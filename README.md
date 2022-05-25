@@ -16,4 +16,4 @@ In command line / terminal:
   flutter run lib/main.dart
 ```
 
-
+> For other useful flutter command-line tools, check this document: https://docs.flutter.dev/reference/flutter-cli
