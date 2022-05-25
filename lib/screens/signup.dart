@@ -60,8 +60,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           password: _passwordTextController.text)
                       .then((value) {
                     print("Created New Account");
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                    User? user = FirebaseAuth.instance.currentUser;
+
+                    if (user != null) {
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => HomeScreen(
+                            user: user,
+                          ),
+                        ),
+                      );
+                    }
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
