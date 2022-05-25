@@ -3,6 +3,9 @@ import 'package:justap/widgets/core_widgets.dart';
 import 'package:justap/screens/home.dart';
 import 'package:justap/screens/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:justap/widgets/google_signin.dart';
+
+import '../services/authentications.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -54,15 +57,38 @@ class _LoginScreenState extends State<LoginScreen> {
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
-                    Navigator.push(
-                        context,
+                    User? user = FirebaseAuth.instance.currentUser;
+                    if (user != null) {
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
-                            builder: (context) => const HomeScreen()));
+                          builder: (context) => HomeScreen(
+                            user: user,
+                          ),
+                        ),
+                      );
+                    }
                   }).onError((error, stackTrace) {
                     print("Error ${error.toString()}");
                   });
                 }),
-                signUpOption()
+                signUpOption(),
+                const Divider(height: 50, thickness: 2, color: Colors.white),
+                FutureBuilder(
+                  future: Authentication.initializeFirebase(context: context),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Text('Error initializing Firebase');
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return GoogleSignInButton();
+                    }
+                    return const CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        Color(0xFFF57C00),
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

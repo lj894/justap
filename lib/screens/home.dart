@@ -3,7 +3,11 @@ import 'package:justap/screens/login.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required User user})
+      : _user = user,
+        super(key: key);
+
+  final User _user;
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
