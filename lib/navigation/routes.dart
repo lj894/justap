@@ -3,23 +3,48 @@ import 'package:justap/screens/login.dart';
 import 'package:justap/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+//import 'package:routing_tutorial/main.dart';
 
-class Routes {
-  User? user = FirebaseAuth.instance.currentUser;
+class RouteGenerator {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
+    final args = settings.arguments;
 
-  // if (user != null) {
-  //   Navigator.of(context).pushReplacement(
-  //     MaterialPageRoute(
-  //       builder: (context) => HomeScreen(
-  //         user: user,
-  //       ),
-  //     ),
-  //   );
-  // }
+    switch (settings.name) {
+      case '/':
+        if (FirebaseAuth.instance.currentUser != null) {
+          return MaterialPageRoute(
+            builder: (context) => HomeScreen(
+              user: FirebaseAuth.instance.currentUser!,
+            ),
+          );
+        }
+        return MaterialPageRoute(builder: (_) => LoginScreen());
+      case '/sign-up':
+        return MaterialPageRoute(builder: (_) => SignUpScreen());
+      case '/home':
+        if (FirebaseAuth.instance.currentUser != null) {
+          return MaterialPageRoute(
+            builder: (context) => HomeScreen(
+              user: FirebaseAuth.instance.currentUser!,
+            ),
+          );
+        }
+        return _errorRoute();
+      default:
+        return _errorRoute();
+    }
+  }
 
-  static Map<String, Widget Function(BuildContext)> routes = {
-    '/': (context) => const LoginScreen(),
-    '/sign-up': (context) => const SignUpScreen(),
-    //'/home': (context) => HomeScreen(user: user ? )
-  };
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(builder: (_) {
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Error'),
+        ),
+        body: Center(
+          child: Text('ERROR'),
+        ),
+      );
+    });
+  }
 }
