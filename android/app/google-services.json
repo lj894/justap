@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "190090293913",
+    "project_id": "justap-bdc9a",
+    "storage_bucket": "justap-bdc9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190090293913:android:8d292f4f691a83fa44fe08",
+        "android_client_info": {
+          "package_name": "com.example.justap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190090293913-4cnrd5qqkf0lpfpjnoqt49sj75b8p9e5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnyehxF1FmtnmaBoVZregBILLTXOy_zOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "190090293913-4cnrd5qqkf0lpfpjnoqt49sj75b8p9e5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

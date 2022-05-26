@@ -44,42 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyA661whOhr5da5wMVagagNCjkq1Y64QwWM',
-    appId: '1:829576828752:web:ed1e95df977c4f666a3e55',
-    messagingSenderId: '829576828752',
-    projectId: 'justap-8acd8',
-    authDomain: 'justap-8acd8.firebaseapp.com',
-    storageBucket: 'justap-8acd8.appspot.com',
-    measurementId: 'G-ML0NHY2BPX',
+    apiKey: 'AIzaSyDfhDD4KXtCNDqgjPZwOcckLF5fpeiEErA',
+    appId: '1:190090293913:web:c86047c977fa5d9544fe08',
+    messagingSenderId: '190090293913',
+    projectId: 'justap-bdc9a',
+    authDomain: 'justap-bdc9a.firebaseapp.com',
+    storageBucket: 'justap-bdc9a.appspot.com',
+    measurementId: 'G-ZPBYL65DYH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBkfy2XTFKt1Mu8MtkzDQHUQ39WLeVJQkQ',
-    appId: '1:829576828752:android:01d843b1ef6df3326a3e55',
-    messagingSenderId: '829576828752',
-    projectId: 'justap-8acd8',
-    storageBucket: 'justap-8acd8.appspot.com',
+    apiKey: 'AIzaSyDnyehxF1FmtnmaBoVZregBILLTXOy_zOA',
+    appId: '1:190090293913:android:8d292f4f691a83fa44fe08',
+    messagingSenderId: '190090293913',
+    projectId: 'justap-bdc9a',
+    storageBucket: 'justap-bdc9a.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyC83mDO0fs5eXhKElEOexrqOC0_SqG5VM0',
-    appId: '1:829576828752:ios:8199580f4a6a6b5d6a3e55',
-    messagingSenderId: '829576828752',
-    projectId: 'justap-8acd8',
-    storageBucket: 'justap-8acd8.appspot.com',
-    iosClientId:
-        '829576828752-60ph4dpnohq7q40sohg6dcl7h9ct49a3.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCXnXHlAEPNzIebIquQ_vn1TbMDiqNXQ5g',
+    appId: '1:190090293913:ios:f8d258f5d05f395344fe08',
+    messagingSenderId: '190090293913',
+    projectId: 'justap-bdc9a',
+    storageBucket: 'justap-bdc9a.appspot.com',
+    iosClientId: '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
     iosBundleId: 'com.example.justap',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyC83mDO0fs5eXhKElEOexrqOC0_SqG5VM0',
-    appId: '1:829576828752:ios:8199580f4a6a6b5d6a3e55',
-    messagingSenderId: '829576828752',
-    projectId: 'justap-8acd8',
-    storageBucket: 'justap-8acd8.appspot.com',
-    iosClientId:
-        '829576828752-60ph4dpnohq7q40sohg6dcl7h9ct49a3.apps.googleusercontent.com',
+    apiKey: 'AIzaSyCXnXHlAEPNzIebIquQ_vn1TbMDiqNXQ5g',
+    appId: '1:190090293913:ios:f8d258f5d05f395344fe08',
+    messagingSenderId: '190090293913',
+    projectId: 'justap-bdc9a',
+    storageBucket: 'justap-bdc9a.appspot.com',
+    iosClientId: '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
     iosBundleId: 'com.example.justap',
   );
 }

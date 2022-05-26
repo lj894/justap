@@ -11,9 +11,9 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
-  TextEditingController _userNameTextController = TextEditingController();
+  TextEditingController _passwordTextController = TextEditingController();
+  TextEditingController _repeatPasswordTextController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,31 +49,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 reusableTextField("Repeat Password", Icons.lock_outlined, true,
-                    _passwordTextController),
+                    _repeatPasswordTextController),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Sign Up", () {
-                  FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
-                      .then((value) {
-                    print("Created New Account");
-                    User? user = FirebaseAuth.instance.currentUser;
-
-                    if (user != null) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                            user: user,
+                  if (_passwordTextController.text ==
+                      _repeatPasswordTextController.text) {
+                    FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: _emailTextController.text,
+                            password: _passwordTextController.text)
+                        .then((value) {
+                      print("Created New Account");
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => HomeScreen(
+                              user: user,
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
-                  });
+                        );
+                      }
+                    }).onError((error, stackTrace) {
+                      print("Error ${error.toString()}");
+                    });
+                  }
                 })
               ],
             ),
