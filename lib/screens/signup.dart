@@ -2,15 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/widgets/core_widgets.dart';
 import 'package:justap/screens/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:justap/services/authentications.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
-
-  @override
-  _SignUpScreenState createState() => _SignUpScreenState();
-}
-
-class _SignUpScreenState extends State<SignUpScreen> {
+class SignUpScreen extends StatelessWidget {
   TextEditingController _emailTextController = TextEditingController();
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _repeatPasswordTextController = TextEditingController();
@@ -56,25 +51,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 firebaseUIButton(context, "Sign Up", () {
                   if (_passwordTextController.text ==
                       _repeatPasswordTextController.text) {
-                    FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: _emailTextController.text,
-                            password: _passwordTextController.text)
-                        .then((value) {
-                      print("Created New Account");
-                      User? user = FirebaseAuth.instance.currentUser;
-                      if (user != null) {
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => HomeScreen(
-                              user: user,
-                            ),
-                          ),
-                        );
-                      }
-                    }).onError((error, stackTrace) {
-                      print("Error ${error.toString()}");
-                    });
+                    context.read<AuthenticationService>().signUp(
+                        email: _emailTextController.text.trim(),
+                        password: _passwordTextController.text.trim());
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        '/', (Route<dynamic> route) => false);
                   }
                 })
               ],
