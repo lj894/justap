@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:justap/screens/home.dart';
 import 'package:justap/services/authentications.dart';
+import 'package:provider/provider.dart';
 
 class GoogleSignInButton extends StatefulWidget {
   @override
@@ -32,22 +31,12 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 setState(() {
                   _isSigningIn = true;
                 });
-                User? user =
-                    await Authentication.signInWithGoogle(context: context);
-
+                context
+                    .read<AuthenticationService>()
+                    .signInWithGoogle(context: context);
                 setState(() {
                   _isSigningIn = false;
                 });
-
-                if (user != null) {
-                  Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => HomeScreen(
-                        user: user,
-                      ),
-                    ),
-                  );
-                }
               },
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),

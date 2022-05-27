@@ -1,22 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/widgets/core_widgets.dart';
-import 'package:justap/screens/home.dart';
 import 'package:justap/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/widgets/google_signin.dart';
+import 'package:provider/provider.dart';
+import 'package:justap/services/authentications.dart';
 
-import '../services/authentications.dart';
-
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
-
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _passwordTextController = TextEditingController();
+class LoginScreen extends StatelessWidget {
   final TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _passwordTextController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,29 +44,35 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 //forgetPassword(context),
                 firebaseUIButton(context, "Sign In", () {
-                  FirebaseAuth.instance
-                      .signInWithEmailAndPassword(
-                          email: _emailTextController.text,
-                          password: _passwordTextController.text)
-                      .then((value) {
-                    User? user = FirebaseAuth.instance.currentUser;
-                    if (user != null) {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => HomeScreen(
-                            user: user,
-                          ),
-                        ),
-                      );
-                    }
-                  }).onError((error, stackTrace) {
-                    print("Error ${error.toString()}");
-                  });
+                  context.read<AuthenticationService>().signIn(
+                      email: _emailTextController.text.trim(),
+                      password: _passwordTextController.text.trim());
+                  //setState(() {});
                 }),
-                signUpOption(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't have account?",
+                        style: TextStyle(color: Colors.white70)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SignUpScreen()));
+                      },
+                      child: const Text(
+                        " Sign Up",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    )
+                  ],
+                ),
                 const Divider(height: 50, thickness: 2, color: Colors.white),
                 FutureBuilder(
-                  future: Authentication.initializeFirebase(context: context),
+                  future: AuthenticationService.initializeFirebase(
+                      context: context),
                   builder: (context, snapshot) {
                     if (snapshot.hasError) {
                       return Text('Error initializing Firebase');
@@ -94,26 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Row signUpOption() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Don't have account?",
-            style: TextStyle(color: Colors.white70)),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SignUpScreen()));
-          },
-          child: const Text(
-            " Sign Up",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-          ),
-        )
-      ],
     );
   }
 }
