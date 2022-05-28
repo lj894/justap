@@ -1,91 +1,66 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:justap/services/authentications.dart';
-import 'package:provider/provider.dart';
-import 'package:justap/utils/globals.dart' as globals;
+import 'package:justap/components/bottom_nav.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
+import 'package:justap/controllers/media.dart';
+import 'package:justap/components/media_tile.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({
-    Key? key,
-    this.userToken,
-  }) : super(key: key);
-
-  final String? userToken;
-
-  @override
-  State<HomeScreen> createState() => _HomeScreen();
-}
-
-class _HomeScreen extends State<HomeScreen> {
-  final User? user = FirebaseAuth.instance.currentUser;
-
-  var token;
-  @override
-  void initState() {
-    super.initState();
-
-    getToken();
-  }
-
-  getToken() async {
-    token = await user?.getIdToken();
-    setState(() {
-      token = token;
-    });
-    print(token);
-  }
+class HomeScreen extends StatelessWidget {
+  //const HomeScreen({Key? key}) : super(key: key);
+  final MediaController mediaController = Get.put(MediaController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          "Home Screen",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          //title: const Text("Home"),
+          backgroundColor: Colors.white,
+          toolbarHeight: 0,
         ),
-      ),
-      body: Container(
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: BoxDecoration(color: Color.fromARGB(255, 163, 162, 156)),
-          child: SingleChildScrollView(
-              child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  height: 50,
-                  //color: Colors.amber[600],
-                  child: Text('Hi! ${user?.email}'),
-                ),
-                Container(
-                  height: 50,
-                  //color: Colors.amber[500],
-                  child: Text('Your token: ${token}'),
-                ),
-                Container(
-                  height: 50,
-                  //color: Colors.amber[500],
-                  child: Text('Your uid: ${user?.uid}'),
-                ),
-                Container(
-                  height: 50,
-                  //color: Colors.amber[100],
-                  child: Center(
-                      child: ElevatedButton(
-                    child: Text("Logout"),
-                    onPressed: () {
-                      context.read<AuthenticationService>().signOut();
-                      setState(() {});
-                    },
-                  )),
-                ),
-              ],
+        bottomNavigationBar: const BottomNav(0),
+        body: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  const Expanded(
+                    child: Text(
+                      'My Portfolios',
+                      style: TextStyle(
+                          fontFamily: 'avenir',
+                          fontSize: 32,
+                          fontWeight: FontWeight.w900),
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {},
+                  ),
+                  IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                  IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                ],
+              ),
             ),
-          ))),
-    );
+            Expanded(
+              child: Obx(() {
+                if (mediaController.isLoading.value)
+                  return Center(child: CircularProgressIndicator());
+                else
+                  return StaggeredGridView.countBuilder(
+                    crossAxisCount: 2,
+                    itemCount: mediaController.mediaList.length,
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    itemBuilder: (context, index) {
+                      return MediaTile(mediaController.mediaList[index]);
+                    },
+                    staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+                  );
+              }),
+            )
+          ],
+        ));
   }
 }

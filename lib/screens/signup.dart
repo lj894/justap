@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/widgets/core_widgets.dart';
-import 'package:justap/screens/home.dart';
+import 'package:justap/screens/onboarding.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/services/authentications.dart';
