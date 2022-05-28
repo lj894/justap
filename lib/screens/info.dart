@@ -19,21 +19,6 @@ class _InfoScreenState extends State<InfoScreen> {
   void initState() {
     super.initState();
   }
-  // var token;
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   getToken();
-  // }
-
-  // getToken() async {
-  //   token = await user?.getIdToken();
-  //   setState(() {
-  //     token = token;
-  //   });
-  //   print(token);
-  // }
 
   @override
   Widget build(BuildContext context) {

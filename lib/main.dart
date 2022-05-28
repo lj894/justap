@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:justap/screens/home.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'package:justap/screens/login.dart';
-import 'package:justap/navigation/routes.dart';
-import 'package:justap/utils/constants.dart';
-import 'package:justap/screens/info.dart';
+import 'package:justap/screens/all.dart';
 import 'package:justap/utils/globals.dart' as globals;
 import 'package:url_strategy/url_strategy.dart';
+import 'controllers/navigation.dart';
 
 Future<void> main() async {
   setPathUrlStrategy();
@@ -44,24 +41,19 @@ class _MyAppState extends State<MyApp> {
       return InfoScreen(redirectURL: widget.redirectURL, uid: widget.uid);
     } else {
       return MultiProvider(
-          providers: [
-            Provider<AuthenticationService>(
-                create: (_) => AuthenticationService(FirebaseAuth.instance)),
-            StreamProvider(
-                create: (context) =>
-                    context.read<AuthenticationService>().authStateChanges,
-                initialData: null)
-          ],
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: Constants.title,
-            home: AuthenticationWrapper(),
-            //initialRoute: '/',
-            //onGenerateRoute: RouteGenerator.generateRoute,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-          ));
+        providers: [
+          Provider<AuthenticationService>(
+              create: (_) => AuthenticationService(FirebaseAuth.instance)),
+          StreamProvider(
+              create: (context) =>
+                  context.read<AuthenticationService>().authStateChanges,
+              initialData: null),
+          ListenableProvider<NavigationController>(
+            create: (_) => NavigationController(),
+          )
+        ],
+        child: const AuthenticationWrapper(),
+      );
     }
   }
 }
@@ -72,7 +64,8 @@ class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User?>();
-    //print(user);
+    NavigationController navigation =
+        Provider.of<NavigationController>(context);
 
     if (FirebaseAuth.instance.currentUser != null) {
       FirebaseAuth.instance.currentUser
@@ -81,9 +74,28 @@ class AuthenticationWrapper extends StatelessWidget {
     }
 
     if (user != null) {
-      return HomeScreen();
-    } else if (user != null) {
-      return HomeScreen();
+      return MaterialApp(
+        home: Navigator(
+          pages: [
+            MaterialPage(child: HomeScreen()),
+            if (navigation.screenName == '/settings')
+              const MaterialPage(child: SettingsScreen()),
+            if (navigation.screenName == '/profile')
+              const MaterialPage(child: ProfileScreen()),
+          ],
+          onPopPage: (route, result) {
+            bool popStatus = route.didPop(result);
+            if (popStatus == true) {
+              Provider.of<NavigationController>(context, listen: false)
+                  .changeScreen('/');
+            }
+            return popStatus;
+          },
+        ),
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+      );
     }
     return LoginScreen();
   }
