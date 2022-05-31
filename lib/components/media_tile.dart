@@ -26,7 +26,6 @@ class MediaTile extends StatelessWidget {
                   ),
                   child: Image.network(
                     media.imageLink,
-                    //"https://www.clipartmax.com/png/full/135-1352882_png-format-twitter-logo-transparent.png",
                     fit: BoxFit.cover,
                   ),
                 ),

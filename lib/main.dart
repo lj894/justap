@@ -35,8 +35,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    print(widget.redirectURL);
-    print(widget.uid);
+    //print(widget.redirectURL);
+    //print(widget.uid);
     if (widget.uid != null) {
       return InfoScreen(redirectURL: widget.redirectURL, uid: widget.uid);
     } else {

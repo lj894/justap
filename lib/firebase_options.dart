@@ -67,7 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '190090293913',
     projectId: 'justap-bdc9a',
     storageBucket: 'justap-bdc9a.appspot.com',
-    iosClientId: '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
+    iosClientId:
+        '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
     iosBundleId: 'com.example.justap',
   );
 
@@ -77,7 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '190090293913',
     projectId: 'justap-bdc9a',
     storageBucket: 'justap-bdc9a.appspot.com',
-    iosClientId: '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
+    iosClientId:
+        '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
     iosBundleId: 'com.example.justap',
   );
 }
