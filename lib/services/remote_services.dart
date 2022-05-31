@@ -1,8 +1,33 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/utils/globals.dart' as globals;
 import 'package:justap/models/media.dart';
+import 'package:justap/models/user.dart';
 
 class RemoteServices {
   static var client = http.Client();
+
+  static Future<SiteUser> fetchUser() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final response = await client.get(
+        Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
+        headers: {
+          //'Accept': 'application/json',
+          'Authorization': 'Bearer ${globals.userToken}',
+        });
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return SiteUser.fromJson(jsonDecode(response.body));
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load user');
+    }
+  }
 
   static Future<List<Media?>> fetchMedias() async {
     var response = await client.get(Uri.parse(
