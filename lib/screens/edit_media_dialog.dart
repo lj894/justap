@@ -6,21 +6,36 @@ import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
 import 'dart:convert';
 
-class MediaDialog extends StatefulWidget {
+class EditMediaDialog extends StatefulWidget {
+  Media? media;
+
+  EditMediaDialog({this.media});
+
   @override
-  _MediaDialog createState() => _MediaDialog();
+  _EditMediaDialog createState() => _EditMediaDialog();
 }
 
-class _MediaDialog extends State<MediaDialog> {
+class _EditMediaDialog extends State<EditMediaDialog> {
+  void initState() {
+    super.initState();
+  }
+
   String mediaType = "Instagram";
   String websiteLink = "";
 
   @override
   Widget build(BuildContext context) {
+    print(widget.media?.socialMedia);
+    if (widget.media?.socialMedia != null) {
+      mediaType = widget.media!.socialMedia!;
+    }
+    if (widget.media?.websiteLink != null) {
+      websiteLink = widget.media!.websiteLink!;
+    }
     return Scaffold(
         appBar: AppBar(
           //backgroundColor: Colors.white,
-          title: Text('Create Link'),
+          title: Text('Edit Link'),
         ),
         body: Container(
           margin: EdgeInsets.all(20.0),
@@ -36,7 +51,7 @@ class _MediaDialog extends State<MediaDialog> {
                         ?.copyWith(color: Colors.black),
                   ),
                   leading: Radio(
-                    value: "Instagram",
+                    value: "INSTAGRAM",
                     groupValue: mediaType,
                     activeColor: Color(0xFF6200EE),
                     onChanged: (value) {
@@ -56,7 +71,7 @@ class _MediaDialog extends State<MediaDialog> {
                         ?.copyWith(color: Colors.black38),
                   ),
                   leading: Radio(
-                    value: "Facebook",
+                    value: "FACEBOOK",
                     groupValue: mediaType,
                     activeColor: Color(0xFF6200EE),
                     onChanged: null,
@@ -77,7 +92,7 @@ class _MediaDialog extends State<MediaDialog> {
                         ?.copyWith(color: Colors.black38),
                   ),
                   leading: Radio(
-                    value: "Twitter",
+                    value: "TWITTER",
                     groupValue: mediaType,
                     activeColor: Color(0xFF6200EE),
                     onChanged: null,
@@ -91,7 +106,7 @@ class _MediaDialog extends State<MediaDialog> {
                 ),
                 TextFormField(
                   cursorColor: Theme.of(context).cursorColor,
-                  initialValue: '',
+                  initialValue: websiteLink,
                   //maxLength: 50,
                   onChanged: (value) {
                     setState(() {
@@ -107,25 +122,61 @@ class _MediaDialog extends State<MediaDialog> {
                     border: OutlineInputBorder(),
                   ),
                 ),
-                Container(
-                  height: 50,
-                  //color: Colors.amber[100],
-                  child: Center(
-                      child: ElevatedButton(
-                    child: const Text("Save"),
-                    onPressed: () async {
-                      await RemoteServices.createMedias(
-                          mediaType.toUpperCase(), websiteLink);
-                      //setState(() {});
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                            settings: const RouteSettings(name: '/')),
-                      );
-                    },
-                  )),
-                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: 50,
+                      //color: Colors.amber[100],
+                      child: Center(
+                          child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            //primary: Colors.redAccent,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 56, vertical: 20),
+                            textStyle: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        child: const Text("Save"),
+                        onPressed: () async {
+                          await RemoteServices.createMedias(
+                              mediaType.toUpperCase(), websiteLink);
+                          //setState(() {});
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                                settings: const RouteSettings(name: '/')),
+                          );
+                        },
+                      )),
+                    ),
+                    Container(
+                      height: 50,
+                      //color: Colors.amber[100],
+                      child: Center(
+                          child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.redAccent,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                            textStyle: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        child: const Text("Delete"),
+                        onPressed: () async {
+                          await RemoteServices.createMedias(
+                              mediaType.toUpperCase(), websiteLink);
+                          //setState(() {});
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                                settings: const RouteSettings(name: '/')),
+                          );
+                        },
+                      )),
+                    ),
+                  ],
+                )
               ],
             ),
           ),

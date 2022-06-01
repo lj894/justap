@@ -10,13 +10,14 @@ class RemoteServices {
   static var client = http.Client();
 
   static Future<SiteUser> fetchUser() async {
-    final uid = FirebaseAuth.instance.currentUser?.uid;
+    String? uid = Uri.base.queryParameters["uid"];
+    uid ??= FirebaseAuth.instance.currentUser?.uid;
+
     final response = await client.get(
         Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
-        headers: {
-          //'Accept': 'application/json',
-          'Authorization': 'Bearer ${globals.userToken}'
-        });
+        headers: (globals.userToken != null)
+            ? {'Authorization': 'Bearer ${globals.userToken}'}
+            : null);
 
     if (response.statusCode == 200) {
       return SiteUser.fromJson(jsonDecode(response.body));
@@ -50,8 +51,11 @@ class RemoteServices {
   }
 
   static Future<List<Media?>> fetchMedias(uid) async {
-    var response = await client
-        .get(Uri.parse("https://api.justap.us/v1/social?firebaseUid=${uid}"));
+    var response = await client.get(
+        Uri.parse("https://api.justap.us/v1/social?firebaseUid=${uid}"),
+        headers: (globals.userToken != null)
+            ? {'Authorization': 'Bearer ${globals.userToken}'}
+            : null);
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return mediaFromJson(jsonString);

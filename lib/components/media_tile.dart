@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
+import 'package:justap/screens/edit_media_dialog.dart';
 
 class MediaTile extends StatelessWidget {
   final Media media;
   const MediaTile(this.media);
 
-  getMediaImage(media) {
+  getMediaImage(context, media) {
     return GestureDetector(
       onTap: () {
-        //html.window.open(media.websiteLink, "_blank");
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => EditMediaDialog(media: media),
+            fullscreenDialog: true,
+          ),
+        );
       }, // Image tapped
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),
@@ -36,7 +43,7 @@ class MediaTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: getMediaImage(media),
+                  child: getMediaImage(context, media),
                 ),
               ],
             ),
