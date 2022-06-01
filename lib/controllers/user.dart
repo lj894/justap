@@ -4,7 +4,7 @@ import 'package:justap/services/remote_services.dart';
 
 class UserController extends GetxController {
   var isLoading = true.obs;
-  var user = <SiteUser>{}.obs;
+  var user = SiteUser().obs;
 
   @override
   void onInit() {
@@ -18,14 +18,15 @@ class UserController extends GetxController {
       isLoading(true);
       var u = await RemoteServices.fetchUser();
       if (u != null) {
-        print("user:");
-        print(u);
-
-        user = u as RxSet<SiteUser>;
-        print(user);
+        user.update((user) {
+          user?.nickName = u.nickName;
+          user?.introduction = u.introduction;
+          user?.email = u.email;
+          user?.profileUrl = u.profileUrl;
+          user?.owner = u.owner;
+        });
       }
     } finally {
-      print('user ends');
       isLoading(false);
     }
   }

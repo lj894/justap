@@ -35,10 +35,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    //print(widget.redirectURL);
-    //print(widget.uid);
     if (widget.uid != null) {
-      return InfoScreen(redirectURL: widget.redirectURL, uid: widget.uid);
+      return MaterialApp(
+          initialRoute: "/?uid=${widget.uid}",
+          routes: <String, WidgetBuilder>{
+            "/?uid=${widget.uid}": (context) =>
+                InfoScreen(redirectURL: widget.redirectURL, uid: widget.uid),
+          },
+          home: InfoScreen(redirectURL: widget.redirectURL, uid: widget.uid));
     } else {
       return MultiProvider(
         providers: [
@@ -75,6 +79,7 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (user != null) {
       return MaterialApp(
+        initialRoute: "/?uid=QDDN9PhdlnRThFZmaztC4gtyB4K2",
         home: Navigator(
           pages: [
             MaterialPage(child: HomeScreen()),

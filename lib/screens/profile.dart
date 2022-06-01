@@ -42,8 +42,7 @@ class _ProfileScreen extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('user:');
-    print(user);
+    //print(user);
     return Scaffold(
       appBar: AppBar(title: const Text("Profile")),
       bottomNavigationBar: const BottomNav(2),
@@ -94,7 +93,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                 //     if (userController.isLoading.value) {
                 //       return Center(child: CircularProgressIndicator());
                 //     } else {
-                //       return Text('User: ${userController.user}');
+                //       return Text('User: ${userController.user().email}');
                 //     }
                 //   }),
                 // ),

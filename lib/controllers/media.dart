@@ -1,6 +1,7 @@
 import 'package:get/state_manager.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/services/remote_services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class MediaController extends GetxController {
   var isLoading = true.obs;
@@ -13,9 +14,10 @@ class MediaController extends GetxController {
   }
 
   void fetchMedias() async {
+    var uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       isLoading(true);
-      var medias = await RemoteServices.fetchMedias();
+      var medias = await RemoteServices.fetchMedias(uid);
       if (medias != null) {
         mediaList.value = medias as List<Media>;
       }

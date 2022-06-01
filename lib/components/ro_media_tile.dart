@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
+import 'dart:html' as html;
 
-class MediaTile extends StatelessWidget {
-  final Media media;
-  const MediaTile(this.media);
+class ROMediaTile extends StatelessWidget {
+  final Media ro_media;
+  const ROMediaTile(this.ro_media);
 
   getMediaImage(media) {
     return GestureDetector(
       onTap: () {
-        //html.window.open(media.websiteLink, "_blank");
+        html.window.open(media.websiteLink, "_blank");
       }, // Image tapped
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),
@@ -36,16 +37,16 @@ class MediaTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: getMediaImage(media),
+                  child: getMediaImage(ro_media),
                 ),
               ],
             ),
             SizedBox(height: 8),
             Center(
               child: Text(
-                media.socialMedia!,
+                ro_media.socialMedia!,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'avenir', fontWeight: FontWeight.w800),
                 overflow: TextOverflow.ellipsis,
               ),
