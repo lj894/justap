@@ -60,4 +60,26 @@ class RemoteServices {
       return [];
     }
   }
+
+  static Future<Media?> createMedias(socialMedia, websiteLink) async {
+    final response = await http.post(
+      Uri.parse('https://api.justap.us/v1/social'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "socialMedia": socialMedia,
+        "imageLink": "string",
+        "websiteLink": websiteLink,
+        "enable": true
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return Media.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to create social media.');
+    }
+  }
 }

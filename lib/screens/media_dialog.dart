@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:justap/controllers/media.dart';
+import 'package:justap/models/media.dart';
+import 'package:justap/screens/home.dart';
+import 'package:justap/services/remote_services.dart';
+import 'dart:convert';
 
 class MediaDialog extends StatefulWidget {
   @override
@@ -7,6 +13,7 @@ class MediaDialog extends StatefulWidget {
 
 class _MediaDialog extends State<MediaDialog> {
   String mediaType = "Instagram";
+  String websiteLink = "";
 
   @override
   Widget build(BuildContext context) {
@@ -86,17 +93,18 @@ class _MediaDialog extends State<MediaDialog> {
                   cursorColor: Theme.of(context).cursorColor,
                   initialValue: '',
                   //maxLength: 50,
+                  onChanged: (value) {
+                    setState(() {
+                      websiteLink = value;
+                    });
+                  },
                   decoration: InputDecoration(
-                    //icon: Icon(Icons.favorite),
                     labelText: 'URL',
                     labelStyle: TextStyle(
                       color: Color(0xFF6200EE),
                     ),
                     helperText: 'Your personal link',
                     border: OutlineInputBorder(),
-                    // enabledBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(color: Color(0xFF6200EE)),
-                    // ),
                   ),
                 ),
                 Container(
@@ -104,10 +112,17 @@ class _MediaDialog extends State<MediaDialog> {
                   //color: Colors.amber[100],
                   child: Center(
                       child: ElevatedButton(
-                    child: Text("Save"),
-                    onPressed: () {
-                      //context.read<AuthenticationService>().signOut();
-                      setState(() {});
+                    child: const Text("Save"),
+                    onPressed: () async {
+                      await RemoteServices.createMedias(
+                          mediaType.toUpperCase(), websiteLink);
+                      //setState(() {});
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HomeScreen(),
+                            settings: const RouteSettings(name: '/')),
+                      );
                     },
                   )),
                 ),

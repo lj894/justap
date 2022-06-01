@@ -12,6 +12,10 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () async {
+      mediaController.fetchMedias();
+    });
+
     return Scaffold(
         appBar: AppBar(
           //title: const Text("Home"),
