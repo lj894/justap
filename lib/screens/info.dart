@@ -3,6 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/utils/globals.dart' as globals;
+import 'package:justap/components/bottom_nav.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
+import 'package:justap/controllers/ro_media.dart';
+import 'package:justap/components/ro_media_tile.dart';
 
 class InfoScreen extends StatefulWidget {
   String? redirectURL;
@@ -20,41 +26,56 @@ class _InfoScreenState extends State<InfoScreen> {
     super.initState();
   }
 
+  final ROMediaController roMediaController = Get.put(ROMediaController());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'App name',
-      home: Builder(builder: (BuildContext context) {
-        return Scaffold(
-          extendBodyBehindAppBar: true,
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            title: const Text(
-              "Info Screen",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ),
-          body: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height,
-              decoration:
-                  BoxDecoration(color: Color.fromARGB(255, 163, 162, 156)),
-              child: SingleChildScrollView(
-                  child: Padding(
-                padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      height: 50,
-                      //color: Colors.amber[600],
-                      child: Text('Hi! ${widget.uid}'),
-                    ),
-                  ],
+    return Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          toolbarHeight: 0,
+        ),
+        body: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'My Portfolios',
+                          style: TextStyle(
+                              fontFamily: 'avenir',
+                              fontSize: 32,
+                              fontWeight: FontWeight.w900),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ))),
-        );
-      }),
-    );
+                Expanded(
+                  child: Obx(() {
+                    if (roMediaController.isLoading.value) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return StaggeredGridView.countBuilder(
+                        crossAxisCount: 2,
+                        itemCount: roMediaController.ro_mediaList.length,
+                        crossAxisSpacing: 16,
+                        mainAxisSpacing: 16,
+                        itemBuilder: (context, index) {
+                          return ROMediaTile(
+                              roMediaController.ro_mediaList[index]);
+                        },
+                        staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+                      );
+                    }
+                  }),
+                )
+              ],
+            )));
   }
 }

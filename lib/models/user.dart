@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 class SiteUser {
-  final String nickName;
-  final String? introduction;
-  final String email;
-  final String? profileUrl;
-  final bool owner;
+  String? nickName;
+  String? introduction;
+  String? email;
+  String? profileUrl;
+  bool? owner;
 
-  const SiteUser({
-    required this.nickName,
+  SiteUser({
+    this.nickName,
     this.introduction,
-    required this.email,
+    this.email,
     this.profileUrl,
-    required this.owner,
+    this.owner,
   });
 
   factory SiteUser.fromJson(Map<String, dynamic> json) {

@@ -5,9 +5,9 @@ import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
+import 'package:justap/screens/media_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
-  //const HomeScreen({Key? key}) : super(key: key);
   final MediaController mediaController = Get.put(MediaController());
 
   @override
@@ -36,18 +36,26 @@ class HomeScreen extends StatelessWidget {
                   ),
                   IconButton(
                     icon: Icon(Icons.add),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                          builder: (BuildContext context) => MediaDialog(),
+                          fullscreenDialog: true,
+                        ),
+                      );
+                    },
                   ),
-                  IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                  IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                  //IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                  //IconButton(icon: Icon(Icons.delete), onPressed: () {}),
                 ],
               ),
             ),
             Expanded(
               child: Obx(() {
-                if (mediaController.isLoading.value)
-                  return Center(child: CircularProgressIndicator());
-                else
+                if (mediaController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
                   return StaggeredGridView.countBuilder(
                     crossAxisCount: 2,
                     itemCount: mediaController.mediaList.length,
@@ -58,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                     },
                     staggeredTileBuilder: (index) => StaggeredTile.fit(1),
                   );
+                }
               }),
             )
           ],
