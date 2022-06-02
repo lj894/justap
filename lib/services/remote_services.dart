@@ -65,7 +65,7 @@ class RemoteServices {
     }
   }
 
-  static Future<Media?> createMedias(socialMedia, websiteLink) async {
+  static Future<Media?> createMedia(socialMedia, websiteLink) async {
     final response = await http.post(
       Uri.parse('https://api.justap.us/v1/social'),
       headers: <String, String>{
@@ -74,8 +74,8 @@ class RemoteServices {
       },
       body: jsonEncode(<String, dynamic>{
         "socialMedia": socialMedia,
-        "imageLink": "string",
         "websiteLink": websiteLink,
+        "imageLink": null,
         "enable": true
       }),
     );
@@ -84,6 +84,45 @@ class RemoteServices {
       return Media.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to create social media.');
+    }
+  }
+
+  static Future<Media?> updateMedia(id, socialMedia, websiteLink) async {
+    print(socialMedia);
+    print(websiteLink);
+
+    final response = await http.put(
+      Uri.parse('https://api.justap.us/v1/social/${id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "socialMedia": socialMedia,
+        "websiteLink": websiteLink,
+        "enable": true
+      }),
+    );
+    if (response.statusCode == 200) {
+      return Media.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update social media.');
+    }
+  }
+
+  static Future<void> deleteMedia(id) async {
+    final response = await http.delete(
+      Uri.parse('https://api.justap.us/v1/social/${id}'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{}),
+    );
+    if (response.statusCode == 204) {
+      return null;
+    } else {
+      throw Exception('Failed to delete social media.');
     }
   }
 }

@@ -45,7 +45,7 @@ class _InfoScreenState extends State<InfoScreen> {
               Container(
                   margin: const EdgeInsets.all(15.0),
                   // padding: const EdgeInsets.all(30.0),
-                  height: 250,
+                  height: 200,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       border: const Border(
@@ -59,7 +59,7 @@ class _InfoScreenState extends State<InfoScreen> {
                           return Center(child: CircularProgressIndicator());
                         } else {
                           return Container(
-                            height: 150,
+                            height: 100,
                             child: userController.user().profileUrl != null
                                 ? CircleAvatar(
                                     radius: 80,

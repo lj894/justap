@@ -12,8 +12,8 @@ class CreateMediaDialog extends StatefulWidget {
 }
 
 class _CreateMediaDialog extends State<CreateMediaDialog> {
-  String mediaType = "Instagram";
-  String websiteLink = "";
+  String mediaType = "INSTAGRAM";
+  String websiteLink = "https://";
 
   @override
   Widget build(BuildContext context) {
@@ -24,116 +24,270 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         ),
         body: Container(
           margin: EdgeInsets.all(20.0),
-          child: Center(
-            child: Column(
-              children: <Widget>[
-                ListTile(
-                  title: Text(
-                    'Instagram',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(color: Colors.black),
-                  ),
-                  leading: Radio(
-                    value: "INSTAGRAM",
-                    groupValue: mediaType,
-                    activeColor: Color(0xFF6200EE),
-                    onChanged: (value) {
-                      print(value);
-                      setState(() {
-                        mediaType = value.toString();
-                      });
-                    },
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Facebook',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(color: Colors.black38),
-                  ),
-                  leading: Radio(
-                    value: "FACEBOOK",
-                    groupValue: mediaType,
-                    activeColor: Color(0xFF6200EE),
-                    onChanged: null,
-                    // onChanged: (value) {
-                    //   print(value);
-                    //   setState(() {
-                    //     mediaType = value.toString();
-                    //   });
-                    // },
-                  ),
-                ),
-                ListTile(
-                  title: Text(
-                    'Twitter',
-                    style: Theme.of(context)
-                        .textTheme
-                        .subtitle1
-                        ?.copyWith(color: Colors.black38),
-                  ),
-                  leading: Radio(
-                    value: "TWITTER",
-                    groupValue: mediaType,
-                    activeColor: Color(0xFF6200EE),
-                    onChanged: null,
-                    // onChanged: (value) {
-                    //   print(value);
-                    //   setState(() {
-                    //     mediaType = value.toString();
-                    //   });
-                    // },
-                  ),
-                ),
-                TextFormField(
-                  cursorColor: Theme.of(context).cursorColor,
-                  initialValue: '',
-                  //maxLength: 50,
-                  onChanged: (value) {
-                    setState(() {
-                      websiteLink = value;
-                    });
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'URL',
-                    labelStyle: TextStyle(
-                      color: Color(0xFF6200EE),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'Instagram',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "INSTAGRAM",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
                     ),
-                    helperText: 'Your personal link',
-                    border: OutlineInputBorder(),
                   ),
-                ),
-                Container(
-                  height: 50,
-                  //color: Colors.amber[100],
-                  child: Center(
-                      child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        //primary: Colors.redAccent,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 56, vertical: 20),
-                        textStyle: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                    child: const Text("Save"),
-                    onPressed: () async {
-                      await RemoteServices.createMedias(
-                          mediaType.toUpperCase(), websiteLink);
-                      //setState(() {});
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => HomeScreen(),
-                            settings: const RouteSettings(name: '/')),
-                      );
-                    },
-                  )),
-                ),
-              ],
-            ),
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'Facebook',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "FACEBOOK",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'LinkedIn',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "LINKEDIN",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'WeChat',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "WECHAT",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'Trello',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "TRELLO",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'GitHub',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "GITHUB",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'venmo',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "VENMO",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: ListTile(
+                      title: const Text(
+                        'Zelle',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.black,
+                        ),
+                      ),
+                      leading: Radio(
+                        value: "ZELLE",
+                        groupValue: mediaType,
+                        activeColor: const Color(0xFF6200EE),
+                        onChanged: (value) {
+                          setState(() {
+                            mediaType = value.toString();
+                          });
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: TextFormField(
+                      cursorColor: Theme.of(context).cursorColor,
+                      initialValue: websiteLink,
+                      //maxLength: 50,
+                      onChanged: (value) {
+                        setState(() {
+                          websiteLink = value.toString();
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        labelText: 'URL',
+                        labelStyle: TextStyle(
+                          color: Color(0xFF6200EE),
+                        ),
+                        helperText: 'Enter your personal link to the site',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              //primary: Colors.redAccent,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 56, vertical: 20),
+                              textStyle: TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.bold)),
+                          child: const Text("Save"),
+                          onPressed: () async {
+                            await RemoteServices.createMedia(
+                                mediaType, websiteLink);
+                            //setState(() {});
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                  settings: const RouteSettings(name: '/')),
+                            );
+                          },
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ));
   }
