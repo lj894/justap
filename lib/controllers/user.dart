@@ -8,12 +8,11 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
-    fetchUser();
     super.onInit();
+    fetchUser();
   }
 
   void fetchUser() async {
-    print('fetchUser');
     try {
       isLoading(true);
       var u = await RemoteServices.fetchUser();
