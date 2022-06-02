@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       const Center(
-                          child: Text("JUSTAP",
+                          child: Text("JusTap",
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,

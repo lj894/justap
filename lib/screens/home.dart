@@ -5,13 +5,17 @@ import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
-import 'package:justap/screens/media_dialog.dart';
+import 'package:justap/screens/create_media_dialog.dart';
 
 class HomeScreen extends StatelessWidget {
   final MediaController mediaController = Get.put(MediaController());
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () async {
+      mediaController.fetchMedias();
+    });
+
     return Scaffold(
         appBar: AppBar(
           //title: const Text("Home"),
@@ -40,7 +44,8 @@ class HomeScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute<void>(
-                          builder: (BuildContext context) => MediaDialog(),
+                          builder: (BuildContext context) =>
+                              CreateMediaDialog(),
                           fullscreenDialog: true,
                         ),
                       );

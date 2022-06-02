@@ -19,8 +19,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreen extends State<ProfileScreen> {
-  //const ProfileScreen({Key? key}) : super(key: key);
-
   final User? user = FirebaseAuth.instance.currentUser;
   var token;
   @override
@@ -35,14 +33,12 @@ class _ProfileScreen extends State<ProfileScreen> {
     setState(() {
       token = token;
     });
-    //print(token);
   }
 
   final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
-    //print(user);
     return Scaffold(
       appBar: AppBar(title: const Text("Profile")),
       bottomNavigationBar: const BottomNav(2),
@@ -77,11 +73,21 @@ class _ProfileScreen extends State<ProfileScreen> {
                   //color: Colors.amber[600],
                   child: Text('Hi! ${user?.email}'),
                 ),
-                // Container(
-                //   height: 50,
-                //   //color: Colors.amber[500],
-                //   child: Text('Your token: ${token}'),
-                // ),
+                Container(
+                  height: 50,
+                  //color: Colors.amber[500],
+                  child: SelectableText(
+                    '''
+                          Your personal link is: 
+                          https://app.justap.us/?uid=${user?.uid}
+                          ''',
+                    //maxLines: 20,
+                    style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black),
+                  ),
+                ),
                 // Container(
                 //   height: 50,
                 //   //color: Colors.amber[500],

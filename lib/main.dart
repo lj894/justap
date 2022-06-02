@@ -79,7 +79,7 @@ class AuthenticationWrapper extends StatelessWidget {
 
     if (user != null) {
       return MaterialApp(
-        initialRoute: "/?uid=QDDN9PhdlnRThFZmaztC4gtyB4K2",
+        initialRoute: "/",
         home: Navigator(
           pages: [
             MaterialPage(child: HomeScreen()),
