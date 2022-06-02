@@ -88,9 +88,6 @@ class RemoteServices {
   }
 
   static Future<Media?> updateMedia(id, socialMedia, websiteLink) async {
-    print(socialMedia);
-    print(websiteLink);
-
     final response = await http.put(
       Uri.parse('https://api.justap.us/v1/social/${id}'),
       headers: <String, String>{

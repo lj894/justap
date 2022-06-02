@@ -6,8 +6,10 @@ import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
 import 'package:justap/screens/create_media_dialog.dart';
+import 'package:justap/controllers/user.dart';
 
 class HomeScreen extends StatelessWidget {
+  final UserController userController = Get.put(UserController());
   final MediaController mediaController = Get.put(MediaController());
 
   @override
