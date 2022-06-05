@@ -12,7 +12,6 @@ import 'package:justap/controllers/user.dart';
 class HomeScreen extends StatelessWidget {
   final UserController userController = Get.put(UserController());
   final MediaController mediaController = Get.put(MediaController());
-  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
