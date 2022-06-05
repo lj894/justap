@@ -10,6 +10,7 @@ import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/ro_media.dart';
 import 'package:justap/components/ro_media_tile.dart';
 import 'package:justap/controllers/user.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InfoScreen extends StatefulWidget {
   String? redirectURL;
@@ -30,13 +31,35 @@ class _InfoScreenState extends State<InfoScreen> {
   final ROMediaController roMediaController = Get.put(ROMediaController());
   final UserController userController = Get.put(UserController());
 
+  //final User? user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
+    if (FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.currentUser
+          ?.getIdToken()
+          .then((value) => globals.userToken = value);
+    }
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           toolbarHeight: 0,
         ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: FloatingActionButton.extended(
+            onPressed: () async {
+              if (await canLaunchUrl(Uri.parse("https://app.justap.us/"))) {
+                await launchUrl(Uri.parse("https://app.justap.us/"));
+              }
+            },
+            icon: const Icon(Icons.account_circle),
+            label: FirebaseAuth.instance.currentUser == null
+                ? const Text("Login")
+                : const Text("My Profile"),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         body: Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
