@@ -12,20 +12,21 @@ class RemoteServices {
   static Future<SiteUser> fetchUser() async {
     String? uid = Uri.base.queryParameters["uid"];
     uid ??= FirebaseAuth.instance.currentUser?.uid;
-
-    final response = await client.get(
-        Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
-        headers: (globals.userToken != null)
-            ? {'Authorization': 'Bearer ${globals.userToken}'}
-            : null);
-
-    if (response.statusCode == 200) {
-      return SiteUser.fromJson(jsonDecode(response.body));
-    } else if (response.statusCode == 204) {
-      return createUser();
-    } else {
-      throw Exception('Failed to load user');
+    if (uid != null) {
+      final response = await client.get(
+          Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
+          headers: (globals.userToken != null)
+              ? {'Authorization': 'Bearer ${globals.userToken}'}
+              : null);
+      if (response.statusCode == 200) {
+        return SiteUser.fromJson(jsonDecode(response.body));
+      } else if (response.statusCode == 204) {
+        return createUser();
+      } else {
+        throw Exception('Failed to load user');
+      }
     }
+    throw Exception('Failed to load user');
   }
 
   static Future<SiteUser> createUser() async {
@@ -120,6 +121,25 @@ class RemoteServices {
       return null;
     } else {
       throw Exception('Failed to delete social media.');
+    }
+  }
+
+  static Future<SiteUser?> updateProfile(nickName, introduction) async {
+    final response = await http.put(
+      Uri.parse('https://api.justap.us/v1/user/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "nickName": nickName,
+        "introduction": introduction,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return SiteUser.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update profile.');
     }
   }
 }

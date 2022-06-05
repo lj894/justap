@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
-import 'dart:html' as html;
+import 'package:url_launcher/url_launcher.dart';
 
 class ROMediaTile extends StatelessWidget {
   final Media ro_media;
@@ -9,8 +11,10 @@ class ROMediaTile extends StatelessWidget {
 
   getMediaImage(media) {
     return GestureDetector(
-      onTap: () {
-        html.window.open(media.websiteLink, "_blank");
+      onTap: () async {
+        if (await canLaunchUrl(Uri.parse(media.websiteLink))) {
+          await launchUrl(Uri.parse(media.websiteLink));
+        }
       }, // Image tapped
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),

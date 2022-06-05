@@ -68,6 +68,7 @@ class AuthenticationWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = context.watch<User?>();
+
     NavigationController navigation =
         Provider.of<NavigationController>(context);
 

@@ -8,8 +8,8 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     fetchUser();
+    super.onInit();
   }
 
   void fetchUser() async {
