@@ -8,7 +8,6 @@ class UserController extends GetxController {
 
   @override
   void onInit() {
-    //print(user().owner);
     fetchUser();
     super.onInit();
   }
