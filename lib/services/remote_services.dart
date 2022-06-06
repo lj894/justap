@@ -20,7 +20,7 @@ class RemoteServices {
               : null);
       if (response.statusCode == 200) {
         return SiteUser.fromJson(jsonDecode(response.body));
-      } else if (response.statusCode == 204) {
+      } else if (response.statusCode == 204 || response.statusCode == 404) {
         return createUser();
       } else {
         throw Exception('Failed to load user');

@@ -21,11 +21,11 @@ class BottomNav extends StatelessWidget {
             navigation.changeScreen('/');
             break;
           case 1:
-            navigation.changeScreen('/settings');
-            break;
-          case 2:
             navigation.changeScreen('/profile');
             break;
+          // case 2:
+          //   navigation.changeScreen('/settings');
+          //   break;
         }
       },
       items: const [
@@ -34,13 +34,13 @@ class BottomNav extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings),
-          label: 'Settings',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.person),
           label: 'Profile',
         ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.settings),
+        //   label: 'Settings',
+        // ),
       ],
     );
   }

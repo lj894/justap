@@ -9,6 +9,7 @@ import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/controllers/navigation.dart';
+import 'package:flutter/services.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -48,20 +49,24 @@ class _ProfileScreen extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(title: const Text("Profile")),
-        bottomNavigationBar: const BottomNav(2),
-        //floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+        bottomNavigationBar: const BottomNav(1),
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: FloatingActionButton.extended(
+            padding: const EdgeInsets.only(top: 60.0),
+            //child: FloatingActionButton.extended(
+            child: FloatingActionButton(
+              mini: true,
+              tooltip: "Sign Out",
               onPressed: () {
                 context.read<AuthenticationService>().signOut();
                 Provider.of<NavigationController>(context, listen: false)
                     .changeScreen('/');
                 setState(() {});
               },
-              icon: const Icon(Icons.logout_rounded),
-              label: const Text("Sign Out")),
-        ),
+              child: const Icon(Icons.logout_rounded),
+              //icon: const Icon(Icons.logout_rounded),
+              //label: const Text("Sign Out")),
+            )),
         body: Container(
             margin: EdgeInsets.all(20.0),
             child: SingleChildScrollView(
@@ -71,19 +76,62 @@ class _ProfileScreen extends State<ProfileScreen> {
                     const Padding(
                       padding: EdgeInsets.all(8.0),
                     ),
-                    ProfileWidget(
-                      imagePath: (user != null && user?.photoURL != null)
-                          ? user!.photoURL!
-                          : "https://toppng.com/uploads/preview/roger-berry-avatar-placeholder-11562991561rbrfzlng6h.png",
-                      isEdit: true,
-                      onClicked: () async {},
-                    ),
+                    Obx(() {
+                      if (userController.isLoading.value) {
+                        return ProfileWidget(
+                          imagePath: "assets/images/avatar_placeholder.png",
+                          isEdit: true,
+                          onClicked: () async {},
+                        );
+                      } else {
+                        return ProfileWidget(
+                          imagePath: userController.user().profileUrl != null
+                              ? userController.user().profileUrl!
+                              : "assets/images/avatar_placeholder.png",
+                          isEdit: true,
+                          onClicked: () async {},
+                        );
+                      }
+                    }),
                     const SizedBox(height: 12),
                     Text('${user?.email}',
                         style: const TextStyle(
                             fontFamily: 'avenir',
                             fontSize: 10,
                             fontWeight: FontWeight.w500)),
+                    const SizedBox(height: 24),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      textDirection: TextDirection.rtl,
+                      children: <Widget>[
+                        IconButton(
+                          iconSize: 24.0,
+                          icon: const Icon(Icons.copy_all_outlined),
+                          color: Colors.black,
+                          onPressed: () {
+                            Clipboard.setData(ClipboardData(
+                                text: "${Uri.base}?uid=${user?.uid}"));
+                            showAlertDialog(context, "Copy URL",
+                                "URL copied! You can write it to a NFC tag and share with others.");
+                          },
+                        ),
+                        Expanded(
+                            child: TextFormField(
+                          cursorColor: Theme.of(context).cursorColor,
+                          initialValue: "${Uri.base}?uid=${user?.uid}",
+                          style: const TextStyle(color: Colors.black45),
+                          readOnly: true,
+                          enabled: false,
+                          decoration: const InputDecoration(
+                            labelText: 'My URL',
+                            labelStyle: TextStyle(
+                              color: Colors.black87,
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
+                        ))
+                      ],
+                    ),
                     const SizedBox(height: 24),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
