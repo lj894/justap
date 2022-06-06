@@ -20,7 +20,7 @@ class MediaTile extends StatelessWidget {
       }, // Image tapped
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),
-        height: 100.0,
+        height: 50.0,
       ),
     );
   }
@@ -37,7 +37,7 @@ class MediaTile extends StatelessWidget {
             Stack(
               children: [
                 Container(
-                  height: 180,
+                  height: 100,
                   width: double.infinity,
                   clipBehavior: Clip.antiAlias,
                   decoration: BoxDecoration(
