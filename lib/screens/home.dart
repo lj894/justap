@@ -36,11 +36,13 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Stack(
                           alignment: Alignment.center,
+                          //alignment: Alignment.bottomLeft,
                           clipBehavior: Clip.none,
                           children: [
                             CoverImage(),
                             Positioned(
                               top: 80,
+                              //lett: 10,
                               child: Obx(() {
                                 if (userController.isLoading.value) {
                                   return const Center(
@@ -56,19 +58,27 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 24),
+                        //const SizedBox(height: 24),
                         Obx(() {
                           if (userController.isLoading.value) {
                             return const Center(
                                 child: CircularProgressIndicator());
                           } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().nickName}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontFamily: 'avenir',
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w800),
+                            return Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(
+                                  left: 10,
+                                  //bottom: 20,
+                                  //right: 20,
+                                  top: 1),
+                              child: Text(
+                                '${userController.user().nickName}',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                    fontFamily: 'avenir',
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800),
+                              ),
                             );
                           } else {
                             return const Text("");
@@ -79,14 +89,24 @@ class HomeScreen extends StatelessWidget {
                           if (userController.isLoading.value) {
                             return const Center(
                                 child: CircularProgressIndicator());
-                          } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().introduction}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black45,
-                                  fontWeight: FontWeight.w800),
+                          } else if (userController.user().introduction !=
+                              null) {
+                            return Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.only(
+                                  left: 10,
+                                  //bottom: 20,
+                                  //right: 20,
+                                  top: 1),
+                              child: Text(
+                                '${userController.user().introduction}',
+                                textAlign: TextAlign.left,
+                                style: const TextStyle(
+                                    fontFamily: 'avenir',
+                                    fontSize: 14,
+                                    color: Colors.black45,
+                                    fontWeight: FontWeight.w400),
+                              ),
                             );
                           } else {
                             return const Text("");
@@ -99,10 +119,10 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               const Expanded(
                                 child: Text(
-                                  'My Portfolios',
+                                  'Social Links',
                                   style: TextStyle(
                                       fontFamily: 'avenir',
-                                      fontSize: 32,
+                                      fontSize: 22,
                                       fontWeight: FontWeight.w900),
                                 ),
                               ),
@@ -131,7 +151,8 @@ class HomeScreen extends StatelessWidget {
                                   child: CircularProgressIndicator());
                             } else {
                               return StaggeredGridView.countBuilder(
-                                crossAxisCount: 2,
+                                //crossAxisCount: 2,
+                                crossAxisCount: 1,
                                 itemCount: mediaController.mediaList.length,
                                 crossAxisSpacing: 16,
                                 mainAxisSpacing: 16,

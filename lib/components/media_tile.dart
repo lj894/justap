@@ -21,6 +21,7 @@ class MediaTile extends StatelessWidget {
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),
         height: 50.0,
+        width: 50.0,
       ),
     );
   }
@@ -31,32 +32,34 @@ class MediaTile extends StatelessWidget {
       elevation: 2,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Stack(
-              children: [
-                Container(
-                  height: 100,
-                  width: double.infinity,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: getMediaImage(context, media),
-                ),
-              ],
+            //Row(
+            //children: [
+            Positioned(
+              height: 50,
+              //alignment: Alignment.centerLeft,
+              width: double.infinity,
+              //clipBehavior: Clip.antiAlias,
+              //decoration: BoxDecoration(
+              //borderRadius: BorderRadius.circular(4),
+              //),
+              child: getMediaImage(context, media),
             ),
-            SizedBox(height: 8),
-            Center(
+            SizedBox(width: 8),
+            Positioned(
               child: Text(
                 media.socialMedia!,
                 maxLines: 2,
-                style: TextStyle(
+                style: const TextStyle(
                     fontFamily: 'avenir', fontWeight: FontWeight.w800),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            // ],
+            //),
+            //SizedBox(height: 8),
           ],
         ),
       ),

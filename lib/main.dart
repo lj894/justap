@@ -34,6 +34,16 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    if (FirebaseAuth.instance.currentUser != null) {
+      FirebaseAuth.instance.currentUser
+          ?.getIdToken()
+          .then((value) => globals.userToken = value);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (widget.uid != null) {
       return MaterialApp(
