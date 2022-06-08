@@ -292,7 +292,10 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                               child: const Text("Save"),
                               onPressed: () async {
                                 await RemoteServices.updateMedia(
-                                    widget.media?.id, mediaType, websiteLink);
+                                    widget.media?.id,
+                                    mediaType,
+                                    websiteLink,
+                                    widget.media?.active);
                                 //setState(() {});
                                 Navigator.push(
                                   context,

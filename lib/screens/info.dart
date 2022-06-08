@@ -24,9 +24,20 @@ class InfoScreen extends StatefulWidget {
 }
 
 class _InfoScreenState extends State<InfoScreen> {
+  final User? user = FirebaseAuth.instance.currentUser;
+  var token;
+
   @override
   void initState() {
     super.initState();
+    getToken();
+  }
+
+  getToken() async {
+    token = await user?.getIdToken();
+    setState(() {
+      token = token;
+    });
   }
 
   final ROMediaController roMediaController = Get.put(ROMediaController());
@@ -35,9 +46,9 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   Widget build(BuildContext context) {
     if (FirebaseAuth.instance.currentUser != null) {
-      FirebaseAuth.instance.currentUser
-          ?.getIdToken()
-          .then((value) => globals.userToken = value);
+      FirebaseAuth.instance.currentUser?.getIdToken().then((value) {
+        globals.userToken = value;
+      });
     }
     return Scaffold(
         appBar: AppBar(
@@ -47,127 +58,130 @@ class _InfoScreenState extends State<InfoScreen> {
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 10.0),
             child: Padding(
-              padding: const EdgeInsets.only(top: 20.0, right: 20.0),
+              padding:
+                  const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
               //child: FloatingActionButton.extended(
               child: FloatingActionButton(
                 mini: true,
-                tooltip: "Sign Out",
+                tooltip: token == null ? "Sign In" : "Back",
                 onPressed: () async {
                   if (await canLaunchUrl(Uri.parse(Uri.base.origin))) {
                     await launchUrl(Uri.parse(Uri.base.origin));
                   }
                 },
-                child: const Icon(Icons.login_rounded),
+                child: token == null
+                    ? const Icon(Icons.login_rounded)
+                    : const Icon(Icons.arrow_back),
               ),
             )),
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
+        floatingActionButtonLocation: token == null
+            ? FloatingActionButtonLocation.miniEndTop
+            : FloatingActionButtonLocation.miniStartTop,
         body: Container(
             margin: EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-                reverse: true,
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height + 100,
-                    child: Column(
+            //child: SingleChildScrollView(
+            //reverse: true,
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height + 100,
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          clipBehavior: Clip.none,
-                          children: [
-                            CoverImage(),
-                            Positioned(
-                              top: 80,
-                              child: Obx(() {
-                                if (userController.isLoading.value) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  return userController.user().profileUrl ==
-                                          null
-                                      ? DefaultProfileImage()
-                                      : ProfileImage(
-                                          userController.user().profileUrl);
-                                }
-                              }),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        Obx(() {
-                          if (userController.isLoading.value) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().nickName}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontFamily: 'avenir',
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w800),
-                            );
-                          } else {
-                            return const Text("");
-                          }
-                        }),
-                        const SizedBox(height: 8),
-                        Obx(() {
-                          if (userController.isLoading.value) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().introduction}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black45,
-                                  fontWeight: FontWeight.w800),
-                            );
-                          } else {
-                            return const Text("");
-                          }
-                        }),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: const [
-                              Expanded(
-                                  child: Center(
-                                child: Text(
-                                  'My Social Medias',
-                                  style: TextStyle(
-                                      fontFamily: 'avenir',
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                              )),
-                            ],
-                          ),
-                        ),
-                        Expanded(
+                        CoverImage(true),
+                        Positioned(
+                          top: 80,
                           child: Obx(() {
-                            if (roMediaController.isLoading.value) {
+                            if (userController.isLoading.value) {
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else {
-                              return StaggeredGridView.countBuilder(
-                                crossAxisCount: 2,
-                                itemCount:
-                                    roMediaController.ro_mediaList.length,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                                itemBuilder: (context, index) {
-                                  return ROMediaTile(
-                                      roMediaController.ro_mediaList[index]);
-                                },
-                                staggeredTileBuilder: (index) =>
-                                    const StaggeredTile.fit(1),
-                              );
+                              return userController.user().profileUrl == null
+                                  ? DefaultProfileImage()
+                                  : ProfileImage(
+                                      userController.user().profileUrl);
                             }
                           }),
-                        )
+                        ),
                       ],
-                    )))));
+                    ),
+                    const SizedBox(height: 24),
+                    Obx(() {
+                      if (userController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (userController.user().nickName != null) {
+                        return Text(
+                          '${userController.user().nickName}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontFamily: 'avenir',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w800),
+                        );
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+                    const SizedBox(height: 8),
+                    Obx(() {
+                      if (userController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (userController.user().introduction != null) {
+                        return Text(
+                          '${userController.user().introduction}',
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.black45,
+                              fontWeight: FontWeight.w400),
+                        );
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+                    //const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: const [
+                          Expanded(
+                              child: Center(
+                            child: Text(
+                              'My Social Links',
+                              style: TextStyle(
+                                  fontFamily: 'avenir',
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          )),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Obx(() {
+                        if (roMediaController.isLoading.value) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return StaggeredGridView.countBuilder(
+                            crossAxisCount: 2,
+                            itemCount: roMediaController.ro_mediaList.length,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            itemBuilder: (context, index) {
+                              return ROMediaTile(
+                                  roMediaController.ro_mediaList[index]);
+                            },
+                            staggeredTileBuilder: (index) =>
+                                const StaggeredTile.fit(1),
+                          );
+                        }
+                      }),
+                    )
+                  ],
+                )))
+        //)
+        );
   }
 }

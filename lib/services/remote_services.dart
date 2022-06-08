@@ -12,6 +12,7 @@ class RemoteServices {
   static Future<SiteUser> fetchUser() async {
     String? uid = Uri.base.queryParameters["uid"];
     uid ??= FirebaseAuth.instance.currentUser?.uid;
+
     if (uid != null) {
       final response = await client.get(
           Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
@@ -51,9 +52,12 @@ class RemoteServices {
     }
   }
 
-  static Future<List<Media?>> fetchMedias(uid) async {
-    var response = await client.get(
-        Uri.parse("https://api.justap.us/v1/social?firebaseUid=${uid}"),
+  static Future<List<Media?>> fetchMedias(uid, active) async {
+    String url = "https://api.justap.us/v1/social?firebaseUid=${uid}";
+    if (active) {
+      url += "&active=${active}";
+    }
+    var response = await client.get(Uri.parse(url),
         headers: (globals.userToken != null)
             ? {'Authorization': 'Bearer ${globals.userToken}'}
             : null);
@@ -77,7 +81,7 @@ class RemoteServices {
         "socialMedia": socialMedia,
         "websiteLink": websiteLink,
         "imageLink": null,
-        "enable": true
+        "active": true
       }),
     );
 
@@ -88,7 +92,8 @@ class RemoteServices {
     }
   }
 
-  static Future<Media?> updateMedia(id, socialMedia, websiteLink) async {
+  static Future<Media?> updateMedia(
+      id, socialMedia, websiteLink, status) async {
     final response = await http.put(
       Uri.parse('https://api.justap.us/v1/social/${id}'),
       headers: <String, String>{
@@ -98,7 +103,7 @@ class RemoteServices {
       body: jsonEncode(<String, dynamic>{
         "socialMedia": socialMedia,
         "websiteLink": websiteLink,
-        "enable": true
+        "active": status
       }),
     );
     if (response.statusCode == 200) {
