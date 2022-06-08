@@ -17,7 +17,7 @@ class MediaController extends GetxController {
     var uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       isLoading(true);
-      var medias = await RemoteServices.fetchMedias(uid);
+      var medias = await RemoteServices.fetchMedias(uid, false);
       if (medias != null) {
         mediaList.value = medias as List<Media>;
       }

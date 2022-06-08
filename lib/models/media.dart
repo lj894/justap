@@ -14,7 +14,7 @@ class Media {
     this.websiteLink,
     this.createdAt,
     this.modifiedAt,
-    this.enable,
+    this.active,
     this.owner,
   });
 
@@ -24,7 +24,7 @@ class Media {
   String? websiteLink;
   int? createdAt;
   int? modifiedAt;
-  bool? enable;
+  bool? active;
   bool? owner;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
@@ -34,7 +34,7 @@ class Media {
         websiteLink: json["websiteLink"] == null ? null : json["websiteLink"],
         createdAt: json["createdAt"] == null ? null : json["createdAt"],
         modifiedAt: json["modifiedAt"] == null ? null : json["modifiedAt"],
-        enable: json["enable"],
+        active: json["active"],
         owner: json["owner"],
       );
 
@@ -45,7 +45,7 @@ class Media {
         "websiteLink": websiteLink == null ? null : websiteLink,
         "createdAt": createdAt == null ? null : createdAt,
         "modifiedAt": modifiedAt == null ? null : modifiedAt,
-        "enable": enable,
+        "active": active,
         "owner": owner,
       };
 }

@@ -28,124 +28,139 @@ class HomeScreen extends StatelessWidget {
         bottomNavigationBar: const BottomNav(0),
         body: Container(
             margin: EdgeInsets.all(20.0),
-            child: SingleChildScrollView(
-                reverse: true,
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height + 100,
-                    child: Column(
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height + 100,
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      //alignment: Alignment.bottomLeft,
+                      clipBehavior: Clip.none,
                       children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          clipBehavior: Clip.none,
-                          children: [
-                            CoverImage(),
-                            Positioned(
-                              top: 80,
-                              child: Obx(() {
-                                if (userController.isLoading.value) {
-                                  return const Center(
-                                      child: CircularProgressIndicator());
-                                } else {
-                                  return userController.user().profileUrl ==
-                                          null
-                                      ? DefaultProfileImage()
-                                      : ProfileImage(
-                                          userController.user().profileUrl);
-                                }
-                              }),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        Obx(() {
-                          if (userController.isLoading.value) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().nickName}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontFamily: 'avenir',
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.w800),
-                            );
-                          } else {
-                            return const Text("");
-                          }
-                        }),
-                        const SizedBox(height: 8),
-                        Obx(() {
-                          if (userController.isLoading.value) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (userController.user().nickName != null) {
-                            return Text(
-                              '${userController.user().introduction}',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black45,
-                                  fontWeight: FontWeight.w800),
-                            );
-                          } else {
-                            return const Text("");
-                          }
-                        }),
-                        const SizedBox(height: 24),
-                        Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Row(
-                            children: [
-                              const Expanded(
-                                child: Text(
-                                  'My Portfolios',
-                                  style: TextStyle(
-                                      fontFamily: 'avenir',
-                                      fontSize: 32,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                              ),
-                              IconButton(
-                                icon: Icon(Icons.add),
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          CreateMediaDialog(),
-                                      fullscreenDialog: true,
-                                    ),
-                                  );
-                                },
-                              ),
-                              //IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                              //IconButton(icon: Icon(Icons.delete), onPressed: () {}),
-                            ],
-                          ),
-                        ),
-                        Flexible(
+                        CoverImage(false),
+                        Positioned(
+                          top: 60,
+                          //left: 10,
                           child: Obx(() {
-                            if (mediaController.isLoading.value) {
+                            if (userController.isLoading.value) {
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else {
-                              return StaggeredGridView.countBuilder(
-                                crossAxisCount: 2,
-                                itemCount: mediaController.mediaList.length,
-                                crossAxisSpacing: 16,
-                                mainAxisSpacing: 16,
-                                itemBuilder: (context, index) {
-                                  return MediaTile(
-                                      mediaController.mediaList[index]);
-                                },
-                                staggeredTileBuilder: (index) =>
-                                    StaggeredTile.fit(1),
-                              );
+                              return userController.user().profileUrl == null
+                                  ? DefaultProfileImage()
+                                  : ProfileImage(
+                                      userController.user().profileUrl);
                             }
                           }),
-                        )
+                        ),
                       ],
-                    )))));
+                    ),
+                    //const SizedBox(height: 24),
+                    Obx(() {
+                      if (userController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (userController.user().nickName != null) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                              left: 10,
+                              //bottom: 20,
+                              //right: 20,
+                              top: 1),
+                          child: Text(
+                            '${userController.user().nickName}',
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                                fontFamily: 'avenir',
+                                fontSize: 20,
+                                fontWeight: FontWeight.w800),
+                          ),
+                        );
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+                    const SizedBox(height: 8),
+                    Obx(() {
+                      if (userController.isLoading.value) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (userController.user().introduction != null) {
+                        return Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.only(
+                              left: 10,
+                              //bottom: 20,
+                              //right: 20,
+                              top: 1),
+                          child: Text(
+                            '${userController.user().introduction}',
+                            textAlign: TextAlign.left,
+                            style: const TextStyle(
+                                fontFamily: 'avenir',
+                                fontSize: 14,
+                                color: Colors.black45,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        );
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          const Expanded(
+                            child: Text(
+                              'Social Links',
+                              style: TextStyle(
+                                  fontFamily: 'avenir',
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.w900),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.add),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute<void>(
+                                  builder: (BuildContext context) =>
+                                      CreateMediaDialog(),
+                                  fullscreenDialog: true,
+                                ),
+                              );
+                            },
+                          ),
+                          //IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                          //IconButton(icon: Icon(Icons.delete), onPressed: () {}),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      child: Obx(() {
+                        if (mediaController.isLoading.value) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          return StaggeredGridView.countBuilder(
+                            //crossAxisCount: 2,
+                            crossAxisCount: 1,
+                            itemCount: mediaController.mediaList.length,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                            itemBuilder: (context, index) {
+                              return MediaTile(
+                                  media: mediaController.mediaList[index]);
+                            },
+                            staggeredTileBuilder: (index) =>
+                                StaggeredTile.fit(1),
+                          );
+                        }
+                      }),
+                    )
+                  ],
+                ))));
   }
 }

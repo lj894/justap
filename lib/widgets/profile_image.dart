@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 
 Widget DefaultProfileImage() => CircleAvatar(
       backgroundColor: Colors.white,
-      radius: 90.0,
+      radius: 42.0,
       child: CircleAvatar(
-        radius: 80,
+        radius: 40,
         backgroundColor: Colors.grey.shade800,
         backgroundImage: AssetImage("assets/images/avatar_placeholder.png"),
       ),
@@ -14,9 +14,9 @@ Widget DefaultProfileImage() => CircleAvatar(
 
 Widget ProfileImage(image) => CircleAvatar(
       backgroundColor: Colors.white,
-      radius: 90.0,
+      radius: 42.0,
       child: CircleAvatar(
-        radius: 80,
+        radius: 40,
         backgroundColor: Colors.grey.shade800,
         backgroundImage: NetworkImage(image),
       ),
