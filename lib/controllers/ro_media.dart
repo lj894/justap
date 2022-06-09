@@ -8,15 +8,16 @@ class ROMediaController extends GetxController {
 
   @override
   void onInit() {
-    String? uid = Uri.base.queryParameters["uid"];
-    fetchROMedias(uid);
+    String? code = Uri.base.queryParameters["code"];
+    fetchROMedias(code);
     super.onInit();
   }
 
-  void fetchROMedias(uid) async {
+  void fetchROMedias(code) async {
     try {
       isLoading(true);
-      var ro_medias = await RemoteServices.fetchMedias(uid, true);
+      var user = await RemoteServices.fetchUserByCode();
+      var ro_medias = await RemoteServices.fetchMediasByCode(user.code);
       if (ro_medias != null) {
         ro_mediaList.value = ro_medias as List<Media>;
       }

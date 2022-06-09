@@ -22,9 +22,12 @@ class UserController extends GetxController {
           user?.introduction = u.introduction;
           user?.email = u.email;
           user?.profileUrl = u.profileUrl;
+          user?.code = u.code;
           user?.owner = u.owner;
         });
       }
+    } catch (e) {
+      print(e);
     } finally {
       isLoading(false);
     }

@@ -17,20 +17,20 @@ Future<void> main() async {
   );
 
   String redirectURL = Uri.base.toString();
-  String? uid = Uri.base.queryParameters["uid"];
+  String? code = Uri.base.queryParameters["code"];
   if (FirebaseAuth.instance.currentUser != null) {
     await FirebaseAuth.instance.currentUser
         ?.getIdToken()
         .then((value) => globals.userToken = value);
   }
-  runApp(MyApp(redirectURL: redirectURL, uid: uid));
+  runApp(MyApp(redirectURL: redirectURL, code: code));
 }
 
 class MyApp extends StatefulWidget {
   String? redirectURL;
-  String? uid;
+  String? code;
 
-  MyApp({this.redirectURL, this.uid});
+  MyApp({this.redirectURL, this.code});
 
   @override
   _MyAppState createState() => _MyAppState();
@@ -39,7 +39,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    if (widget.uid != null) {
+    if (widget.code != null) {
+      print("?/code=" + widget.code!);
       return MultiProvider(
           providers: [
             Provider<AuthenticationService>(
@@ -59,13 +60,14 @@ class _MyAppState extends State<MyApp> {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   return MaterialApp(
-                      initialRoute: "/?uid=${widget.uid}",
+                      title: 'JusTap',
+                      initialRoute: "/?code=${widget.code}",
                       routes: <String, WidgetBuilder>{
-                        "/?uid=${widget.uid}": (context) => InfoScreen(
-                            redirectURL: widget.redirectURL, uid: widget.uid),
+                        "/?code=${widget.code}": (context) => InfoScreen(
+                            redirectURL: widget.redirectURL, code: widget.code),
                       },
                       home: InfoScreen(
-                          redirectURL: widget.redirectURL, uid: widget.uid));
+                          redirectURL: widget.redirectURL, code: widget.code));
                 }
               }));
     } else {
@@ -110,6 +112,7 @@ class AuthenticationWrapper extends StatelessWidget {
           .then((value) => globals.userToken = value);
     }
     return MaterialApp(
+      title: 'JusTap',
       initialRoute: "/",
       home: Navigator(
         pages: [

@@ -15,9 +15,9 @@ import 'package:justap/widgets/profile_image.dart';
 
 class InfoScreen extends StatefulWidget {
   String? redirectURL;
-  String? uid;
+  String? code;
 
-  InfoScreen({this.redirectURL, this.uid});
+  InfoScreen({this.redirectURL, this.code});
 
   @override
   _InfoScreenState createState() => _InfoScreenState();
@@ -62,11 +62,13 @@ class _InfoScreenState extends State<InfoScreen> {
                   const EdgeInsets.only(top: 20.0, left: 20.0, right: 20.0),
               //child: FloatingActionButton.extended(
               child: FloatingActionButton(
+                backgroundColor: Colors.black,
                 mini: true,
                 tooltip: token == null ? "Sign In" : "Back",
                 onPressed: () async {
                   if (await canLaunchUrl(Uri.parse(Uri.base.origin))) {
-                    await launchUrl(Uri.parse(Uri.base.origin));
+                    await launchUrl(Uri.parse(Uri.base.origin),
+                        webOnlyWindowName: '_self');
                   }
                 },
                 child: token == null

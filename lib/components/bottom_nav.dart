@@ -15,6 +15,7 @@ class BottomNav extends StatelessWidget {
 
     return BottomNavigationBar(
       currentIndex: activeButtonIndex,
+      selectedItemColor: Colors.black,
       onTap: (buttonIndex) {
         switch (buttonIndex) {
           case 0:
@@ -31,10 +32,12 @@ class BottomNav extends StatelessWidget {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
+          activeIcon: Icon(Icons.home, color: Colors.black),
           label: 'Home',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
+          activeIcon: Icon(Icons.person, color: Colors.black),
           label: 'Profile',
         ),
         // BottomNavigationBarItem(
