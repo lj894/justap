@@ -12,14 +12,15 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Justap',
+        title: 'JusTap',
         home: Builder(builder: (BuildContext context) {
           return Scaffold(
             body: Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height,
               decoration:
-                  const BoxDecoration(color: Color.fromARGB(255, 99, 203, 255)),
+                  //const BoxDecoration(color: Color.fromARGB(255, 99, 203, 255)),
+                  const BoxDecoration(color: Color.fromARGB(225, 0, 0, 0)),
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
@@ -50,7 +51,6 @@ class LoginScreen extends StatelessWidget {
                         context.read<AuthenticationService>().signIn(
                             email: _emailTextController.text.trim(),
                             password: _passwordTextController.text.trim());
-                        //setState(() {});
                       }),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -75,12 +75,15 @@ class LoginScreen extends StatelessWidget {
                       ),
                       const Divider(
                           height: 50, thickness: 2, color: Colors.white),
+                      const Text("Other Sign In Options",
+                          style: TextStyle(color: Colors.white70)),
+                      const SizedBox(height: 20),
                       FutureBuilder(
                         future: AuthenticationService.initializeFirebase(
                             context: context),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
-                            return Text('Error initializing Firebase');
+                            return const Text('Error initializing Firebase');
                           } else if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return GoogleSignInButton();

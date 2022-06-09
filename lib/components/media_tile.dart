@@ -42,7 +42,7 @@ class _MediaTile extends State<MediaTile> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   GestureDetector(
                     onTap: () {
@@ -73,26 +73,21 @@ class _MediaTile extends State<MediaTile> {
                       ],
                     ),
                   ),
-                  const Spacer(),
-                  Expanded(
-                    child: Center(
-                      child: Switch(
-                        value: active,
-                        onChanged: (value) async {
-                          await RemoteServices.updateMedia(
-                              widget.media!.id,
-                              widget.media!.socialMedia,
-                              widget.media?.websiteLink,
-                              value);
-                          setState(() {
-                            active = value;
-                          });
-                          //mediaController.fetchMedias();
-                        },
-                        activeTrackColor: Colors.black,
-                        activeColor: Colors.white60,
-                      ),
-                    ),
+                  Switch(
+                    value: active,
+                    onChanged: (value) async {
+                      await RemoteServices.updateMedia(
+                          widget.media!.id,
+                          widget.media!.socialMedia,
+                          widget.media?.websiteLink,
+                          value);
+                      setState(() {
+                        active = value;
+                      });
+                      //mediaController.fetchMedias();
+                    },
+                    activeTrackColor: Colors.black,
+                    activeColor: Colors.white60,
                   ),
                 ])));
   }

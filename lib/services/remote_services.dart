@@ -10,9 +10,7 @@ class RemoteServices {
   static var client = http.Client();
 
   static Future<SiteUser> fetchUser() async {
-    String? uid = Uri.base.queryParameters["uid"];
-    uid ??= FirebaseAuth.instance.currentUser?.uid;
-
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
       final response = await client.get(
           Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
@@ -23,6 +21,21 @@ class RemoteServices {
         return SiteUser.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 204 || response.statusCode == 404) {
         return createUser();
+      } else {
+        throw Exception('Failed to load user');
+      }
+    } else {
+      throw Exception('Failed to load user');
+    }
+  }
+
+  static Future<SiteUser> fetchUserByCode() async {
+    String? code = Uri.base.queryParameters["code"];
+    if (code != null) {
+      final response = await client
+          .get(Uri.parse('https://api.justap.us/v1/user?code=${code}'));
+      if (response.statusCode == 200) {
+        return SiteUser.fromJson(jsonDecode(response.body));
       } else {
         throw Exception('Failed to load user');
       }
@@ -52,20 +65,69 @@ class RemoteServices {
     }
   }
 
-  static Future<List<Media?>> fetchMedias(uid, active) async {
-    String url = "https://api.justap.us/v1/social?firebaseUid=${uid}";
-    if (active) {
-      url += "&active=${active}";
+  static Future<SiteUser?> updateProfile(nickName, introduction) async {
+    final response = await http.put(
+      Uri.parse('https://api.justap.us/v1/user/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "nickName": nickName,
+        "introduction": introduction,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return SiteUser.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update profile.');
     }
-    var response = await client.get(Uri.parse(url),
-        headers: (globals.userToken != null)
-            ? {'Authorization': 'Bearer ${globals.userToken}'}
-            : null);
+  }
+
+  static Future<SiteUser?> resetProfileCode() async {
+    final response = await http.post(
+      Uri.parse('https://api.justap.us/v1/user/reset/code'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{}),
+    );
+    if (response.statusCode == 200) {
+      return SiteUser.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update profile.');
+    }
+  }
+
+  static Future<List<Media?>> fetchMedias(uid, active) async {
+    if (uid != null) {
+      String url = "https://api.justap.us/v1/social?firebaseUid=${uid}";
+      if (active) {
+        url += "&active=${active}";
+      }
+      var response = await client.get(Uri.parse(url),
+          headers: (globals.userToken != null)
+              ? {'Authorization': 'Bearer ${globals.userToken}'}
+              : null);
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        return mediaFromJson(jsonString);
+      } else {
+        return [];
+      }
+    } else {
+      throw Exception('Failed to fetch medias.');
+    }
+  }
+
+  static Future<List<Media?>> fetchMediasByCode(code) async {
+    String url = "https://api.justap.us/v1/social?code=${code}&active=true";
+    var response = await client.get(Uri.parse(url));
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return mediaFromJson(jsonString);
     } else {
-      //show error message
       return [];
     }
   }
@@ -88,7 +150,7 @@ class RemoteServices {
     if (response.statusCode == 200) {
       return Media.fromJson(jsonDecode(response.body));
     } else {
-      throw Exception('Failed to create social media.');
+      throw Exception(jsonDecode(response.body)['message']);
     }
   }
 
@@ -126,25 +188,6 @@ class RemoteServices {
       return null;
     } else {
       throw Exception('Failed to delete social media.');
-    }
-  }
-
-  static Future<SiteUser?> updateProfile(nickName, introduction) async {
-    final response = await http.put(
-      Uri.parse('https://api.justap.us/v1/user/'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${globals.userToken}',
-      },
-      body: jsonEncode(<String, dynamic>{
-        "nickName": nickName,
-        "introduction": introduction,
-      }),
-    );
-    if (response.statusCode == 200) {
-      return SiteUser.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to update profile.');
     }
   }
 }

@@ -39,26 +39,26 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
                 });
               },
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const <Widget>[
                     Image(
                       image: AssetImage("assets/images/google_logo.png"),
-                      height: 35.0,
+                      height: 25.0,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 10),
-                      child: Text(
-                        'Sign in with Google',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.black54,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    )
+                    // Padding(
+                    //   padding: EdgeInsets.only(left: 10),
+                    //   child: Text(
+                    //     'Sign in with Google',
+                    //     style: TextStyle(
+                    //       fontSize: 20,
+                    //       color: Colors.black54,
+                    //       fontWeight: FontWeight.w600,
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),

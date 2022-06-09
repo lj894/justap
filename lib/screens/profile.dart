@@ -48,13 +48,20 @@ class _ProfileScreen extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Profile")),
+        appBar: AppBar(
+            iconTheme: const IconThemeData(
+              color: Colors.black,
+            ),
+            title: const Text("Profile", style: TextStyle(color: Colors.black)),
+            backgroundColor: Colors.transparent,
+            elevation: 0.0),
         bottomNavigationBar: const BottomNav(1),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 60.0),
             //child: FloatingActionButton.extended(
             child: FloatingActionButton(
+              backgroundColor: Colors.black,
               mini: true,
               tooltip: "Sign Out",
               onPressed: () {
@@ -64,8 +71,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                 setState(() {});
               },
               child: const Icon(Icons.logout_rounded),
-              //icon: const Icon(Icons.logout_rounded),
-              //label: const Text("Sign Out")),
             )),
         body: Container(
             margin: EdgeInsets.all(20.0),
@@ -104,32 +109,106 @@ class _ProfileScreen extends State<ProfileScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       textDirection: TextDirection.rtl,
                       children: <Widget>[
-                        IconButton(
-                          iconSize: 24.0,
-                          icon: const Icon(Icons.copy_all_outlined),
-                          color: Colors.black,
-                          onPressed: () {
-                            Clipboard.setData(ClipboardData(
-                                text: "${Uri.base}?uid=${user?.uid}"));
-                            showAlertDialog(context, "Copy URL",
-                                "URL copied! You can write it to a NFC tag and share with others.");
-                          },
-                        ),
-                        Expanded(
-                            child: TextFormField(
-                          cursorColor: Theme.of(context).cursorColor,
-                          initialValue: "${Uri.base}?uid=${user?.uid}",
-                          style: const TextStyle(color: Colors.black45),
-                          readOnly: true,
-                          enabled: false,
-                          decoration: const InputDecoration(
-                            labelText: 'My URL',
-                            labelStyle: TextStyle(
-                              color: Colors.black87,
-                            ),
-                            border: OutlineInputBorder(),
+                        Obx(() {
+                          if (userController.isLoading.value) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (userController.user().code != null) {
+                            return IconButton(
+                              iconSize: 24.0,
+                              icon: const Icon(Icons.copy_all_outlined),
+                              color: Colors.black,
+                              onPressed: () {
+                                Clipboard.setData(ClipboardData(
+                                    text:
+                                        "${Uri.base}?code=${userController.user().code}"));
+                                showAlertDialog(context, "Copy URL",
+                                    "URL copied! You can write it to a NFC tag and share with others.");
+                              },
+                            );
+                          } else {
+                            return IconButton(
+                              iconSize: 24.0,
+                              icon: const Icon(Icons.copy_all_outlined),
+                              color: Colors.black,
+                              onPressed: () {},
+                            );
+                          }
+                        }),
+                        Obx(() {
+                          if (userController.isLoading.value) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (userController.user().code != null) {
+                            return Expanded(
+                                child: TextFormField(
+                              cursorColor: Theme.of(context).cursorColor,
+                              initialValue:
+                                  "${Uri.base}?code=${userController.user().code}",
+                              style: const TextStyle(color: Colors.black45),
+                              readOnly: true,
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                labelText: 'My URL',
+                                labelStyle: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                            ));
+                          } else {
+                            return Expanded(
+                                child: TextFormField(
+                              cursorColor: Theme.of(context).cursorColor,
+                              initialValue: "loading...",
+                              style: const TextStyle(color: Colors.black45),
+                              readOnly: true,
+                              enabled: false,
+                              decoration: const InputDecoration(
+                                labelText: 'My URL',
+                                labelStyle: TextStyle(
+                                  color: Colors.black87,
+                                ),
+                                border: OutlineInputBorder(),
+                              ),
+                            ));
+                          }
+                        }),
+                      ],
+                    ),
+                    SizedBox(height: 5),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "Lost your tag? Let's ",
+                          style: TextStyle(
+                            color: Colors.black54,
+                            fontSize: 12,
                           ),
-                        ))
+                        ),
+                        GestureDetector(
+                          onTap: () async {
+                            showConfirmDialog(
+                                context,
+                                "Reset Code",
+                                "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
+                                () => () async {
+                                      await RemoteServices.resetProfileCode();
+                                      userController.fetchUser();
+                                      setState(() {});
+                                    });
+                          },
+                          child: const Text(
+                            "Reset Your Code",
+                            style: TextStyle(
+                              color: Colors.black54,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline,
+                            ),
+                          ),
+                        )
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -151,7 +230,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Nick Name',
                               labelStyle: TextStyle(
-                                color: Color(0xFF6200EE),
+                                color: Colors.black87,
                               ),
                               border: OutlineInputBorder(),
                             ),
@@ -183,7 +262,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             decoration: const InputDecoration(
                               labelText: 'Introduction',
                               labelStyle: TextStyle(
-                                color: Color(0xFF6200EE),
+                                color: Colors.black87,
                               ),
                               border: OutlineInputBorder(),
                             ),
@@ -203,7 +282,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                       children: [
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              //primary: Colors.redAccent,
+                              primary: Colors.black,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 56, vertical: 20),
                               textStyle: TextStyle(

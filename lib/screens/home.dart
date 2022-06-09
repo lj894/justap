@@ -27,7 +27,7 @@ class HomeScreen extends StatelessWidget {
         ),
         bottomNavigationBar: const BottomNav(0),
         body: Container(
-            margin: EdgeInsets.all(20.0),
+            margin: const EdgeInsets.all(20.0),
             child: SizedBox(
                 height: MediaQuery.of(context).size.height + 100,
                 child: Column(
