@@ -21,6 +21,8 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
     {'value': 'INSTAGRAM', 'label': 'Instagram'},
     {'value': 'TWITTER', 'label': 'Twitter'},
     {'value': 'FACEBOOK', 'label': 'Facebook'},
+    {'value': 'TIKTOK', 'label': 'TikTok'},
+    {'value': 'BEHANCE', 'label': 'Behance'},
     {'value': 'LINKEDIN', 'label': 'LinkedIn'},
     {'value': 'YOUTUBE', 'label': 'YouTube'},
     {'value': 'SPOTIFY', 'label': 'Spotify'},
@@ -29,7 +31,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
     {'value': 'WECHAT', 'label': 'WeChat'},
     {'value': 'WHATSAPP', 'label': 'WhatsApp'},
     {'value': 'LINE', 'label': 'Line'},
-    {'value': 'TIKTOK', 'label': 'TikTok'},
     {'value': 'TELEGRAM', 'label': 'Telegram'},
     {'value': 'GITHUB', 'label': 'GitHub'},
   ];
@@ -452,6 +453,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                     child: ButtonTheme(
               alignedDropdown: true,
               child: DropdownButton(
+                menuMaxHeight: 400,
                 hint: const Text('Select Media'),
                 value: mediaType,
                 onChanged: (value) {
@@ -503,10 +505,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 //showMediaRadios(),
-                // const Text('Media',
-                //     textAlign: TextAlign.start,
-                //     style:
-                //         TextStyle(fontWeight: FontWeight.w700, fontSize: 16)),
                 showMediaDropDown(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -537,7 +535,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                             style: ElevatedButton.styleFrom(
                                 primary: Colors.black,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 56, vertical: 20),
+                                    horizontal: 30, vertical: 10),
                                 textStyle: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
                             child: const Text("Save"),
@@ -545,8 +543,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                               if (mediaType != '') {
                                 String link = websiteLink;
                                 if (mediaType == 'INSTAGRAM') {
-                                  link =
-                                      "https://instagram.com/m/${websiteLink}";
+                                  link = "https://instagram.com/${websiteLink}";
                                 } else if (mediaType == 'FACEBOOK') {
                                   link = "https://m.facebook/${websiteLink}";
                                 } else if (mediaType == 'LINKEDIN') {

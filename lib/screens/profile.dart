@@ -73,7 +73,7 @@ class _ProfileScreen extends State<ProfileScreen> {
               child: const Icon(Icons.logout_rounded),
             )),
         body: Container(
-            margin: EdgeInsets.all(20.0),
+            margin: EdgeInsets.all(10.0),
             child: SingleChildScrollView(
                 reverse: true,
                 child: Column(
@@ -252,7 +252,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                             cursorColor: Theme.of(context).cursorColor,
                             initialValue: userController.user().introduction,
                             //minLines: 5,
-                            maxLines: 5,
+                            maxLines: 4,
                             onChanged: (value) {
                               setState(() {
                                 irChanged = true;
@@ -284,8 +284,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                           style: ElevatedButton.styleFrom(
                               primary: Colors.black,
                               padding: const EdgeInsets.symmetric(
-                                  horizontal: 56, vertical: 20),
-                              textStyle: TextStyle(
+                                  horizontal: 30, vertical: 10),
+                              textStyle: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           child: const Text("Save"),
                           onPressed: () async {

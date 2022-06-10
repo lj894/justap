@@ -29,6 +29,8 @@ class _EditMediaDialog extends State<EditMediaDialog> {
     {'value': 'INSTAGRAM', 'label': 'Instagram'},
     {'value': 'TWITTER', 'label': 'Twitter'},
     {'value': 'FACEBOOK', 'label': 'Facebook'},
+    {'value': 'TIKTOK', 'label': 'TikTok'},
+    {'value': 'BEHANCE', 'label': 'Behance'},
     {'value': 'LINKEDIN', 'label': 'LinkedIn'},
     {'value': 'YOUTUBE', 'label': 'YouTube'},
     {'value': 'SPOTIFY', 'label': 'Spotify'},
@@ -37,18 +39,13 @@ class _EditMediaDialog extends State<EditMediaDialog> {
     {'value': 'WECHAT', 'label': 'WeChat'},
     {'value': 'WHATSAPP', 'label': 'WhatsApp'},
     {'value': 'LINE', 'label': 'Line'},
-    {'value': 'TIKTOK', 'label': 'TikTok'},
     {'value': 'TELEGRAM', 'label': 'Telegram'},
     {'value': 'GITHUB', 'label': 'GitHub'},
   ];
 
+  List<String> supportedList = ["INSTAGRAM", "FACEBOOK", "LINKEDIN", "GITHUB"];
+
   showMediaInput(context, mediaType, link) {
-    List<String> supportedList = [
-      "INSTAGRAM",
-      "FACEBOOK",
-      "LINKEDIN",
-      "GITHUB"
-    ];
     if (supportedList.contains(mediaType)) {
       return Flexible(
         flex: 1,
@@ -460,13 +457,14 @@ class _EditMediaDialog extends State<EditMediaDialog> {
               child: DropdownButton(
                 hint: Text('Select Media'),
                 value: mediaType,
-                onChanged: (value) {
-                  setState(() {
-                    if (value != '') {
-                      mediaType = value.toString();
-                    }
-                  });
-                },
+                onChanged: null,
+                // onChanged: (value) {
+                //   setState(() {
+                //     if (value != '') {
+                //       mediaType = value.toString();
+                //     }
+                //   });
+                // },
                 items: mediaJson.map((media) {
                   return DropdownMenuItem(
                       value: media['value'].toString(),
@@ -543,24 +541,31 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.black,
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 56, vertical: 20),
+                                      horizontal: 30, vertical: 10),
                                   textStyle: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
                               child: const Text("Save"),
                               onPressed: () async {
-                                String? link = websiteLink;
+                                String? link = '';
+                                if (websiteLink != null && websiteLink != '') {
+                                  link = websiteLink;
+                                } else {
+                                  link = widget.media?.websiteLink;
+
+                                  if (supportedList.contains(mediaType)) {
+                                    link = link!.split("/").last;
+                                  }
+                                }
+
                                 if (mediaType == 'INSTAGRAM') {
-                                  link =
-                                      "https://instagram.com/m/${websiteLink}";
+                                  link = "https://instagram.com/${link}";
                                 } else if (mediaType == 'FACEBOOK') {
-                                  link =
-                                      "https://m.facebook.com/${websiteLink}";
+                                  link = "https://m.facebook.com/${link}";
                                 } else if (mediaType == 'LINKEDIN') {
-                                  link =
-                                      "https://www.linkedin.com/in/${websiteLink}";
+                                  link = "https://www.linkedin.com/in/${link}";
                                 } else if (mediaType == 'GITHUB') {
-                                  link = "https://github.com/${websiteLink}";
+                                  link = "https://github.com/${link}";
                                 }
 
                                 try {
@@ -587,13 +592,13 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                       Flexible(
                         flex: 1,
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                   primary: Colors.grey,
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 50, vertical: 20),
+                                      horizontal: 30, vertical: 10),
                                   textStyle: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
