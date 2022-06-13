@@ -1,5 +1,7 @@
 import 'dart:convert';
-
+import 'package:path/path.dart';
+import 'package:async/async.dart';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/utils/globals.dart' as globals;
@@ -97,6 +99,47 @@ class RemoteServices {
       return SiteUser.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update profile.');
+    }
+  }
+
+  static Future<SiteUser?> updateProfileImage(File imageFile) async {
+    http.ByteStream stream =
+        http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+    int length = await imageFile.length();
+    Uri uri = Uri.parse('https://api.justap.us/v1/user/profile');
+    http.MultipartRequest request = http.MultipartRequest("POST", uri);
+    request.headers['authorization'] = 'Bearer ${globals.userToken}';
+    http.MultipartFile multipartFile = http.MultipartFile(
+        'file', stream, length,
+        filename: basename(imageFile.path));
+    //contentType: new MediaType('image', 'png'));
+    request.files.add(multipartFile);
+    var response = await request.send();
+    //print(response.statusCode);
+    // response.stream.transform(utf8.decoder).listen((value) {
+    //   print(value);
+    // });
+    final responseStr = await response.stream.bytesToString();
+    if (response.statusCode == 200) {
+      return SiteUser.fromJson(jsonDecode(responseStr));
+    } else {
+      throw Exception('Failed to update profile image.');
+    }
+  }
+
+  static Future<SiteUser?> updateBackgroundImage() async {
+    final response = await http.post(
+      Uri.parse('https://api.justap.us/v1/user/background'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{}),
+    );
+    if (response.statusCode == 200) {
+      return SiteUser.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update background image.');
     }
   }
 

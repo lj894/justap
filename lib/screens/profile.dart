@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/user.dart';
@@ -30,6 +31,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   var introduction = "";
   var nnChanged = false;
   var irChanged = false;
+
   @override
   void initState() {
     super.initState();
@@ -94,7 +96,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                               ? userController.user().profileUrl!
                               : "assets/images/avatar_placeholder.png",
                           isEdit: true,
-                          onClicked: () async {},
+                          onClicked: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const ImageUpload(
+                                        title: "Upload Profile Photo"),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
                         );
                       }
                     }),
