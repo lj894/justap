@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'dart:io';
@@ -7,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/utils/globals.dart' as globals;
 import 'package:justap/models/media.dart';
 import 'package:justap/models/user.dart';
+import 'package:http_parser/http_parser.dart';
 
 class RemoteServices {
   static var client = http.Client();
@@ -102,45 +105,165 @@ class RemoteServices {
     }
   }
 
-  static Future<SiteUser?> updateProfileImage(File imageFile) async {
-    http.ByteStream stream =
-        http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-    int length = await imageFile.length();
-    Uri uri = Uri.parse('https://api.justap.us/v1/user/profile');
-    http.MultipartRequest request = http.MultipartRequest("POST", uri);
-    request.headers['authorization'] = 'Bearer ${globals.userToken}';
-    http.MultipartFile multipartFile = http.MultipartFile(
-        'file', stream, length,
-        filename: basename(imageFile.path));
-    //contentType: new MediaType('image', 'png'));
-    request.files.add(multipartFile);
-    var response = await request.send();
-    //print(response.statusCode);
-    // response.stream.transform(utf8.decoder).listen((value) {
-    //   print(value);
-    // });
-    final responseStr = await response.stream.bytesToString();
-    if (response.statusCode == 200) {
-      return SiteUser.fromJson(jsonDecode(responseStr));
-    } else {
-      throw Exception('Failed to update profile image.');
-    }
+  static updateOriginalProfileImage(XFile imageData) async {
+    // final response =
+    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
+    //         // headers: {'Content-Type': 'application/octet-stream'},
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //           'authorization': 'Bearer ${globals.userToken}'
+    //         },
+    //         body: imageData);
+    // if (response.statusCode == 200) {
+    //   return Media.fromJson(jsonDecode(response.body));
+    // } else {
+    //   throw Exception('Failed to update social media.');
+    // }
+    var _request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
+    _request.headers.addAll({
+      'authorization': 'Bearer ${globals.userToken}',
+      'Content-Type': 'multipart/form-data'
+      //'application/x-www-form-urlencoded'
+    });
+    _request.files.add(http.MultipartFile.fromBytes(
+        'profile',
+        await imageData.readAsBytes().then((value) {
+          return value.cast();
+        }),
+        filename: imageData.path.toString() + imageData.name));
+    return await _request.send().then((value) {
+      if (value.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to update profile image');
+      }
+    });
   }
 
-  static Future<SiteUser?> updateBackgroundImage() async {
-    final response = await http.post(
-      Uri.parse('https://api.justap.us/v1/user/background'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer ${globals.userToken}',
-      },
-      body: jsonEncode(<String, dynamic>{}),
-    );
-    if (response.statusCode == 200) {
-      return SiteUser.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception('Failed to update background image.');
-    }
+  static updateCroppedProfileImage(CroppedFile imageData) async {
+    // final response =
+    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
+    //         // headers: {'Content-Type': 'application/octet-stream'},
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //           'authorization': 'Bearer ${globals.userToken}'
+    //         },
+    //         body: imageData);
+    // if (response.statusCode == 200) {
+    //   return Media.fromJson(jsonDecode(response.body));
+    // } else {
+    //   throw Exception('Failed to update social media.');
+    // }
+    var _request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
+    _request.headers.addAll({
+      'authorization': 'Bearer ${globals.userToken}',
+      'Content-Type': 'multipart/form-data'
+      //'application/x-www-form-urlencoded'
+    });
+    _request.files.add(http.MultipartFile.fromBytes(
+        'profile',
+        await imageData.readAsBytes().then((value) {
+          return value.cast();
+        }),
+        filename: imageData.path.toString()));
+    return await _request.send().then((value) {
+      if (value.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to update profile image');
+      }
+    });
+  }
+
+  static updateOriginalBackgroundImage(XFile imageData) async {
+    // final response =
+    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
+    //         // headers: {'Content-Type': 'application/octet-stream'},
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //           'authorization': 'Bearer ${globals.userToken}'
+    //         },
+    //         body: imageData);
+    // if (response.statusCode == 200) {
+    //   return Media.fromJson(jsonDecode(response.body));
+    // } else {
+    //   throw Exception('Failed to update social media.');
+    // }
+    var _request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.justap.us/v1/user/background'));
+    _request.headers.addAll({
+      'authorization': 'Bearer ${globals.userToken}',
+      'Content-Type': 'multipart/form-data'
+      //'application/x-www-form-urlencoded'
+    });
+    _request.files.add(http.MultipartFile.fromBytes(
+        'background',
+        await imageData.readAsBytes().then((value) {
+          return value.cast();
+        }),
+        filename: imageData.path.toString() + imageData.name));
+    return await _request.send().then((value) {
+      if (value.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to update background image');
+      }
+    });
+  }
+
+  static updateCroppedBackgroundImage(CroppedFile imageData) async {
+    // final response =
+    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
+    //         // headers: {'Content-Type': 'application/octet-stream'},
+    //         headers: {
+    //           'Content-Type': 'multipart/form-data',
+    //           'authorization': 'Bearer ${globals.userToken}'
+    //         },
+    //         body: imageData);
+    // if (response.statusCode == 200) {
+    //   return Media.fromJson(jsonDecode(response.body));
+    // } else {
+    //   throw Exception('Failed to update social media.');
+    // }
+    var _request = http.MultipartRequest(
+        'POST', Uri.parse('https://api.justap.us/v1/user/background'));
+    _request.headers.addAll({
+      'authorization': 'Bearer ${globals.userToken}',
+      'Content-Type': 'multipart/form-data'
+      //'application/x-www-form-urlencoded'
+    });
+    _request.files.add(http.MultipartFile.fromBytes(
+        'background',
+        await imageData.readAsBytes().then((value) {
+          return value.cast();
+        }),
+        filename: imageData.path.toString()));
+    return await _request.send().then((value) {
+      if (value.statusCode == 200) {
+        return true;
+      } else {
+        throw Exception('Failed to update background image');
+      }
+    });
+  }
+
+  static updateBackgroundImage(imageData) async {
+    var postUri = Uri.parse("https://api.justap.us/v1/user/background");
+    var request = http.MultipartRequest("POST", postUri);
+    request.headers['authorization'] = 'Bearer ${globals.userToken}';
+    request.headers['Content-Type'] = 'multipart/form-data';
+    request.files.add(http.MultipartFile.fromBytes('profile', imageData,
+        contentType: MediaType('image', 'jpeg')));
+
+    request.send().then((response) {
+      if (response.statusCode == 200) {
+        print('done');
+      } else {
+        throw Exception('Failed to update profile image.');
+      }
+    });
   }
 
   static Future<List<Media?>> fetchMedias(uid, active) async {

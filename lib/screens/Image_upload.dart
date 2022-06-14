@@ -1,24 +1,26 @@
 import 'dart:io';
-// //if (dart.library.io) 'dart:io'
-// if (dart.library.html) 'dart:html' as html;
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:justap/controllers/user.dart';
 import 'package:justap/utils/ui_helper.dart'
     if (dart.library.io) 'package:justap/utils/mobile_ui_helper.dart'
     if (dart.library.html) 'package:justap/utils/web_ui_helper.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/screens/all.dart';
+import 'package:get/get.dart';
 
 class ImageUpload extends StatefulWidget {
   final String title;
+  final String type;
 
   const ImageUpload({
     Key? key,
     required this.title,
+    required this.type,
   }) : super(key: key);
 
   @override
@@ -76,9 +78,9 @@ class _ImageUploadState extends State<ImageUpload> {
             ),
           ),
           const SizedBox(height: 24.0),
-          _menu(),
+          _menu(widget.type),
           const SizedBox(height: 16.0),
-          _saveButton(),
+          _saveButton(widget.type),
         ],
       ),
     );
@@ -87,38 +89,68 @@ class _ImageUploadState extends State<ImageUpload> {
   Widget _image() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    if (_croppedFile != null) {
-      final path = _croppedFile!.path;
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 0.8 * screenWidth,
-          maxHeight: 0.7 * screenHeight,
-        ),
-        child: kIsWeb ? Image.network(path) : Image.file(File(path)),
-      );
-    } else if (_pickedFile != null) {
-      final path = _pickedFile!.path;
-      return ConstrainedBox(
-        constraints: BoxConstraints(
-          maxWidth: 0.8 * screenWidth,
-          maxHeight: 0.7 * screenHeight,
-        ),
-        child: kIsWeb ? Image.network(path) : Image.file(File(path)),
-      );
+
+    if (widget.type == 'PROFILE') {
+      if (_croppedFile != null) {
+        final path = _croppedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 0.6 * screenWidth,
+            maxHeight: 0.6 * screenHeight,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else if (_pickedFile != null) {
+        final path = _pickedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 0.6 * screenWidth,
+            maxHeight: 0.6 * screenHeight,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
+    } else if (widget.type == 'BACKGROUND') {
+      if (_croppedFile != null) {
+        final path = _croppedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 0.6 * screenWidth,
+            maxWidth: 0.6 * screenWidth,
+            minHeight: 120,
+            maxHeight: 120,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else if (_pickedFile != null) {
+        final path = _pickedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 0.6 * screenWidth,
+            maxWidth: 0.6 * screenWidth,
+            minHeight: 120,
+            maxHeight: 120,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else {
+        return const SizedBox.shrink();
+      }
     } else {
       return const SizedBox.shrink();
     }
   }
 
-  Widget _menu() {
+  Widget _menu(type) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         FloatingActionButton(
           onPressed: () {
-            _cropImage('PROFILE');
-            //_cropImage('BACKGROUND');
+            _cropImage(type);
           },
           mini: true,
           backgroundColor: Colors.black,
@@ -216,7 +248,7 @@ class _ImageUploadState extends State<ImageUpload> {
     );
   }
 
-  Widget _saveButton() {
+  Widget _saveButton(type) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           primary: Colors.black,
@@ -225,26 +257,32 @@ class _ImageUploadState extends State<ImageUpload> {
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       child: const Text("Save"),
       onPressed: () async {
-        //try {
-        // await RemoteServices.updateProfileImage();
-        File imageFile;
-        if (_croppedFile != null) {
-          if (kIsWeb) {
-            imageFile = Image.network(_croppedFile!.path) as File;
-          } else {
-            imageFile = File(_croppedFile!.path);
+        try {
+          if (type == 'PROFILE') {
+            if (_croppedFile != null) {
+              await RemoteServices.updateCroppedProfileImage(_croppedFile!);
+            } else if (_pickedFile != null) {
+              await RemoteServices.updateOriginalProfileImage(_pickedFile!);
+            }
+          } else if (type == 'BACKGROUND') {
+            if (_croppedFile != null) {
+              await RemoteServices.updateCroppedBackgroundImage(_croppedFile!);
+            } else if (_pickedFile != null) {
+              await RemoteServices.updateOriginalBackgroundImage(_pickedFile!);
+            }
           }
-          await RemoteServices.updateProfileImage(imageFile);
+          final UserController userController = Get.put(UserController());
+          userController.fetchUser();
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProfileScreen(),
+                settings: const RouteSettings(name: '/')),
+          );
+        } catch (e) {
+          showAlertDialog(context, "Error", "$e");
         }
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ProfileScreen(),
-              settings: const RouteSettings(name: '/')),
-        );
-        //} catch (e) {
-        //showAlertDialog(context, "Error", "$e");
-        //}
       },
     );
   }
@@ -255,18 +293,14 @@ class _ImageUploadState extends State<ImageUpload> {
         sourcePath: _pickedFile!.path,
         compressFormat: ImageCompressFormat.jpg,
         compressQuality: 300,
-        // maxWidth: 500,
-        // maxHeight: 500,
-        uiSettings: type == "PROFILE"
-            ? buildProfileUISettings(context)
-            : type == "BACKGROUND"
-                ? buildBackgroundUISettings(context)
-                : buildSocialUISettings(context),
+        maxWidth: type == "BACKGROUND" ? 120 : 350,
+        maxHeight: type == "BACKGROUND" ? 120 : 350,
+        uiSettings: type == "BACKGROUND"
+            ? buildBackgroundUISettings(context)
+            : buildProfileUISettings(context),
       );
       if (croppedFile != null) {
         setState(() {
-          print('cropped');
-          print(croppedFile);
           _croppedFile = croppedFile;
         });
       }

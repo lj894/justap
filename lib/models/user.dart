@@ -5,6 +5,7 @@ class SiteUser {
   String? introduction;
   String? email;
   String? profileUrl;
+  String? backgroundUrl;
   String? code;
   bool? owner;
 
@@ -13,6 +14,7 @@ class SiteUser {
     this.introduction,
     this.email,
     this.profileUrl,
+    this.backgroundUrl,
     this.code,
     this.owner,
   });
@@ -23,6 +25,7 @@ class SiteUser {
       introduction: json['introduction'],
       email: json['email'],
       profileUrl: json['profileUrl'],
+      backgroundUrl: json['backgroundUrl'],
       code: json['code'],
       owner: json['owner'],
     );

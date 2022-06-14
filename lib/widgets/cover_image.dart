@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 
-Widget CoverImage(info) => Container(
-    margin: info
-        ? const EdgeInsets.only(bottom: 20)
-        : const EdgeInsets.only(bottom: 5),
+Widget CoverImage(url) => Container(
     color: Colors.grey,
-    child: Image.asset(
-      "assets/images/profile_background.png",
-      width: double.infinity,
-      height: 120,
-      fit: BoxFit.cover,
-    ));
+    child: url != null
+        ? Image.network(
+            url,
+            width: double.infinity,
+            height: 120,
+            fit: BoxFit.cover,
+          )
+        : Image.asset(
+            "assets/images/profile_background.png",
+            width: double.infinity,
+            height: 120,
+            fit: BoxFit.cover,
+          ));

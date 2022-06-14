@@ -40,17 +40,14 @@ class ProfileWidget extends StatelessWidget {
     } else {
       image = NetworkImage(imagePath);
     }
-
-    return ClipOval(
-      child: Material(
-        color: Colors.transparent,
-        child: Ink.image(
-          image: image,
-          fit: BoxFit.cover,
-          width: 100,
-          height: 100,
-          child: InkWell(onTap: onClicked),
-        ),
+    return CircleAvatar(
+      backgroundColor: Colors.white,
+      radius: 42.0,
+      child: CircleAvatar(
+        radius: 40,
+        backgroundColor: Colors.grey.shade800,
+        backgroundImage: image,
+        child: InkWell(onTap: onClicked),
       ),
     );
   }
@@ -60,11 +57,11 @@ class ProfileWidget extends StatelessWidget {
         all: 3,
         child: buildCircle(
           color: color,
-          all: 8,
-          child: Icon(
-            isEdit ? Icons.add_a_photo : Icons.edit,
+          all: 2,
+          child: const Icon(
+            Icons.edit,
             color: Colors.white,
-            size: 20,
+            size: 12,
           ),
         ),
       );

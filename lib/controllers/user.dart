@@ -22,6 +22,7 @@ class UserController extends GetxController {
           user?.introduction = u.introduction;
           user?.email = u.email;
           user?.profileUrl = u.profileUrl;
+          user?.backgroundUrl = u.backgroundUrl;
           user?.code = u.code;
           user?.owner = u.owner;
         });

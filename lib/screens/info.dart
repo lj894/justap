@@ -91,7 +91,23 @@ class _InfoScreenState extends State<InfoScreen> {
                       alignment: Alignment.center,
                       clipBehavior: Clip.none,
                       children: [
-                        CoverImage(true),
+                        Container(
+                          height: 120,
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: Obx(() {
+                            if (userController.isLoading.value) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (userController.user().backgroundUrl != null) {
+                                return CoverImage(
+                                    userController.user().backgroundUrl);
+                              } else {
+                                return CoverImage(null);
+                              }
+                            }
+                          }),
+                        ),
                         Positioned(
                           top: 80,
                           child: Obx(() {
