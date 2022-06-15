@@ -24,8 +24,16 @@ class LoginScreen extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.fromLTRB(
-                      20, MediaQuery.of(context).size.height * 0.2, 20, 0),
+                      MediaQuery.of(context).size.width > 700
+                          ? MediaQuery.of(context).size.width * 0.35
+                          : 20,
+                      MediaQuery.of(context).size.height * 0.2,
+                      MediaQuery.of(context).size.width > 700
+                          ? MediaQuery.of(context).size.width * 0.35
+                          : 20,
+                      0),
                   child: Column(
+                    //mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       const Center(
                           child: Text("JusTap",

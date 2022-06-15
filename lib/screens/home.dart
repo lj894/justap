@@ -37,7 +37,23 @@ class HomeScreen extends StatelessWidget {
                       //alignment: Alignment.bottomLeft,
                       clipBehavior: Clip.none,
                       children: [
-                        CoverImage(false),
+                        Container(
+                          height: 120,
+                          margin: const EdgeInsets.only(bottom: 5),
+                          child: Obx(() {
+                            if (userController.isLoading.value) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (userController.user().backgroundUrl != null) {
+                                return CoverImage(
+                                    userController.user().backgroundUrl);
+                              } else {
+                                return CoverImage(null);
+                              }
+                            }
+                          }),
+                        ),
                         Positioned(
                           top: 60,
                           //left: 10,

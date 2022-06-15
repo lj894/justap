@@ -40,7 +40,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (widget.code != null) {
-      print("?/code=" + widget.code!);
       return MultiProvider(
           providers: [
             Provider<AuthenticationService>(

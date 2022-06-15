@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/user.dart';
@@ -30,6 +31,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   var introduction = "";
   var nnChanged = false;
   var irChanged = false;
+
   @override
   void initState() {
     super.initState();
@@ -49,6 +51,7 @@ class _ProfileScreen extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+            toolbarHeight: 40,
             iconTheme: const IconThemeData(
               color: Colors.black,
             ),
@@ -78,27 +81,90 @@ class _ProfileScreen extends State<ProfileScreen> {
                 reverse: true,
                 child: Column(
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
+                    Stack(
+                      alignment: Alignment.topCenter,
+                      //alignment: Alignment.bottomLeft,
+                      clipBehavior: Clip.none,
+                      children: [
+                        InkWell(
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const ImageUpload(
+                                        title: "Upload Background Image",
+                                        type: "BACKGROUND"),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          child: Container(
+                              height: 120,
+                              margin: const EdgeInsets.only(bottom: 5),
+                              color: Colors.grey,
+                              child: userController.user().backgroundUrl != null
+                                  ? Image.network(
+                                      userController.user().backgroundUrl!,
+                                      width: double.infinity,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      "assets/images/profile_background.png",
+                                      width: double.infinity,
+                                      height: 120,
+                                      fit: BoxFit.cover,
+                                    )),
+                        ),
+                        Positioned(
+                          top: 60,
+                          //left: 10,
+                          child: Obx(() {
+                            if (userController.isLoading.value) {
+                              return ProfileWidget(
+                                imagePath:
+                                    "assets/images/avatar_placeholder.png",
+                                isEdit: true,
+                                onClicked: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          const ImageUpload(
+                                              title: "Upload Profile Photo",
+                                              type: "PROFILE"),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              return ProfileWidget(
+                                imagePath: userController.user().profileUrl !=
+                                        null
+                                    ? userController.user().profileUrl!
+                                    : "assets/images/avatar_placeholder.png",
+                                isEdit: true,
+                                onClicked: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          const ImageUpload(
+                                              title: "Upload Profile Photo",
+                                              type: "PROFILE"),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                                },
+                              );
+                            }
+                          }),
+                        ),
+                      ],
                     ),
-                    Obx(() {
-                      if (userController.isLoading.value) {
-                        return ProfileWidget(
-                          imagePath: "assets/images/avatar_placeholder.png",
-                          isEdit: true,
-                          onClicked: () async {},
-                        );
-                      } else {
-                        return ProfileWidget(
-                          imagePath: userController.user().profileUrl != null
-                              ? userController.user().profileUrl!
-                              : "assets/images/avatar_placeholder.png",
-                          isEdit: true,
-                          onClicked: () async {},
-                        );
-                      }
-                    }),
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 24),
                     Text('${user?.email}',
                         style: const TextStyle(
                             fontFamily: 'avenir',

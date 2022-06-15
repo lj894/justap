@@ -2,7 +2,7 @@ import 'package:get/state_manager.dart';
 import 'package:justap/models/user.dart';
 import 'package:justap/services/remote_services.dart';
 
-class UserController extends GetxController {
+class ROUserController extends GetxController {
   var isLoading = true.obs;
   var user = SiteUser().obs;
 
@@ -15,7 +15,7 @@ class UserController extends GetxController {
   void fetchUser() async {
     try {
       isLoading(true);
-      var u = await RemoteServices.fetchUser();
+      var u = await RemoteServices.fetchUserByCode();
       if (u != null) {
         user.update((user) {
           user?.nickName = u.nickName;

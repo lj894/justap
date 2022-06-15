@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/ro_media.dart';
 import 'package:justap/components/ro_media_tile.dart';
-import 'package:justap/controllers/user.dart';
+import 'package:justap/controllers/ro_user.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
@@ -41,7 +41,7 @@ class _InfoScreenState extends State<InfoScreen> {
   }
 
   final ROMediaController roMediaController = Get.put(ROMediaController());
-  final UserController userController = Get.put(UserController());
+  final ROUserController roUserController = Get.put(ROUserController());
 
   @override
   Widget build(BuildContext context) {
@@ -91,18 +91,35 @@ class _InfoScreenState extends State<InfoScreen> {
                       alignment: Alignment.center,
                       clipBehavior: Clip.none,
                       children: [
-                        CoverImage(true),
-                        Positioned(
-                          top: 80,
+                        Container(
+                          height: 120,
+                          margin: const EdgeInsets.only(bottom: 20),
                           child: Obx(() {
-                            if (userController.isLoading.value) {
+                            if (roUserController.isLoading.value) {
                               return const Center(
                                   child: CircularProgressIndicator());
                             } else {
-                              return userController.user().profileUrl == null
+                              if (roUserController.user().backgroundUrl !=
+                                  null) {
+                                return CoverImage(
+                                    roUserController.user().backgroundUrl);
+                              } else {
+                                return CoverImage(null);
+                              }
+                            }
+                          }),
+                        ),
+                        Positioned(
+                          top: 80,
+                          child: Obx(() {
+                            if (roUserController.isLoading.value) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              return roUserController.user().profileUrl == null
                                   ? DefaultProfileImage()
                                   : ProfileImage(
-                                      userController.user().profileUrl);
+                                      roUserController.user().profileUrl);
                             }
                           }),
                         ),
@@ -110,11 +127,11 @@ class _InfoScreenState extends State<InfoScreen> {
                     ),
                     const SizedBox(height: 24),
                     Obx(() {
-                      if (userController.isLoading.value) {
+                      if (roUserController.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (userController.user().nickName != null) {
+                      } else if (roUserController.user().nickName != null) {
                         return Text(
-                          '${userController.user().nickName}',
+                          '${roUserController.user().nickName}',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontFamily: 'avenir',
@@ -127,11 +144,11 @@ class _InfoScreenState extends State<InfoScreen> {
                     }),
                     const SizedBox(height: 8),
                     Obx(() {
-                      if (userController.isLoading.value) {
+                      if (roUserController.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (userController.user().introduction != null) {
+                      } else if (roUserController.user().introduction != null) {
                         return Text(
-                          '${userController.user().introduction}',
+                          '${roUserController.user().introduction}',
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 12,
