@@ -12,6 +12,9 @@ import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/screens/all.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:justap/components/image_cropper_for_web.dart';
 
 class ImageUpload extends StatefulWidget {
   final String title;
@@ -288,17 +291,37 @@ class _ImageUploadState extends State<ImageUpload> {
   }
 
   Future<void> _cropImage(type) async {
+    WebUiSettings settings;
+
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    settings = WebUiSettings(
+      context: context,
+      presentStyle: CropperPresentStyle.dialog,
+      boundary: Boundary(
+        width: type == "BACKGROUND"
+            ? (screenWidth * 0.7).round()
+            : (screenWidth * 0.6).round(),
+        height: type == "BACKGROUND"
+            ? 150 //(screenHeight * 0.5).round()
+            : (screenWidth * 0.6).round(),
+      ),
+      viewPort: ViewPort(
+        width: type == "BACKGROUND" ? (screenWidth * 0.6).round() : 200,
+        height: type == "BACKGROUND" ? 120 : 200,
+        type: type == "BACKGROUND" ? 'square' : 'circle',
+      ),
+      enableExif: true,
+      enableZoom: true,
+      showZoomer: true,
+    );
+
     if (_pickedFile != null) {
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: _pickedFile!.path,
-        compressFormat: ImageCompressFormat.jpg,
-        compressQuality: 300,
-        maxWidth: type == "BACKGROUND" ? 120 : 350,
-        maxHeight: type == "BACKGROUND" ? 120 : 350,
-        uiSettings: type == "BACKGROUND"
-            ? buildBackgroundUISettings(context)
-            : buildProfileUISettings(context),
-      );
+      final croppedFile = await ImageCropperPlugin().cropImage(
+          sourcePath: _pickedFile!.path,
+          compressFormat: ImageCompressFormat.jpg,
+          compressQuality: 200,
+          uiSettings: [settings]);
       if (croppedFile != null) {
         setState(() {
           _croppedFile = croppedFile;
