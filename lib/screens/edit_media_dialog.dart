@@ -6,6 +6,7 @@ import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
 import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
+import 'package:justap/utils/media_list.dart';
 
 class EditMediaDialog extends StatefulWidget {
   Media? media;
@@ -24,34 +25,18 @@ class _EditMediaDialog extends State<EditMediaDialog> {
   String? mediaType;
   String? websiteLink = "";
 
-  List<Map> mediaJson = [
-    {'value': '', 'label': 'Select A Media'},
-    {'value': 'INSTAGRAM', 'label': 'Instagram'},
-    {'value': 'TWITTER', 'label': 'Twitter'},
-    {'value': 'FACEBOOK', 'label': 'Facebook'},
-    {'value': 'TIKTOK', 'label': 'TikTok'},
-    {'value': 'BEHANCE', 'label': 'Behance'},
-    {'value': 'LINKEDIN', 'label': 'LinkedIn'},
-    {'value': 'YOUTUBE', 'label': 'YouTube'},
-    {'value': 'SPOTIFY', 'label': 'Spotify'},
-    {'value': 'VENMO', 'label': 'Venmo'},
-    {'value': 'ZELLE', 'label': 'Zelle'},
-    {'value': 'WECHAT', 'label': 'WeChat'},
-    {'value': 'WHATSAPP', 'label': 'WhatsApp'},
-    {'value': 'LINE', 'label': 'Line'},
-    {'value': 'TELEGRAM', 'label': 'Telegram'},
-    {'value': 'GITHUB', 'label': 'GitHub'},
-  ];
-
-  List<String> supportedList = ["INSTAGRAM", "FACEBOOK", "LINKEDIN", "GITHUB"];
-
   showMediaInput(context, mediaType, link) {
-    if (supportedList.contains(mediaType)) {
+    List<Map> targetMedia =
+        mediaJson.where((m) => m['value'] == mediaType).toList();
+
+    String prefix = targetMedia[0]['prefix'];
+
+    if (prefix != '') {
       return Flexible(
         flex: 1,
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
-          initialValue: link.split("/").last,
+          initialValue: link.replaceAll(prefix, ''),
           //maxLength: 50,
           onChanged: (value) {
             setState(() {
@@ -548,25 +533,20 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                               child: const Text("Save"),
                               onPressed: () async {
                                 String? link = '';
+                                List<Map> targetMedia = mediaJson
+                                    .where((m) => m['value'] == mediaType)
+                                    .toList();
+                                String prefix = targetMedia[0]['prefix'];
+
                                 if (websiteLink != null && websiteLink != '') {
                                   link = websiteLink;
                                 } else {
                                   link = widget.media?.websiteLink;
-
-                                  if (supportedList.contains(mediaType)) {
-                                    link = link!.split("/").last;
+                                  if (prefix != '') {
+                                    link = link!.replaceAll(prefix, '');
                                   }
                                 }
-
-                                if (mediaType == 'INSTAGRAM') {
-                                  link = "https://instagram.com/${link}";
-                                } else if (mediaType == 'FACEBOOK') {
-                                  link = "https://m.facebook.com/${link}";
-                                } else if (mediaType == 'LINKEDIN') {
-                                  link = "https://www.linkedin.com/in/${link}";
-                                } else if (mediaType == 'GITHUB') {
-                                  link = "https://github.com/${link}";
-                                }
+                                link = prefix + link!;
 
                                 try {
                                   await RemoteServices.updateMedia(

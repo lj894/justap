@@ -1,19 +1,43 @@
 import 'dart:io';
-
+import 'dart:html' as html;
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
+import 'package:justap/widgets/alert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:justap/utils/media_list.dart';
 
 class ROMediaTile extends StatelessWidget {
   final Media ro_media;
   const ROMediaTile(this.ro_media);
 
-  getMediaImage(media) {
+  getMediaImage(context, media) {
     return GestureDetector(
       onTap: () async {
         if (await canLaunchUrl(Uri.parse(media.websiteLink))) {
           await launchUrl(Uri.parse(media.websiteLink));
+        } else {
+          if (media.socialMedia == "WECHAT") {
+            List<Map> targetMedia = mediaJson
+                .where((m) => m['value'] == media.socialMedia)
+                .toList();
+
+            String prefix = targetMedia[0]['prefix'];
+
+            String userName = media.websiteLink.replaceAll(prefix, "");
+
+            Clipboard.setData(ClipboardData(text: "${userName}"));
+            showConfirmDialog(
+                context,
+                "User Name Copied",
+                "You will be redirect to the WeChat.",
+                () => () {
+                      html.window.open(media.websiteLink, "Justap");
+                    });
+          } else {
+            html.window.open(media.websiteLink, "Justap");
+          }
         }
       }, // Image tapped
       child: Image(
@@ -41,7 +65,7 @@ class ROMediaTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: getMediaImage(ro_media),
+                  child: getMediaImage(context, ro_media),
                 ),
               ],
             ),

@@ -6,6 +6,7 @@ import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
 import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
+import 'package:justap/utils/media_list.dart';
 
 class CreateMediaDialog extends StatefulWidget {
   @override
@@ -16,33 +17,13 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
   String mediaType = "";
   String websiteLink = "";
 
-  List<Map> mediaJson = [
-    {'value': '', 'label': 'Select A Media'},
-    {'value': 'INSTAGRAM', 'label': 'Instagram'},
-    {'value': 'TWITTER', 'label': 'Twitter'},
-    {'value': 'FACEBOOK', 'label': 'Facebook'},
-    {'value': 'TIKTOK', 'label': 'TikTok'},
-    {'value': 'BEHANCE', 'label': 'Behance'},
-    {'value': 'LINKEDIN', 'label': 'LinkedIn'},
-    {'value': 'YOUTUBE', 'label': 'YouTube'},
-    {'value': 'SPOTIFY', 'label': 'Spotify'},
-    {'value': 'VENMO', 'label': 'Venmo'},
-    {'value': 'ZELLE', 'label': 'Zelle'},
-    {'value': 'WECHAT', 'label': 'WeChat'},
-    {'value': 'WHATSAPP', 'label': 'WhatsApp'},
-    {'value': 'LINE', 'label': 'Line'},
-    {'value': 'TELEGRAM', 'label': 'Telegram'},
-    {'value': 'GITHUB', 'label': 'GitHub'},
-  ];
-
   showMediaInput(context, mediaType) {
-    List<String> supportedList = [
-      "INSTAGRAM",
-      "FACEBOOK",
-      "LINKEDIN",
-      "GITHUB"
-    ];
-    if (supportedList.contains(mediaType)) {
+    List<Map> targetMedia =
+        mediaJson.where((m) => m['value'] == mediaType).toList();
+
+    String prefix = targetMedia[0]['prefix'];
+
+    if (prefix != '') {
       return Flexible(
         flex: 1,
         child: TextFormField(
@@ -542,16 +523,15 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                             onPressed: () async {
                               if (mediaType != '') {
                                 String link = websiteLink;
-                                if (mediaType == 'INSTAGRAM') {
-                                  link = "https://instagram.com/${websiteLink}";
-                                } else if (mediaType == 'FACEBOOK') {
-                                  link = "https://m.facebook/${websiteLink}";
-                                } else if (mediaType == 'LINKEDIN') {
-                                  link =
-                                      "https://www.linkedin.com/in/${websiteLink}";
-                                } else if (mediaType == 'GITHUB') {
-                                  link = "https://github.com/${websiteLink}";
-                                }
+
+                                List<Map> targetMedia = mediaJson
+                                    .where((m) => m['value'] == mediaType)
+                                    .toList();
+
+                                String prefix = targetMedia[0]['prefix'];
+
+                                link = prefix + websiteLink;
+
                                 try {
                                   await RemoteServices.createMedia(
                                       mediaType, link);
