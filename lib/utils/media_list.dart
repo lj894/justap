@@ -28,7 +28,7 @@ List<Map> mediaJson = [
     'label': 'Spotify',
     'prefix': 'https://open.spotify.com/playlist/'
   },
-  {'value': 'VENMO', 'label': 'Venmo', 'prefix': ''},
+  {'value': 'VENMO', 'label': 'Venmo', 'prefix': 'venmo://users/'},
   {
     'value': 'ZELLE',
     'label': 'Zelle',
@@ -36,7 +36,7 @@ List<Map> mediaJson = [
   },
   {'value': 'WECHAT', 'label': 'WeChat', 'prefix': 'weixin://dl/chat?'},
   {'value': 'WHATSAPP', 'label': 'WhatsApp', 'prefix': 'https://wa.me/'},
-  {'value': 'LINE', 'label': 'Line', 'prefix': ''},
+  {'value': 'LINE', 'label': 'Line', 'prefix': 'https://line.me/ti/p/~'},
   {'value': 'TELEGRAM', 'label': 'Telegram', 'prefix': 'https://t.me/'},
   {'value': 'GITHUB', 'label': 'GitHub', 'prefix': 'https://github.com/'},
 ];
