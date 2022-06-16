@@ -73,22 +73,40 @@ class _MediaTile extends State<MediaTile> {
                       ],
                     ),
                   ),
-                  Switch(
-                    value: active,
-                    onChanged: (value) async {
-                      await RemoteServices.updateMedia(
-                          widget.media!.id,
-                          widget.media!.socialMedia,
-                          widget.media?.websiteLink,
-                          value);
-                      setState(() {
-                        active = value;
-                      });
-                      //mediaController.fetchMedias();
-                    },
-                    activeTrackColor: Colors.black,
-                    activeColor: Colors.white60,
-                  ),
+                  Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  EditMediaDialog(media: widget.media),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                        },
+                        child: const Icon(Icons.edit, color: Colors.black),
+                      ),
+                      const SizedBox(width: 15),
+                      Switch(
+                        value: active,
+                        onChanged: (value) async {
+                          await RemoteServices.updateMedia(
+                              widget.media!.id,
+                              widget.media!.socialMedia,
+                              widget.media?.websiteLink,
+                              value);
+                          setState(() {
+                            active = value;
+                          });
+                          //mediaController.fetchMedias();
+                        },
+                        activeTrackColor: Colors.black,
+                        activeColor: Colors.white60,
+                      ),
+                    ],
+                  )
                 ])));
   }
 }
