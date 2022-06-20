@@ -106,19 +106,6 @@ class RemoteServices {
   }
 
   static updateOriginalProfileImage(XFile imageData) async {
-    // final response =
-    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
-    //         // headers: {'Content-Type': 'application/octet-stream'},
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //           'authorization': 'Bearer ${globals.userToken}'
-    //         },
-    //         body: imageData);
-    // if (response.statusCode == 200) {
-    //   return Media.fromJson(jsonDecode(response.body));
-    // } else {
-    //   throw Exception('Failed to update social media.');
-    // }
     var _request = http.MultipartRequest(
         'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
     _request.headers.addAll({
@@ -142,19 +129,6 @@ class RemoteServices {
   }
 
   static updateCroppedProfileImage(CroppedFile imageData) async {
-    // final response =
-    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
-    //         // headers: {'Content-Type': 'application/octet-stream'},
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //           'authorization': 'Bearer ${globals.userToken}'
-    //         },
-    //         body: imageData);
-    // if (response.statusCode == 200) {
-    //   return Media.fromJson(jsonDecode(response.body));
-    // } else {
-    //   throw Exception('Failed to update social media.');
-    // }
     var _request = http.MultipartRequest(
         'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
     _request.headers.addAll({
@@ -178,19 +152,6 @@ class RemoteServices {
   }
 
   static updateOriginalBackgroundImage(XFile imageData) async {
-    // final response =
-    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
-    //         // headers: {'Content-Type': 'application/octet-stream'},
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //           'authorization': 'Bearer ${globals.userToken}'
-    //         },
-    //         body: imageData);
-    // if (response.statusCode == 200) {
-    //   return Media.fromJson(jsonDecode(response.body));
-    // } else {
-    //   throw Exception('Failed to update social media.');
-    // }
     var _request = http.MultipartRequest(
         'POST', Uri.parse('https://api.justap.us/v1/user/background'));
     _request.headers.addAll({
@@ -214,19 +175,6 @@ class RemoteServices {
   }
 
   static updateCroppedBackgroundImage(CroppedFile imageData) async {
-    // final response =
-    //     await http.post(Uri.parse("https://api.justap.us/v1/user/profile"),
-    //         // headers: {'Content-Type': 'application/octet-stream'},
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //           'authorization': 'Bearer ${globals.userToken}'
-    //         },
-    //         body: imageData);
-    // if (response.statusCode == 200) {
-    //   return Media.fromJson(jsonDecode(response.body));
-    // } else {
-    //   throw Exception('Failed to update social media.');
-    // }
     var _request = http.MultipartRequest(
         'POST', Uri.parse('https://api.justap.us/v1/user/background'));
     _request.headers.addAll({

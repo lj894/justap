@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -285,7 +287,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                           flex: 1,
                           child: TextFormField(
                             cursorColor: Theme.of(context).cursorColor,
-                            initialValue: userController.user().nickName,
+                            initialValue: utf8.decode(
+                                userController.user().nickName!.runes.toList()),
                             //maxLength: 50,
                             onChanged: (value) {
                               setState(() {
@@ -316,7 +319,11 @@ class _ProfileScreen extends State<ProfileScreen> {
                           flex: 1,
                           child: TextFormField(
                             cursorColor: Theme.of(context).cursorColor,
-                            initialValue: userController.user().introduction,
+                            initialValue: utf8.decode(userController
+                                .user()
+                                .introduction!
+                                .runes
+                                .toList()),
                             //minLines: 5,
                             maxLines: 4,
                             onChanged: (value) {

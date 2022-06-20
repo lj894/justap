@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -84,7 +86,8 @@ class HomeScreen extends StatelessWidget {
                               //right: 20,
                               top: 1),
                           child: Text(
-                            '${userController.user().nickName}',
+                            utf8.decode(
+                                userController.user().nickName!.runes.toList()),
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                                 fontFamily: 'avenir',
@@ -109,7 +112,11 @@ class HomeScreen extends StatelessWidget {
                               //right: 20,
                               top: 1),
                           child: Text(
-                            '${userController.user().introduction}',
+                            utf8.decode(userController
+                                .user()
+                                .introduction!
+                                .runes
+                                .toList()),
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                                 fontFamily: 'avenir',
