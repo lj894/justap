@@ -30,6 +30,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         mediaJson.where((m) => m['value'] == mediaType).toList();
 
     String prefix = targetMedia[0]['prefix'];
+    String? inputLabel = targetMedia[0]['input_label'];
 
     if (prefix != '') {
       return Flexible(
@@ -43,8 +44,8 @@ class _EditMediaDialog extends State<EditMediaDialog> {
               websiteLink = value.toString();
             });
           },
-          decoration: const InputDecoration(
-            labelText: 'User Name',
+          decoration: InputDecoration(
+            labelText: inputLabel,
             labelStyle: TextStyle(
               color: Colors.black87,
             ),
@@ -65,8 +66,8 @@ class _EditMediaDialog extends State<EditMediaDialog> {
               websiteLink = value.toString();
             });
           },
-          decoration: const InputDecoration(
-            labelText: 'URL',
+          decoration: InputDecoration(
+            labelText: inputLabel,
             labelStyle: TextStyle(
               color: Colors.black87,
             ),

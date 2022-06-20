@@ -22,6 +22,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         mediaJson.where((m) => m['value'] == mediaType).toList();
 
     String prefix = targetMedia[0]['prefix'];
+    String? inputLabel = targetMedia[0]['input_label'];
 
     if (prefix != '') {
       return Flexible(
@@ -35,12 +36,12 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
               websiteLink = value.toString();
             });
           },
-          decoration: const InputDecoration(
-            labelText: 'User Name',
+          decoration: InputDecoration(
+            labelText: inputLabel,
             labelStyle: TextStyle(
               color: Colors.black87,
             ),
-            helperText: 'Enter your user name of the site',
+            //helperText: 'Enter your user name of the site',
             border: OutlineInputBorder(),
           ),
         ),
@@ -57,8 +58,8 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
               websiteLink = value.toString();
             });
           },
-          decoration: const InputDecoration(
-            labelText: 'URL',
+          decoration: InputDecoration(
+            labelText: inputLabel,
             labelStyle: TextStyle(
               color: Colors.black87,
             ),

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/services/authentications.dart';
@@ -131,7 +133,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else if (roUserController.user().nickName != null) {
                         return Text(
-                          '${roUserController.user().nickName}',
+                          utf8.decode(
+                              roUserController.user().nickName!.runes.toList()),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontFamily: 'avenir',
@@ -148,7 +151,11 @@ class _InfoScreenState extends State<InfoScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else if (roUserController.user().introduction != null) {
                         return Text(
-                          '${roUserController.user().introduction}',
+                          utf8.decode(roUserController
+                              .user()
+                              .introduction!
+                              .runes
+                              .toList()),
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 12,
