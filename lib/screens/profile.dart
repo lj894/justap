@@ -189,7 +189,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               onPressed: () {
                                 Clipboard.setData(ClipboardData(
                                     text:
-                                        "${Uri.base}?code=${userController.user().code}"));
+                                        "${Uri.base}${userController.user().code}"));
                                 showAlertDialog(context, "Copy URL",
                                     "URL copied! You can write it to a NFC tag and share with others.");
                               },
@@ -212,7 +212,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: TextFormField(
                               cursorColor: Theme.of(context).cursorColor,
                               initialValue:
-                                  "${Uri.base}?code=${userController.user().code}",
+                                  "${Uri.base}${userController.user().code}",
                               style: const TextStyle(color: Colors.black45),
                               readOnly: true,
                               enabled: false,

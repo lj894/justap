@@ -17,7 +17,16 @@ Future<void> main() async {
   );
 
   String redirectURL = Uri.base.toString();
-  String? code = Uri.base.queryParameters["code"];
+
+  String regexString =
+      r'[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}';
+  RegExp regExp = RegExp(regexString);
+  RegExpMatch? match = regExp.firstMatch(redirectURL);
+  String? code = match?.group(0);
+
+  //print(code);
+
+  //String? code = Uri.base.queryParameters["code"];
   if (FirebaseAuth.instance.currentUser != null) {
     await FirebaseAuth.instance.currentUser
         ?.getIdToken()
@@ -40,6 +49,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     if (widget.code != null) {
+      print(widget.code);
       return MultiProvider(
           providers: [
             Provider<AuthenticationService>(
@@ -60,9 +70,9 @@ class _MyAppState extends State<MyApp> {
                 } else {
                   return MaterialApp(
                       title: 'JusTap',
-                      initialRoute: "/?code=${widget.code}",
+                      initialRoute: "/${widget.code}",
                       routes: <String, WidgetBuilder>{
-                        "/?code=${widget.code}": (context) => InfoScreen(
+                        "/${widget.code}": (context) => InfoScreen(
                             redirectURL: widget.redirectURL, code: widget.code),
                       },
                       home: InfoScreen(
