@@ -14,6 +14,7 @@ import 'package:justap/controllers/ro_user.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
+import 'package:justap/services/remote_services.dart';
 
 class InfoScreen extends StatefulWidget {
   String? redirectURL;
@@ -25,6 +26,8 @@ class InfoScreen extends StatefulWidget {
   _InfoScreenState createState() => _InfoScreenState();
 }
 
+bool isLogged = false;
+
 class _InfoScreenState extends State<InfoScreen> {
   final User? user = FirebaseAuth.instance.currentUser;
   var token;
@@ -32,6 +35,10 @@ class _InfoScreenState extends State<InfoScreen> {
   @override
   void initState() {
     super.initState();
+    if (isLogged == false) {
+      isLogged = true;
+      RemoteServices.logProfileVisit(widget.code);
+    }
     getToken();
   }
 
