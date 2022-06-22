@@ -140,8 +140,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else if (roUserController.user().nickName != null) {
                         return Text(
-                          utf8.decode(
-                              roUserController.user().nickName!.runes.toList()),
+                          roUserController.user().nickName!,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontFamily: 'avenir',
@@ -158,11 +157,7 @@ class _InfoScreenState extends State<InfoScreen> {
                         return const Center(child: CircularProgressIndicator());
                       } else if (roUserController.user().introduction != null) {
                         return Text(
-                          utf8.decode(roUserController
-                              .user()
-                              .introduction!
-                              .runes
-                              .toList()),
+                          roUserController.user().introduction!,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
                               fontSize: 12,

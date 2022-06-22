@@ -66,9 +66,9 @@ class _MyAppState extends State<MyApp> {
                 } else {
                   return MaterialApp(
                       title: 'JusTap',
-                      initialRoute: "/${widget.code}",
+                      initialRoute: "/user/${widget.code}",
                       routes: <String, WidgetBuilder>{
-                        "/${widget.code}": (context) => InfoScreen(
+                        "/user/${widget.code}": (context) => InfoScreen(
                             redirectURL: widget.redirectURL, code: widget.code),
                         "/?code=${widget.code}": (context) => InfoScreen(
                             redirectURL: widget.redirectURL, code: widget.code),

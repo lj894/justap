@@ -18,11 +18,14 @@ class RemoteServices {
   static Future<SiteUser> fetchUser() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      final response = await client.get(
-          Uri.parse('$justapAPI/user?firebaseUid=$uid'),
-          headers: (globals.userToken != null)
-              ? {'Authorization': 'Bearer ${globals.userToken}'}
-              : null);
+      final response =
+          await client.get(Uri.parse('$justapAPI/user?firebaseUid=$uid'),
+              headers: (globals.userToken != null)
+                  ? {
+                      'Authorization': 'Bearer ${globals.userToken}',
+                      'Accept': 'application/json; charset=UTF-8'
+                    }
+                  : {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         return SiteUser.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 204 || response.statusCode == 404) {
@@ -44,8 +47,8 @@ class RemoteServices {
     RegExpMatch? match = regExp.firstMatch(redirectURL);
     String? code = match?.group(0);
     if (code != null) {
-      final response =
-          await client.get(Uri.parse('$justapAPI/user?code=$code'));
+      final response = await client.get(Uri.parse('$justapAPI/user?code=$code'),
+          headers: {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         return SiteUser.fromJson(jsonDecode(response.body));
       } else {
@@ -82,6 +85,7 @@ class RemoteServices {
       Uri.parse('$justapAPI/user/'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -101,6 +105,7 @@ class RemoteServices {
       Uri.parse('$justapAPI/user/reset/code'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{}),
@@ -228,8 +233,11 @@ class RemoteServices {
       }
       var response = await client.get(Uri.parse(url),
           headers: (globals.userToken != null)
-              ? {'Authorization': 'Bearer ${globals.userToken}'}
-              : null);
+              ? {
+                  'Authorization': 'Bearer ${globals.userToken}',
+                  'Accept': 'application/json; charset=UTF-8'
+                }
+              : {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         var jsonString = response.body;
         return mediaFromJson(jsonString);
@@ -243,7 +251,8 @@ class RemoteServices {
 
   static Future<List<Media?>> fetchMediasByCode(code) async {
     String url = "$justapAPI/social?code=$code&active=true";
-    var response = await client.get(Uri.parse(url));
+    var response = await client.get(Uri.parse(url),
+        headers: {'Accept': 'application/json; charset=UTF-8'});
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return mediaFromJson(jsonString);
@@ -257,6 +266,7 @@ class RemoteServices {
       Uri.parse('$justapAPI/social'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -280,6 +290,7 @@ class RemoteServices {
       Uri.parse('$justapAPI/social/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -300,6 +311,7 @@ class RemoteServices {
       Uri.parse('$justapAPI/social/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{}),

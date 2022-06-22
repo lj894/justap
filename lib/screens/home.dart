@@ -86,8 +86,7 @@ class HomeScreen extends StatelessWidget {
                               //right: 20,
                               top: 1),
                           child: Text(
-                            utf8.decode(
-                                userController.user().nickName!.runes.toList()),
+                            userController.user().nickName!,
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                                 fontFamily: 'avenir',
@@ -112,11 +111,7 @@ class HomeScreen extends StatelessWidget {
                               //right: 20,
                               top: 1),
                           child: Text(
-                            utf8.decode(userController
-                                .user()
-                                .introduction!
-                                .runes
-                                .toList()),
+                            userController.user().introduction!,
                             textAlign: TextAlign.left,
                             style: const TextStyle(
                                 fontFamily: 'avenir',
