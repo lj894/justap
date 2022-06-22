@@ -12,16 +12,20 @@ import 'package:justap/models/user.dart';
 import 'package:http_parser/http_parser.dart';
 
 class RemoteServices {
+  static const justapAPI = "https://api.justap.us/v1";
   static var client = http.Client();
 
   static Future<SiteUser> fetchUser() async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid != null) {
-      final response = await client.get(
-          Uri.parse('https://api.justap.us/v1/user?firebaseUid=${uid}'),
-          headers: (globals.userToken != null)
-              ? {'Authorization': 'Bearer ${globals.userToken}'}
-              : null);
+      final response =
+          await client.get(Uri.parse('$justapAPI/user?firebaseUid=$uid'),
+              headers: (globals.userToken != null)
+                  ? {
+                      'Authorization': 'Bearer ${globals.userToken}',
+                      'Accept': 'application/json; charset=UTF-8'
+                    }
+                  : {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         return SiteUser.fromJson(jsonDecode(response.body));
       } else if (response.statusCode == 204 || response.statusCode == 404) {
@@ -35,10 +39,16 @@ class RemoteServices {
   }
 
   static Future<SiteUser> fetchUserByCode() async {
-    String? code = Uri.base.queryParameters["code"];
+    //String? code = Uri.base.queryParameters["code"];
+    String redirectURL = Uri.base.toString();
+    String regexString =
+        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}';
+    RegExp regExp = RegExp(regexString);
+    RegExpMatch? match = regExp.firstMatch(redirectURL);
+    String? code = match?.group(0);
     if (code != null) {
-      final response = await client
-          .get(Uri.parse('https://api.justap.us/v1/user?code=${code}'));
+      final response = await client.get(Uri.parse('$justapAPI/user?code=$code'),
+          headers: {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         return SiteUser.fromJson(jsonDecode(response.body));
       } else {
@@ -52,7 +62,7 @@ class RemoteServices {
     final uid = FirebaseAuth.instance.currentUser?.uid;
 
     final response = await http.post(
-      Uri.parse('https://api.justap.us/v1/user/register'),
+      Uri.parse('$justapAPI/user/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
@@ -72,9 +82,10 @@ class RemoteServices {
 
   static Future<SiteUser?> updateProfile(nickName, introduction) async {
     final response = await http.put(
-      Uri.parse('https://api.justap.us/v1/user/'),
+      Uri.parse('$justapAPI/user/'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -91,9 +102,10 @@ class RemoteServices {
 
   static Future<SiteUser?> resetProfileCode() async {
     final response = await http.post(
-      Uri.parse('https://api.justap.us/v1/user/reset/code'),
+      Uri.parse('$justapAPI/user/reset/code'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{}),
@@ -106,8 +118,8 @@ class RemoteServices {
   }
 
   static updateOriginalProfileImage(XFile imageData) async {
-    var _request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
+    var _request =
+        http.MultipartRequest('POST', Uri.parse('$justapAPI/user/profile'));
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
@@ -129,8 +141,8 @@ class RemoteServices {
   }
 
   static updateCroppedProfileImage(CroppedFile imageData) async {
-    var _request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.justap.us/v1/user/profile'));
+    var _request =
+        http.MultipartRequest('POST', Uri.parse('$justapAPI/user/profile'));
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
@@ -152,8 +164,8 @@ class RemoteServices {
   }
 
   static updateOriginalBackgroundImage(XFile imageData) async {
-    var _request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.justap.us/v1/user/background'));
+    var _request =
+        http.MultipartRequest('POST', Uri.parse('$justapAPI/user/background'));
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
@@ -175,8 +187,8 @@ class RemoteServices {
   }
 
   static updateCroppedBackgroundImage(CroppedFile imageData) async {
-    var _request = http.MultipartRequest(
-        'POST', Uri.parse('https://api.justap.us/v1/user/background'));
+    var _request =
+        http.MultipartRequest('POST', Uri.parse('$justapAPI/user/background'));
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
@@ -198,7 +210,7 @@ class RemoteServices {
   }
 
   static updateBackgroundImage(imageData) async {
-    var postUri = Uri.parse("https://api.justap.us/v1/user/background");
+    var postUri = Uri.parse("$justapAPI/user/background");
     var request = http.MultipartRequest("POST", postUri);
     request.headers['authorization'] = 'Bearer ${globals.userToken}';
     request.headers['Content-Type'] = 'multipart/form-data';
@@ -207,7 +219,6 @@ class RemoteServices {
 
     request.send().then((response) {
       if (response.statusCode == 200) {
-        print('done');
       } else {
         throw Exception('Failed to update profile image.');
       }
@@ -216,14 +227,17 @@ class RemoteServices {
 
   static Future<List<Media?>> fetchMedias(uid, active) async {
     if (uid != null) {
-      String url = "https://api.justap.us/v1/social?firebaseUid=${uid}";
+      String url = "$justapAPI/social?firebaseUid=$uid";
       if (active) {
-        url += "&active=${active}";
+        url += "&active=$active";
       }
       var response = await client.get(Uri.parse(url),
           headers: (globals.userToken != null)
-              ? {'Authorization': 'Bearer ${globals.userToken}'}
-              : null);
+              ? {
+                  'Authorization': 'Bearer ${globals.userToken}',
+                  'Accept': 'application/json; charset=UTF-8'
+                }
+              : {'Accept': 'application/json; charset=UTF-8'});
       if (response.statusCode == 200) {
         var jsonString = response.body;
         return mediaFromJson(jsonString);
@@ -236,8 +250,9 @@ class RemoteServices {
   }
 
   static Future<List<Media?>> fetchMediasByCode(code) async {
-    String url = "https://api.justap.us/v1/social?code=${code}&active=true";
-    var response = await client.get(Uri.parse(url));
+    String url = "$justapAPI/social?code=$code&active=true";
+    var response = await client.get(Uri.parse(url),
+        headers: {'Accept': 'application/json; charset=UTF-8'});
     if (response.statusCode == 200) {
       var jsonString = response.body;
       return mediaFromJson(jsonString);
@@ -248,9 +263,10 @@ class RemoteServices {
 
   static Future<Media?> createMedia(socialMedia, websiteLink) async {
     final response = await http.post(
-      Uri.parse('https://api.justap.us/v1/social'),
+      Uri.parse('$justapAPI/social'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -271,9 +287,10 @@ class RemoteServices {
   static Future<Media?> updateMedia(
       id, socialMedia, websiteLink, status) async {
     final response = await http.put(
-      Uri.parse('https://api.justap.us/v1/social/${id}'),
+      Uri.parse('$justapAPI/social/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{
@@ -291,9 +308,10 @@ class RemoteServices {
 
   static Future<void> deleteMedia(id) async {
     final response = await http.delete(
-      Uri.parse('https://api.justap.us/v1/social/${id}'),
+      Uri.parse('$justapAPI/social/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, dynamic>{}),
@@ -302,6 +320,21 @@ class RemoteServices {
       return null;
     } else {
       throw Exception('Failed to delete social media.');
+    }
+  }
+
+  static logProfileVisit(code) async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null) {
+      await http.post(Uri.parse('$justapAPI/social/history/user/$code'));
+    } else {
+      FirebaseAuth.instance.currentUser?.getIdToken().then((value) {
+        globals.userToken = value;
+        http.post(Uri.parse('$justapAPI/social/history/user/$code'),
+            headers: <String, String>{
+              'Authorization': 'Bearer $value',
+            });
+      });
     }
   }
 }

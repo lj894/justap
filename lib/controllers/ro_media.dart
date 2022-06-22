@@ -8,7 +8,14 @@ class ROMediaController extends GetxController {
 
   @override
   void onInit() {
-    String? code = Uri.base.queryParameters["code"];
+    //String? code = Uri.base.queryParameters["code"];
+    String redirectURL = Uri.base.toString();
+    String regexString =
+        r'[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}';
+    RegExp regExp = RegExp(regexString);
+    RegExpMatch? match = regExp.firstMatch(redirectURL);
+    String? code = match?.group(0);
+
     fetchROMedias(code);
     super.onInit();
   }
