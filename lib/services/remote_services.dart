@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/utils/globals.dart' as globals;
 import 'package:justap/models/media.dart';
 import 'package:justap/models/user.dart';
+import 'package:justap/models/history.dart';
 import 'package:http_parser/http_parser.dart';
 
 class RemoteServices {
@@ -334,6 +335,21 @@ class RemoteServices {
               'Authorization': 'Bearer $value',
             });
       });
+    }
+  }
+
+  static Future<List<History?>> fetchHistory() async {
+    String url = "$justapAPI/social/history";
+    var response = await client.get(Uri.parse(url), headers: {
+      'Authorization': 'Bearer ${globals.userToken}',
+      'Accept': 'application/json; charset=UTF-8'
+    });
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return historyFromJson(jsonString);
+    } else {
+      return [];
+      //throw Exception('Failed to fetch history.');
     }
   }
 }

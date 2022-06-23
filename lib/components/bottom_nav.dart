@@ -22,11 +22,11 @@ class BottomNav extends StatelessWidget {
             navigation.changeScreen('/');
             break;
           case 1:
+            navigation.changeScreen('/history');
+            break;
+          case 2:
             navigation.changeScreen('/profile');
             break;
-          // case 2:
-          //   navigation.changeScreen('/settings');
-          //   break;
         }
       },
       items: const [
@@ -36,14 +36,14 @@ class BottomNav extends StatelessWidget {
           label: 'Home',
         ),
         BottomNavigationBarItem(
+          icon: Icon(Icons.history_outlined),
+          label: 'History',
+        ),
+        BottomNavigationBarItem(
           icon: Icon(Icons.person),
           activeIcon: Icon(Icons.person, color: Colors.black),
           label: 'Profile',
         ),
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.settings),
-        //   label: 'Settings',
-        // ),
       ],
     );
   }

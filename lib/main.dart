@@ -23,7 +23,6 @@ Future<void> main() async {
   RegExp regExp = RegExp(regexString);
   RegExpMatch? match = regExp.firstMatch(redirectURL);
   String? code = match?.group(0);
-  //String? code = Uri.base.queryParameters["code"];
   if (FirebaseAuth.instance.currentUser != null) {
     await FirebaseAuth.instance.currentUser
         ?.getIdToken()
@@ -124,8 +123,8 @@ class AuthenticationWrapper extends StatelessWidget {
       home: Navigator(
         pages: [
           MaterialPage(child: HomeScreen()),
-          // if (navigation.screenName == '/settings')
-          //   const MaterialPage(child: SettingsScreen()),
+          if (navigation.screenName == '/history')
+            const MaterialPage(child: HistoryScreen()),
           if (navigation.screenName == '/profile')
             const MaterialPage(child: ProfileScreen()),
         ],

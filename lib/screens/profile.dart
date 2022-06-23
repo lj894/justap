@@ -60,7 +60,7 @@ class _ProfileScreen extends State<ProfileScreen> {
             title: const Text("Profile", style: TextStyle(color: Colors.black)),
             backgroundColor: Colors.transparent,
             elevation: 0.0),
-        bottomNavigationBar: const BottomNav(1),
+        bottomNavigationBar: const BottomNav(2),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 60.0),
@@ -318,7 +318,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                           flex: 1,
                           child: TextFormField(
                             cursorColor: Theme.of(context).cursorColor,
-                            initialValue: userController.user().introduction!,
+                            initialValue:
+                                userController.user().introduction == null
+                                    ? ""
+                                    : userController.user().introduction!,
                             //minLines: 5,
                             maxLines: 4,
                             onChanged: (value) {
