@@ -318,7 +318,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           flex: 1,
                           child: TextFormField(
                             cursorColor: Theme.of(context).cursorColor,
-                            initialValue: userController.user().introduction!,
+                            initialValue: userController.user().introduction,
                             //minLines: 5,
                             maxLines: 4,
                             onChanged: (value) {
