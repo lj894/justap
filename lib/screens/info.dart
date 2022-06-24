@@ -207,8 +207,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   crossAxisCount: 2,
                                   itemCount:
                                       roMediaController.ro_mediaList.length,
-                                  crossAxisSpacing: 16,
-                                  mainAxisSpacing: 16,
+                                  crossAxisSpacing: 0,
+                                  mainAxisSpacing: 0,
                                   itemBuilder: (context, index) {
                                     return ROMediaTile(
                                         roMediaController.ro_mediaList[index]);

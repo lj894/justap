@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:justap/controllers/history.dart';
+import 'package:justap/screens/visit_history.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({
@@ -32,6 +33,7 @@ class _HistoryScreen extends State<HistoryScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0.0,
             bottom: const TabBar(
+              indicatorColor: Colors.black,
               tabs: <Widget>[
                 Tab(
                     child:
@@ -44,11 +46,12 @@ class _HistoryScreen extends State<HistoryScreen> {
           ),
           body: const TabBarView(
             children: <Widget>[
+              VisitHistoryTab(),
+              // Center(
+              //   child: Text("people who visited my page will appear here"),
+              // ),
               Center(
-                child: Text("people visited my page"),
-              ),
-              Center(
-                child: Text("people I visited"),
+                child: Text("people I recently visited will appear here"),
               ),
             ],
           ),
