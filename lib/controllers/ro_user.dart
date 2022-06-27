@@ -1,6 +1,7 @@
 import 'package:get/state_manager.dart';
 import 'package:justap/models/user.dart';
 import 'package:justap/services/remote_services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ROUserController extends GetxController {
   var isLoading = true.obs;
@@ -28,7 +29,9 @@ class ROUserController extends GetxController {
         });
       }
     } catch (e) {
-      print(e);
+      if (await canLaunchUrl(Uri.parse(Uri.base.origin))) {
+        await launchUrl(Uri.parse(Uri.base.origin), webOnlyWindowName: '_self');
+      }
     } finally {
       isLoading(false);
     }

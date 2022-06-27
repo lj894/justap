@@ -49,6 +49,9 @@ dependencies:
   image_cropper: ^2.0.3
   dotted_border: ^2.0.0+2
   dio: ^4.0.6
+  intl: ^0.17.0
+  universal_html: ^2.0.8
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:

@@ -23,8 +23,7 @@ class ROMediaController extends GetxController {
   void fetchROMedias(code) async {
     try {
       isLoading(true);
-      var user = await RemoteServices.fetchUserByCode();
-      var ro_medias = await RemoteServices.fetchMediasByCode(user.code);
+      var ro_medias = await RemoteServices.fetchMediasByCode(code);
       if (ro_medias != null) {
         ro_mediaList.value = ro_medias as List<Media>;
       }

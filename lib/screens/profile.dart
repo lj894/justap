@@ -60,7 +60,7 @@ class _ProfileScreen extends State<ProfileScreen> {
             title: const Text("Profile", style: TextStyle(color: Colors.black)),
             backgroundColor: Colors.transparent,
             elevation: 0.0),
-        bottomNavigationBar: const BottomNav(1),
+        bottomNavigationBar: const BottomNav(2),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 60.0),

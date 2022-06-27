@@ -166,8 +166,8 @@ class HomeScreen extends StatelessWidget {
                             //crossAxisCount: 2,
                             crossAxisCount: 1,
                             itemCount: mediaController.mediaList.length,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 0,
+                            mainAxisSpacing: 0,
                             itemBuilder: (context, index) {
                               return MediaTile(
                                   media: mediaController.mediaList[index]);
