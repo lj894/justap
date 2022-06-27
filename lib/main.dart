@@ -123,8 +123,10 @@ class AuthenticationWrapper extends StatelessWidget {
       home: Navigator(
         pages: [
           MaterialPage(child: HomeScreen()),
-          if (navigation.screenName == '/history')
-            const MaterialPage(child: HistoryScreen()),
+          if (navigation.screenName == '/reward')
+            const MaterialPage(child: RewardScreen()),
+          if (navigation.screenName == '/reward_exchange')
+            const MaterialPage(child: RewardExchangeScreen()),
           if (navigation.screenName == '/profile')
             const MaterialPage(child: ProfileScreen()),
         ],

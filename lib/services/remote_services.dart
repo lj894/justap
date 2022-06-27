@@ -380,17 +380,23 @@ class RemoteServices {
   }
 
   static Future<List<History?>> fetchHistory() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    String? token = await user?.getIdToken();
     String url = "$justapAPI/social/history";
-    var response = await client.get(Uri.parse(url), headers: {
-      'Authorization': 'Bearer ${globals.userToken}',
-      'Accept': 'application/json; charset=UTF-8'
-    });
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return historyFromJson(jsonString);
+    if (token != null) {
+      var response = await client.get(Uri.parse(url), headers: {
+        'Authorization': 'Bearer ${token}',
+        'Accept': 'application/json; charset=UTF-8'
+      });
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        return historyFromJson(jsonString);
+      } else {
+        return [];
+        //throw Exception('Failed to fetch history.');
+      }
     } else {
       return [];
-      //throw Exception('Failed to fetch history.');
     }
   }
 }
