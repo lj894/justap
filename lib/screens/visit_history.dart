@@ -30,27 +30,32 @@ class VisitHistoryTab extends StatefulWidget {
 
 class _VisitHistoryTab extends State<VisitHistoryTab> {
   final HistoryController historyController = Get.put(HistoryController());
-
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: Obx(() {
-        if (historyController.isLoading.value) {
-          return const Center(child: CircularProgressIndicator());
-        } else {
-          return StaggeredGridView.countBuilder(
-            //crossAxisCount: 2,
-            crossAxisCount: 1,
-            itemCount: historyController.historyList.length,
-            crossAxisSpacing: 0,
-            mainAxisSpacing: 0,
-            itemBuilder: (context, index) {
-              return HistoryTile(history: historyController.historyList[index]);
-            },
-            staggeredTileBuilder: (index) => StaggeredTile.fit(1),
-          );
-        }
-      }),
+    return Column(
+      children: [
+        const SizedBox(height: 5),
+        Flexible(
+          child: Obx(() {
+            if (historyController.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            } else {
+              return StaggeredGridView.countBuilder(
+                //crossAxisCount: 2,
+                crossAxisCount: 1,
+                itemCount: historyController.historyList.length,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
+                itemBuilder: (context, index) {
+                  return HistoryTile(
+                      history: historyController.historyList[index]);
+                },
+                staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+              );
+            }
+          }),
+        )
+      ],
     );
   }
 }

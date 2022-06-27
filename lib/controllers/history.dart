@@ -17,12 +17,14 @@ class HistoryController extends GetxController {
     var uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       isLoading(true);
-      if (uid != null) {
-        var history = await RemoteServices.fetchHistory();
-        if (history.isNotEmpty) {
-          historyList.value = history as List<History>;
-        }
+      //if (uid != null) {
+      var history = await RemoteServices.fetchHistory();
+      if (history.isNotEmpty) {
+        historyList.value = history as List<History>;
+      } else {
+        historyList.value = [];
       }
+      //}
     } finally {
       isLoading(false);
     }

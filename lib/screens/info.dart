@@ -211,7 +211,8 @@ class _InfoScreenState extends State<InfoScreen> {
                                   mainAxisSpacing: 0,
                                   itemBuilder: (context, index) {
                                     return ROMediaTile(
-                                        roMediaController.ro_mediaList[index]);
+                                        roMediaController.ro_mediaList[index],
+                                        widget.code);
                                   },
                                   staggeredTileBuilder: (index) =>
                                       const StaggeredTile.fit(1),

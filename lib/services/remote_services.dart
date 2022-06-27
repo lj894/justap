@@ -12,6 +12,8 @@ import 'package:justap/models/user.dart';
 import 'package:justap/models/history.dart';
 import 'package:http_parser/http_parser.dart';
 import 'dart:html';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/uuid_util.dart';
 
 class RemoteServices {
   static const justapAPI = "https://api.justap.us/v1";
@@ -326,45 +328,53 @@ class RemoteServices {
 
   static logProfileVisit(code) async {
     String? uid = FirebaseAuth.instance.currentUser?.uid;
+    var viewerId = window.localStorage['viewerId'];
+    if (viewerId == null) {
+      viewerId = const Uuid().v4();
+      window.localStorage['viewerId'] = viewerId;
+    }
     if (uid == null) {
-      var sessionId = window.localStorage['sessionId'];
-      if (sessionId == null) {
-        String codeSeg = code.substring(24, code.length);
-        String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-        String sessionId = '$codeSeg-$timeStamp';
-        window.localStorage['sessionId'] = sessionId;
-      } else {
-        String currentCodeSeg = sessionId.substring(0, 12);
-        String currentTimeSeg = sessionId.substring(13, sessionId.length);
-        if (code.contains(currentCodeSeg)) {
-          var now = DateTime.now().millisecondsSinceEpoch;
-          if (now - int.parse(currentTimeSeg) > 60 * 60 * 24 * 7 * 1000) {
-            String codeSeg = code.substring(24, code.length);
-            String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-            String sessionId = '$codeSeg-$timeStamp';
-            window.localStorage['sessionId'] = sessionId;
-          }
-        } else {
-          String codeSeg = code.substring(24, code.length);
-          String timeStamp = DateTime.now().millisecondsSinceEpoch.toString();
-          String sessionId = '$codeSeg-$timeStamp';
-          window.localStorage['sessionId'] = sessionId;
-        }
-      }
       await http.post(Uri.parse('$justapAPI/social/history/user/$code'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           },
-          body: jsonEncode(<String, dynamic>{
-            "sessionId": sessionId,
-          }));
+          body: viewerId);
     } else {
       FirebaseAuth.instance.currentUser?.getIdToken().then((value) {
         globals.userToken = value;
         http.post(Uri.parse('$justapAPI/social/history/user/$code'),
             headers: <String, String>{
               'Authorization': 'Bearer $value',
-            });
+            },
+            body: viewerId);
+      });
+    }
+  }
+
+  static logSocialVisit(code, media) async {
+    String? uid = FirebaseAuth.instance.currentUser?.uid;
+    var viewerId = window.localStorage['viewerId'];
+    if (viewerId == null) {
+      viewerId = const Uuid().v4();
+      window.localStorage['viewerId'] = viewerId;
+    }
+    if (uid == null) {
+      await http.post(
+          Uri.parse('$justapAPI/social/history/user/$code/socialMedia/$media'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          },
+          body: viewerId);
+    } else {
+      FirebaseAuth.instance.currentUser?.getIdToken().then((value) {
+        globals.userToken = value;
+        http.post(
+            Uri.parse(
+                '$justapAPI/social/history/user/$code/socialMedia/$media'),
+            headers: <String, String>{
+              'Authorization': 'Bearer $value',
+            },
+            body: viewerId);
       });
     }
   }

@@ -15,13 +15,13 @@ class History {
 
   factory History.fromJson(Map<String, dynamic> json) => History(
         id: json["id"],
-        notes: json["notes"],
-        createdAt: json["createdAt"],
+        notes: json["notes"] == null ? null : json["notes"],
+        createdAt: json["createdAt"] == null ? null : json["createdAt"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "notes": notes,
-        "createdAt": createdAt,
+        "notes": notes == null ? null : notes,
+        "createdAt": createdAt == null ? null : createdAt,
       };
 }

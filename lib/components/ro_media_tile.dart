@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
+import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:justap/utils/media_list.dart';
 
 class ROMediaTile extends StatelessWidget {
   final Media ro_media;
-  const ROMediaTile(this.ro_media);
+  final String? code;
+  const ROMediaTile(this.ro_media, this.code);
 
   getMediaImage(context, media) {
     return GestureDetector(
       onTap: () async {
+        RemoteServices.logSocialVisit(code, media.socialMedia);
         if (await canLaunchUrl(Uri.parse(media.websiteLink))) {
           await launchUrl(Uri.parse(media.websiteLink));
         } else {

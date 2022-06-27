@@ -21,6 +21,10 @@ class _HistoryScreen extends State<HistoryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future.delayed(Duration.zero, () async {
+      historyController.fetchHistory();
+    });
+
     return DefaultTabController(
         length: 2,
         child: Scaffold(
