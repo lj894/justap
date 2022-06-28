@@ -23,13 +23,12 @@ class _HistoryTile extends State<HistoryTile> {
   }
 
   getHistoryProfile(context, history) {
-    String? link;
-    //var link = widget.history!.profileLink;
+    String? link = widget.history!.profileUrl;
     if (link != null) {
       return Image.network(
         link,
-        width: 10,
-        height: 10,
+        width: 50,
+        height: 50,
         fit: BoxFit.cover,
       );
     } else {
@@ -78,15 +77,16 @@ class _HistoryTile extends State<HistoryTile> {
                         },
                         child: Row(
                           children: <Widget>[
-                            FittedBox(
-                              fit: BoxFit.contain,
+                            SizedBox(
+                              height: 50,
+                              width: 50,
                               child: getHistoryProfile(context, widget.history),
                             ),
                             const SizedBox(width: 15),
                             Text(
-                              widget.history!.user == null
+                              widget.history!.nickName == null
                                   ? "Anonymous"
-                                  : widget.history!.user!,
+                                  : widget.history!.nickName!,
                               style: const TextStyle(
                                   fontFamily: 'avenir',
                                   fontWeight: FontWeight.w800),

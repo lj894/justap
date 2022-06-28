@@ -108,7 +108,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 //     ? FloatingActionButtonLocation.miniEndTop
                 //     : FloatingActionButtonLocation.miniStartTop,
                 body: Container(
-                    margin: const EdgeInsets.all(20.0),
+                    margin: const EdgeInsets.only(bottom: 20.0),
                     //child: SingleChildScrollView(
                     //reverse: true,
                     child: SizedBox(
@@ -238,7 +238,12 @@ class _InfoScreenState extends State<InfoScreen> {
                                   );
                                 }
                               }),
-                            )
+                            ),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom)),
                           ],
                         )))
                 //)

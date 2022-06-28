@@ -2,8 +2,10 @@ import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/components/bottom_nav.dart';
-import 'package:justap/controllers/history.dart';
-import 'package:justap/screens/visit_history.dart';
+import 'package:justap/models/reward_log.dart';
+import 'package:justap/screens/reward_logs.dart';
+import 'package:justap/screens/reward_offer.dart';
+import 'package:justap/screens/reward_asking.dart';
 
 class RewardExchangeScreen extends StatefulWidget {
   const RewardExchangeScreen({
@@ -61,12 +63,10 @@ class _RewardExchangeScreen extends State<RewardExchangeScreen> {
                   height: 40.0,
                 ),
                 Tab(
-                  //child: SizedBox(width: 100, child: Text('Sell')),
                   text: "Sell ",
                   height: 40.0,
                 ),
                 Tab(
-                  //child: SizedBox(width: 100, child: Text('Message')),
                   text: "Logs",
                   height: 40.0,
                 )
@@ -76,13 +76,13 @@ class _RewardExchangeScreen extends State<RewardExchangeScreen> {
           body: const TabBarView(
             children: <Widget>[
               Center(
-                child: Text("Buy"),
+                child: RewardOfferTab(),
               ),
               Center(
-                child: Text("Sell"),
+                child: RewardAskingTab(),
               ),
               Center(
-                child: Text("Logs"),
+                child: RewardLogsTab(),
               ),
             ],
           ),

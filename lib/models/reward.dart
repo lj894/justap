@@ -28,23 +28,23 @@ class Reward {
 
   factory Reward.fromJson(Map<String, dynamic> json) => Reward(
         id: json["id"],
-        store: json["store"] == null ? null : json["store"],
-        type: json["type"] == null ? null : json["type"],
-        image: json["image"] == null ? null : json["image"],
-        credit: json["credit"] == null ? null : json["credit"],
-        fullCredit: json["fullCredit"] == null ? null : json["fullCredit"],
-        createdAt: json["createdAt"] == null ? null : json["createdAt"],
-        expiryAt: json["expiryAt"] == null ? null : json["expiryAt"],
+        store: json["store"],
+        type: json["type"],
+        image: json["image"],
+        credit: json["credit"],
+        fullCredit: json["fullCredit"],
+        createdAt: json["createdAt"],
+        expiryAt: json["expiryAt"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "store": store == null ? null : store,
-        "type": type == null ? null : type,
-        "image": image == null ? null : image,
-        "credit": credit == null ? null : credit,
-        "fullCredit": fullCredit == null ? null : fullCredit,
-        "createdAt": createdAt == null ? null : createdAt,
-        "expiryAt": expiryAt == null ? null : expiryAt,
+        "store": store,
+        "type": type,
+        "image": image,
+        "credit": credit,
+        "fullCredit": fullCredit,
+        "createdAt": createdAt,
+        "expiryAt": expiryAt,
       };
 }

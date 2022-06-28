@@ -29,22 +29,22 @@ class Media {
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         id: json["id"],
-        socialMedia: json["socialMedia"] == null ? null : json["socialMedia"],
-        imageLink: json["imageLink"] == null ? null : json["imageLink"],
-        websiteLink: json["websiteLink"] == null ? null : json["websiteLink"],
-        createdAt: json["createdAt"] == null ? null : json["createdAt"],
-        modifiedAt: json["modifiedAt"] == null ? null : json["modifiedAt"],
+        socialMedia: json["socialMedia"],
+        imageLink: json["imageLink"],
+        websiteLink: json["websiteLink"],
+        createdAt: json["createdAt"],
+        modifiedAt: json["modifiedAt"],
         active: json["active"],
         owner: json["owner"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "socialMedia": socialMedia == null ? null : socialMedia,
-        "imageLink": imageLink == null ? null : imageLink,
-        "websiteLink": websiteLink == null ? null : websiteLink,
-        "createdAt": createdAt == null ? null : createdAt,
-        "modifiedAt": modifiedAt == null ? null : modifiedAt,
+        "socialMedia": socialMedia,
+        "imageLink": imageLink,
+        "websiteLink": websiteLink,
+        "createdAt": createdAt,
+        "modifiedAt": modifiedAt,
         "active": active,
         "owner": owner,
       };
