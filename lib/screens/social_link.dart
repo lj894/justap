@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:convert';
-import 'package:justap/components/bottom_nav.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
-import 'package:justap/controllers/user.dart';
 import 'package:justap/screens/create_media_dialog.dart';
-import 'package:justap/widgets/cover_image.dart';
-import 'package:justap/widgets/profile_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SocialLink extends StatefulWidget {
   const SocialLink({
@@ -35,31 +29,37 @@ class _SocialLink extends State<SocialLink> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 0, 20, 10),
+                  padding: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SizedBox(
-                        height: 16.0,
-                        width: 16.0,
-                        child: IconButton(
-                          iconSize: 16,
-                          alignment: Alignment.centerLeft,
-                          //padding: const EdgeInsets.only(right: 00),
-                          splashRadius: 4,
-                          icon: const Icon(Icons.add_circle_outline, size: 16),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) =>
-                                    CreateMediaDialog(),
-                                fullscreenDialog: true,
-                              ),
-                            );
-                          },
+                          //height: 20.0,
+                          //width: 20.0,
+                          child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 0),
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                        child: const Icon(
+                          Icons.add_rounded,
+                          color: Colors.black,
                         ),
-                      )
+                        onPressed: () async {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  CreateMediaDialog(),
+                              fullscreenDialog: true,
+                            ),
+                          );
+                        },
+                      ))
                     ],
                   ),
                 ),

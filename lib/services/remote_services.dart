@@ -390,6 +390,7 @@ class RemoteServices {
       });
       if (response.statusCode == 200) {
         var jsonString = response.body;
+        print(jsonString);
         return historyFromJson(jsonString);
       } else {
         return [];
@@ -397,6 +398,25 @@ class RemoteServices {
       }
     } else {
       return [];
+    }
+  }
+
+  static Future<History?> updateHistoryNotes(id, notes) async {
+    final response = await http.put(
+      Uri.parse('$justapAPI/social/history/$id/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "notes": notes,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return History.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update history notes.');
     }
   }
 }

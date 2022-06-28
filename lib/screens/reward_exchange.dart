@@ -50,23 +50,24 @@ class _RewardExchangeScreen extends State<RewardExchangeScreen> {
               borderWidth: 1,
               unselectedBorderColor: Colors.black87,
               radius: 100,
-              height: 40,
-              buttonMargin: const EdgeInsets.only(
-                  top: 10, left: 30, right: 30, bottom: 10),
+              height: 24,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 25),
+              buttonMargin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+              // buttonMargin: const EdgeInsets.only(
+              //     top: 10, left: 30, right: 30, bottom: 10),
               tabs: const <Widget>[
                 Tab(
-                  //child: SizedBox(width: 100, child: Text('Sell')),
-                  text: "Buy",
+                  text: "Buy ",
                   height: 40.0,
                 ),
                 Tab(
                   //child: SizedBox(width: 100, child: Text('Sell')),
-                  text: "Sell",
+                  text: "Sell ",
                   height: 40.0,
                 ),
                 Tab(
                   //child: SizedBox(width: 100, child: Text('Message')),
-                  text: "Message",
+                  text: "Logs",
                   height: 40.0,
                 )
               ],
@@ -81,7 +82,7 @@ class _RewardExchangeScreen extends State<RewardExchangeScreen> {
                 child: Text("Sell"),
               ),
               Center(
-                child: Text("Message"),
+                child: Text("Logs"),
               ),
             ],
           ),

@@ -1,20 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:justap/components/bottom_nav.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/components/history_tile.dart';
-import 'package:justap/screens/Image_upload.dart';
-import 'package:justap/services/authentications.dart';
 import 'package:get/get.dart';
-import 'package:justap/controllers/user.dart';
-import 'package:justap/widgets/profile_widget.dart';
-import 'package:justap/services/remote_services.dart';
-import 'package:justap/widgets/alert_dialog.dart';
-import 'package:provider/provider.dart';
 import 'package:justap/controllers/history.dart';
-import 'package:flutter/services.dart';
 
 class VisitHistoryTab extends StatefulWidget {
   const VisitHistoryTab({
@@ -50,7 +38,7 @@ class _VisitHistoryTab extends State<VisitHistoryTab> {
                   return HistoryTile(
                       history: historyController.historyList[index]);
                 },
-                staggeredTileBuilder: (index) => StaggeredTile.fit(1),
+                staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
               );
             }
           }),

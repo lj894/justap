@@ -74,10 +74,8 @@ class _InfoScreenState extends State<InfoScreen> {
                   centerTitle: true,
                   title: GestureDetector(
                       onTap: () async {
-                        if (await canLaunchUrl(
-                            Uri.parse("http://www.instagram.com"))) {
-                          await launchUrl(
-                              Uri.parse("http://www.instagram.com"));
+                        if (await canLaunchUrl(Uri.parse("http://justap.us"))) {
+                          await launchUrl(Uri.parse("http://justap.us"));
                         }
                       },
                       child: const Image(

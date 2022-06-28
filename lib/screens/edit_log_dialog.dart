@@ -21,10 +21,14 @@ class _EditHistoryDialog extends State<EditHistoryDialog> {
     super.initState();
   }
 
+  BuildContext? dialogContext;
+
   String? notes = "";
+  final HistoryController historyController = Get.put(HistoryController());
 
   @override
   Widget build(BuildContext context) {
+    dialogContext = context;
     return Scaffold(
         appBar: AppBar(
             iconTheme: const IconThemeData(
@@ -47,8 +51,7 @@ class _EditHistoryDialog extends State<EditHistoryDialog> {
                         flex: 1,
                         child: TextFormField(
                           cursorColor: Theme.of(context).cursorColor,
-                          initialValue: notes,
-                          //minLines: 5,
+                          initialValue: widget.history?.notes,
                           maxLines: 4,
                           onChanged: (value) {
                             setState(() {
@@ -91,20 +94,21 @@ class _EditHistoryDialog extends State<EditHistoryDialog> {
                                       fontWeight: FontWeight.bold)),
                               child: const Text("Save"),
                               onPressed: () async {
-                                //String? notes = '';
-                                // try {
-                                //   await RemoteServices.updateHistory(
-                                //       widget.history?.id, notes);
-                                //   Navigator.push(
-                                //     context,
-                                //     MaterialPageRoute(
-                                //         builder: (context) => HomeScreen(),
-                                //         settings:
-                                //             const RouteSettings(name: '/')),
-                                //   );
-                                // } catch (e) {
-                                //   showAlertDialog(context, "Error", "$e");
-                                // }
+                                String? newNotes = '';
+                                if (notes != null && notes != '') {
+                                  newNotes = notes;
+                                } else {
+                                  //newNotes = widget.history?.notes;
+                                }
+
+                                try {
+                                  await RemoteServices.updateHistoryNotes(
+                                      widget.history?.id, notes);
+                                  historyController.fetchHistory();
+                                  Navigator.pop(dialogContext!);
+                                } catch (e) {
+                                  showAlertDialog(context, "Error", "$e");
+                                }
                               },
                             )
                           ],

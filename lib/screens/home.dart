@@ -60,9 +60,9 @@ class _HomeScreenState extends State<HomeScreen>
           children: [
             Container(
                 color: const Color.fromRGBO(235, 235, 235, 0.8),
-                margin: const EdgeInsets.fromLTRB(0, 10.0, 0, 0),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
                 constraints: const BoxConstraints(
-                    minHeight: 0, minWidth: double.infinity, maxHeight: 230),
+                    minHeight: 0, minWidth: double.infinity),
                 child: SizedBox(
                     //height: MediaQuery.of(context).size.height,
                     child: Column(

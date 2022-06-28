@@ -53,6 +53,8 @@ dependencies:
   universal_html: ^2.0.8
   uuid: ^3.0.6
   buttons_tabbar: ^1.3.6
+  getwidget: ^2.1.1
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   flutter_test:
