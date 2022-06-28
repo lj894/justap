@@ -1,60 +1,108 @@
 import 'dart:convert';
 
+import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
+import 'package:justap/controllers/history.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
 import 'package:justap/controllers/user.dart';
+import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/screens/create_media_dialog.dart';
+import 'package:justap/screens/social_link.dart';
+import 'package:justap/screens/visit_history.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/widgets/profile_widget.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen>
+    with SingleTickerProviderStateMixin {
+  final User? user = FirebaseAuth.instance.currentUser;
+  TabController? _tabController;
+  String? token;
+
   final UserController userController = Get.put(UserController());
   final MediaController mediaController = Get.put(MediaController());
+  final HistoryController historyController = Get.put(HistoryController());
+
+  @override
+  void initState() {
+    _tabController = TabController(length: 2, vsync: this);
+    super.initState();
+    getToken();
+  }
+
+  getToken() async {
+    token = await user?.getIdToken();
+    setState(() {
+      token = token;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () async {
-      mediaController.fetchMedias();
-      userController.fetchUser();
-    });
+    // Future.delayed(Duration.zero, () async {
+    //   historyController.fetchHistory();
+    // });
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          toolbarHeight: 0,
-        ),
-        bottomNavigationBar: const BottomNav(0),
-        body: Container(
-            margin: const EdgeInsets.all(20.0),
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height + 100,
-                child: Column(
+      bottomNavigationBar: const BottomNav(0),
+      body: Container(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+                color: const Color.fromRGBO(235, 235, 235, 0.8),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                constraints: const BoxConstraints(
+                    minHeight: 0, minWidth: double.infinity),
+                child: SizedBox(
+                    //height: MediaQuery.of(context).size.height,
+                    child: Column(
                   children: [
                     Stack(
                       alignment: Alignment.center,
                       //alignment: Alignment.bottomLeft,
                       clipBehavior: Clip.none,
                       children: [
-                        Container(
-                          height: 120,
-                          margin: const EdgeInsets.only(bottom: 5),
-                          child: Obx(() {
-                            if (userController.isLoading.value) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else {
-                              if (userController.user().backgroundUrl != null) {
-                                return CoverImage(
-                                    userController.user().backgroundUrl);
+                        InkWell(
+                          onTap: () async {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    const ImageUpload(
+                                        title: "Upload Background Image",
+                                        type: "BACKGROUND"),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            height: 120,
+                            margin: const EdgeInsets.only(bottom: 5),
+                            child: Obx(() {
+                              if (userController.isLoading.value) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
                               } else {
-                                return CoverImage(null);
+                                if (userController.user().backgroundUrl !=
+                                    null) {
+                                  return CoverImage(
+                                      userController.user().backgroundUrl);
+                                } else {
+                                  return CoverImage(null);
+                                }
                               }
-                            }
-                          }),
+                            }),
+                          ),
                         ),
                         Positioned(
                           top: 60,
@@ -65,15 +113,42 @@ class HomeScreen extends StatelessWidget {
                                   child: CircularProgressIndicator());
                             } else {
                               return userController.user().profileUrl == null
-                                  ? DefaultProfileImage()
-                                  : ProfileImage(
-                                      userController.user().profileUrl);
+                                  ? InkWell(
+                                      onTap: () async {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                const ImageUpload(
+                                                    title:
+                                                        "Upload Profile Photo",
+                                                    type: "PROFILE"),
+                                            fullscreenDialog: true,
+                                          ),
+                                        );
+                                      },
+                                      child: DefaultProfileImage())
+                                  : InkWell(
+                                      onTap: () async {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute<void>(
+                                            builder: (BuildContext context) =>
+                                                const ImageUpload(
+                                                    title:
+                                                        "Upload Profile Photo",
+                                                    type: "PROFILE"),
+                                            fullscreenDialog: true,
+                                          ),
+                                        );
+                                      },
+                                      child: ProfileImage(
+                                          userController.user().profileUrl));
                             }
                           }),
                         ),
                       ],
                     ),
-                    //const SizedBox(height: 24),
                     Obx(() {
                       if (userController.isLoading.value) {
                         return const Center(child: CircularProgressIndicator());
@@ -124,61 +199,47 @@ class HomeScreen extends StatelessWidget {
                         return const Text("");
                       }
                     }),
-                    const SizedBox(height: 24),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Row(
-                        children: [
-                          const Expanded(
-                            child: Text(
-                              'Social Links',
-                              style: TextStyle(
-                                  fontFamily: 'avenir',
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.add),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute<void>(
-                                  builder: (BuildContext context) =>
-                                      CreateMediaDialog(),
-                                  fullscreenDialog: true,
-                                ),
-                              );
-                            },
-                          ),
-                          //IconButton(icon: Icon(Icons.edit), onPressed: () {}),
-                          //IconButton(icon: Icon(Icons.delete), onPressed: () {}),
-                        ],
-                      ),
-                    ),
-                    Flexible(
-                      child: Obx(() {
-                        if (mediaController.isLoading.value) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          return StaggeredGridView.countBuilder(
-                            //crossAxisCount: 2,
-                            crossAxisCount: 1,
-                            itemCount: mediaController.mediaList.length,
-                            crossAxisSpacing: 0,
-                            mainAxisSpacing: 0,
-                            itemBuilder: (context, index) {
-                              return MediaTile(
-                                  media: mediaController.mediaList[index]);
-                            },
-                            staggeredTileBuilder: (index) =>
-                                StaggeredTile.fit(1),
-                          );
-                        }
-                      }),
-                    )
                   ],
-                ))));
+                ))),
+            ButtonsTabBar(
+              backgroundColor: Colors.black,
+              unselectedBackgroundColor: Colors.white,
+              labelStyle: const TextStyle(
+                  color: Colors.white, fontWeight: FontWeight.bold),
+              unselectedLabelStyle: const TextStyle(
+                  color: Colors.black, fontWeight: FontWeight.bold),
+              borderWidth: 1,
+              unselectedBorderColor: Colors.black87,
+              radius: 100,
+              height: 24,
+              buttonMargin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+              tabs: const [
+                Tab(
+                  text: 'Social Links',
+                  height: 20.0,
+                ),
+                Tab(
+                  text: 'Tab History',
+                  height: 20.0,
+                )
+              ],
+              controller: _tabController,
+            ),
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: const [SocialLink(), VisitHistoryTab()],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _tabController?.dispose();
+    super.dispose();
   }
 }

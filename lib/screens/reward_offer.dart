@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:justap/components/history_tile.dart';
+import 'package:justap/components/offer_tile.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
+import 'package:justap/models/offer.dart';
 
-class VisitHistoryTab extends StatefulWidget {
-  const VisitHistoryTab({
+class RewardOfferTab extends StatefulWidget {
+  const RewardOfferTab({
     Key? key,
     this.userToken,
   }) : super(key: key);
@@ -13,10 +14,12 @@ class VisitHistoryTab extends StatefulWidget {
   final String? userToken;
 
   @override
-  State<VisitHistoryTab> createState() => _VisitHistoryTab();
+  State<RewardOfferTab> createState() => _RewardOfferTab();
 }
 
-class _VisitHistoryTab extends State<VisitHistoryTab> {
+class _RewardOfferTab extends State<RewardOfferTab> {
+  final offerList = offerFromJson(
+      '[{"id": 1, "user": "Lee", "userImage": "", "offerStore": "Bubble Tea", "offerCredit": 5, "askingStore": "Noddle House", "askingCredit": 4, "createdAt": 1657194538925, "expiryAt": 1657994538925}, {"id": 2, "user": "Jas", "userImage": "", "offerStore": "Noddle House", "offerCredit": 2, "askingStore": "Bubble Tea", "askingCredit": 2, "createdAt": 1657194538925, "expiryAt": 1657994538925}]');
   final HistoryController historyController = Get.put(HistoryController());
   @override
   Widget build(BuildContext context) {
@@ -29,14 +32,14 @@ class _VisitHistoryTab extends State<VisitHistoryTab> {
               return const Center(child: CircularProgressIndicator());
             } else {
               return StaggeredGridView.countBuilder(
-                //crossAxisCount: 2,
                 crossAxisCount: 1,
-                itemCount: historyController.historyList.length,
+                itemCount: offerList.length,
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
                 itemBuilder: (context, index) {
-                  return HistoryTile(
-                      history: historyController.historyList[index]);
+                  return OfferTile(
+                      offer: offerList[
+                          index]); //offerController.offerList[index]);
                 },
                 staggeredTileBuilder: (index) => const StaggeredTile.fit(1),
               );

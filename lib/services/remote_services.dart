@@ -380,17 +380,43 @@ class RemoteServices {
   }
 
   static Future<List<History?>> fetchHistory() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+    String? token = await user?.getIdToken();
     String url = "$justapAPI/social/history";
-    var response = await client.get(Uri.parse(url), headers: {
-      'Authorization': 'Bearer ${globals.userToken}',
-      'Accept': 'application/json; charset=UTF-8'
-    });
-    if (response.statusCode == 200) {
-      var jsonString = response.body;
-      return historyFromJson(jsonString);
+    if (token != null) {
+      var response = await client.get(Uri.parse(url), headers: {
+        'Authorization': 'Bearer ${token}',
+        'Accept': 'application/json; charset=UTF-8'
+      });
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        print(jsonString);
+        return historyFromJson(jsonString);
+      } else {
+        return [];
+        //throw Exception('Failed to fetch history.');
+      }
     } else {
       return [];
-      //throw Exception('Failed to fetch history.');
+    }
+  }
+
+  static Future<History?> updateHistoryNotes(id, notes) async {
+    final response = await http.put(
+      Uri.parse('$justapAPI/social/history/$id/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "notes": notes,
+      }),
+    );
+    if (response.statusCode == 200) {
+      return History.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update history notes.');
     }
   }
 }

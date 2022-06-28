@@ -22,26 +22,35 @@ class BottomNav extends StatelessWidget {
             navigation.changeScreen('/');
             break;
           case 1:
-            navigation.changeScreen('/history');
+            navigation.changeScreen('/reward');
             break;
           case 2:
+            navigation.changeScreen('/reward_exchange');
+            break;
+          case 3:
             navigation.changeScreen('/profile');
             break;
         }
       },
       items: const [
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          activeIcon: Icon(Icons.home, color: Colors.black),
+          icon: Icon(Icons.remember_me, color: Colors.grey),
+          activeIcon: Icon(Icons.remember_me, color: Colors.black),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.history_outlined),
-          label: 'History',
+          icon: Icon(Icons.military_tech, color: Colors.grey),
+          activeIcon: Icon(Icons.military_tech, color: Colors.black),
+          label: 'Reward',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          activeIcon: Icon(Icons.person, color: Colors.black),
+          icon: Icon(Icons.currency_exchange, color: Colors.grey),
+          activeIcon: Icon(Icons.currency_exchange, color: Colors.black),
+          label: 'Exchange',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.face, color: Colors.grey),
+          activeIcon: Icon(Icons.face, color: Colors.black),
           label: 'Profile',
         ),
       ],
