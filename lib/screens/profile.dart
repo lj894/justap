@@ -60,7 +60,8 @@ class _ProfileScreen extends State<ProfileScreen> {
 
       NdefMessage message = NdefMessage([
         NdefRecord.createText('JusTap'),
-        NdefRecord.createUri(Uri.parse('https://app.justap.us')),
+        NdefRecord.createUri(Uri.parse(
+            'https://app.justap.us/user/504c297e-49ab-4ace-8b04-d585b13d2796')),
         NdefRecord.createMime(
             'text/plain', Uint8List.fromList('JusTap'.codeUnits)),
         NdefRecord.createExternal(
