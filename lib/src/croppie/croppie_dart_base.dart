@@ -1,7 +1,7 @@
 @JS()
 library chroppie.native;
 
-import 'dart:html';
+import 'package:universal_html/html.dart';
 import 'package:js/js.dart';
 
 import 'croppie_dart.dart';

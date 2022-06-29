@@ -7,16 +7,16 @@ import 'package:justap/services/remote_services.dart';
 import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
 
-class EditHistoryDialog extends StatefulWidget {
-  History? history;
+class EditTabHistoryDialog extends StatefulWidget {
+  TabHistory? history;
 
-  EditHistoryDialog({this.history});
+  EditTabHistoryDialog({this.history});
 
   @override
-  _EditHistoryDialog createState() => _EditHistoryDialog();
+  _EditTabHistoryDialog createState() => _EditTabHistoryDialog();
 }
 
-class _EditHistoryDialog extends State<EditHistoryDialog> {
+class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
   void initState() {
     super.initState();
   }
@@ -24,7 +24,8 @@ class _EditHistoryDialog extends State<EditHistoryDialog> {
   BuildContext? dialogContext;
 
   String? notes = "";
-  final HistoryController historyController = Get.put(HistoryController());
+  final TabHistoryController historyController =
+      Get.put(TabHistoryController());
 
   @override
   Widget build(BuildContext context) {
@@ -102,9 +103,9 @@ class _EditHistoryDialog extends State<EditHistoryDialog> {
                                 }
 
                                 try {
-                                  await RemoteServices.updateHistoryNotes(
+                                  await RemoteServices.updateTabHistoryNotes(
                                       widget.history?.id, notes);
-                                  historyController.fetchHistory();
+                                  historyController.fetchTabHistory();
                                   Navigator.pop(dialogContext!);
                                 } catch (e) {
                                   showAlertDialog(context, "Error", "$e");

@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-List<History> historyFromJson(String str) =>
-    List<History>.from(json.decode(str).map((x) => History.fromJson(x)));
+List<TabHistory> historyFromJson(String str) =>
+    List<TabHistory>.from(json.decode(str).map((x) => TabHistory.fromJson(x)));
 
-String historyToJson(List<History> data) =>
+String historyToJson(List<TabHistory> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-class History {
-  History(
+class TabHistory {
+  TabHistory(
       {this.id, this.nickName, this.profileUrl, this.notes, this.createdAt});
 
   int? id;
@@ -16,7 +16,7 @@ class History {
   String? notes;
   int? createdAt;
 
-  factory History.fromJson(Map<String, dynamic> json) => History(
+  factory TabHistory.fromJson(Map<String, dynamic> json) => TabHistory(
         id: json["id"],
         nickName: json["nickName"],
         profileUrl: json["profileUrl"],

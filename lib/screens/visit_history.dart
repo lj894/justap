@@ -4,8 +4,8 @@ import 'package:justap/components/history_tile.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
 
-class VisitHistoryTab extends StatefulWidget {
-  const VisitHistoryTab({
+class VisitTabHistoryTab extends StatefulWidget {
+  const VisitTabHistoryTab({
     Key? key,
     this.userToken,
   }) : super(key: key);
@@ -13,11 +13,12 @@ class VisitHistoryTab extends StatefulWidget {
   final String? userToken;
 
   @override
-  State<VisitHistoryTab> createState() => _VisitHistoryTab();
+  State<VisitTabHistoryTab> createState() => _VisitTabHistoryTab();
 }
 
-class _VisitHistoryTab extends State<VisitHistoryTab> {
-  final HistoryController historyController = Get.put(HistoryController());
+class _VisitTabHistoryTab extends State<VisitTabHistoryTab> {
+  final TabHistoryController historyController =
+      Get.put(TabHistoryController());
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -35,7 +36,7 @@ class _VisitHistoryTab extends State<VisitHistoryTab> {
                 crossAxisSpacing: 0,
                 mainAxisSpacing: 0,
                 itemBuilder: (context, index) {
-                  return HistoryTile(
+                  return TabHistoryTile(
                       history: historyController.historyList[index]);
                 },
                 staggeredTileBuilder: (index) => const StaggeredTile.fit(1),

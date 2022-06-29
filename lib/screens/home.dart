@@ -1,22 +1,16 @@
-import 'dart:convert';
-
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
 import 'package:justap/controllers/media.dart';
-import 'package:justap/components/media_tile.dart';
 import 'package:justap/controllers/user.dart';
-import 'package:justap/screens/Image_upload.dart';
-import 'package:justap/screens/create_media_dialog.dart';
+//import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/screens/social_link.dart';
 import 'package:justap/screens/visit_history.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:justap/widgets/profile_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -31,7 +25,8 @@ class _HomeScreenState extends State<HomeScreen>
 
   final UserController userController = Get.put(UserController());
   final MediaController mediaController = Get.put(MediaController());
-  final HistoryController historyController = Get.put(HistoryController());
+  final TabHistoryController historyController =
+      Get.put(TabHistoryController());
 
   @override
   void initState() {
@@ -74,16 +69,16 @@ class _HomeScreenState extends State<HomeScreen>
                       children: [
                         InkWell(
                           onTap: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) =>
-                                    const ImageUpload(
-                                        title: "Upload Background Image",
-                                        type: "BACKGROUND"),
-                                fullscreenDialog: true,
-                              ),
-                            );
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute<void>(
+                            //     builder: (BuildContext context) =>
+                            //         const ImageUpload(
+                            //             title: "Upload Background Image",
+                            //             type: "BACKGROUND"),
+                            //     fullscreenDialog: true,
+                            //   ),
+                            // );
                           },
                           child: Container(
                             height: 120,
@@ -115,32 +110,32 @@ class _HomeScreenState extends State<HomeScreen>
                               return userController.user().profileUrl == null
                                   ? InkWell(
                                       onTap: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const ImageUpload(
-                                                    title:
-                                                        "Upload Profile Photo",
-                                                    type: "PROFILE"),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute<void>(
+                                        //     builder: (BuildContext context) =>
+                                        //         const ImageUpload(
+                                        //             title:
+                                        //                 "Upload Profile Photo",
+                                        //             type: "PROFILE"),
+                                        //     fullscreenDialog: true,
+                                        //   ),
+                                        // );
                                       },
                                       child: DefaultProfileImage())
                                   : InkWell(
                                       onTap: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const ImageUpload(
-                                                    title:
-                                                        "Upload Profile Photo",
-                                                    type: "PROFILE"),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
+                                        // Navigator.push(
+                                        //   context,
+                                        //   MaterialPageRoute<void>(
+                                        //     builder: (BuildContext context) =>
+                                        //         const ImageUpload(
+                                        //             title:
+                                        //                 "Upload Profile Photo",
+                                        //             type: "PROFILE"),
+                                        //     fullscreenDialog: true,
+                                        //   ),
+                                        // );
                                       },
                                       child: ProfileImage(
                                           userController.user().profileUrl));
@@ -228,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen>
             Expanded(
               child: TabBarView(
                 controller: _tabController,
-                children: const [SocialLink(), VisitHistoryTab()],
+                children: const [SocialLink(), VisitTabHistoryTab()],
               ),
             ),
           ],

@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:justap/controllers/user.dart';
 import 'package:justap/utils/ui_helper.dart'
@@ -12,8 +11,6 @@ import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/screens/all.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:justap/components/image_cropper_for_web.dart';
 
 class ImageUpload extends StatefulWidget {

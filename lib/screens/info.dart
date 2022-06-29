@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:justap/services/authentications.dart';
-import 'package:provider/provider.dart';
 import 'package:justap/utils/globals.dart' as globals;
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:justap/controllers/ro_media.dart';
 import 'package:justap/components/ro_media_tile.dart';
 import 'package:justap/controllers/ro_user.dart';
@@ -83,30 +78,6 @@ class _InfoScreenState extends State<InfoScreen> {
                         width: 80.0,
                       )),
                 ),
-                // floatingActionButton: Padding(
-                //     padding: const EdgeInsets.only(top: 0.0),
-                //     child: Padding(
-                //       padding: const EdgeInsets.only(
-                //           top: 20.0, left: 20.0, right: 20.0),
-                //       //child: FloatingActionButton.extended(
-                //       child: FloatingActionButton(
-                //         backgroundColor: Colors.black,
-                //         mini: true,
-                //         tooltip: token == null ? "Sign In" : "Back",
-                //         onPressed: () async {
-                //           if (await canLaunchUrl(Uri.parse(Uri.base.origin))) {
-                //             await launchUrl(Uri.parse(Uri.base.origin),
-                //                 webOnlyWindowName: '_self');
-                //           }
-                //         },
-                //         child: token == null
-                //             ? const Icon(Icons.login_rounded)
-                //             : const Icon(Icons.arrow_back),
-                //       ),
-                //     )),
-                // floatingActionButtonLocation: token == null
-                //     ? FloatingActionButtonLocation.miniEndTop
-                //     : FloatingActionButtonLocation.miniStartTop,
                 body: Container(
                     margin: const EdgeInsets.only(bottom: 20.0),
                     //child: SingleChildScrollView(
