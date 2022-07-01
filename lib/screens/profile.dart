@@ -121,8 +121,15 @@ class _ProfileScreen extends State<ProfileScreen> {
               },
               child: const Icon(Icons.logout_rounded),
             )),
-        body: Container(
-            margin: const EdgeInsets.all(10.0),
+        body: GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
+
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            // margin: const EdgeInsets.all(10.0),
             child: SingleChildScrollView(
                 reverse: true,
                 child: Column(
@@ -162,10 +169,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom)),
+                        // Padding(
+                        //     padding: EdgeInsets.only(
+                        //         bottom:
+                        //             MediaQuery.of(context).viewInsets.bottom)),
                       ],
                     ),
                     const SizedBox(height: 24),
@@ -177,7 +184,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                           child: TextFormField(
                             cursorColor: Theme.of(context).cursorColor,
                             initialValue: userController.user().introduction,
-                            //minLines: 5,
+                            minLines: 1,
                             maxLines: 4,
                             onChanged: (value) {
                               setState(() {
@@ -194,10 +201,10 @@ class _ProfileScreen extends State<ProfileScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                            padding: EdgeInsets.only(
-                                bottom:
-                                    MediaQuery.of(context).viewInsets.bottom)),
+                        // Padding(
+                        //     padding: EdgeInsets.only(
+                        //         bottom:
+                        //             MediaQuery.of(context).viewInsets.bottom)),
                       ],
                     ),
                     const SizedBox(height: 24),
