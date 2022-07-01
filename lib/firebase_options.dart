@@ -69,7 +69,7 @@ class DefaultFirebaseOptions {
     storageBucket: 'justap-bdc9a.appspot.com',
     iosClientId:
         '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
-    iosBundleId: 'com.example.justap',
+    iosBundleId: 'us.justap.app',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -80,6 +80,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'justap-bdc9a.appspot.com',
     iosClientId:
         '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
-    iosBundleId: 'com.example.justap',
+    iosBundleId: 'us.justap.app',
   );
 }

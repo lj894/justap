@@ -61,11 +61,11 @@ class _ProfileScreen extends State<ProfileScreen> {
       NdefMessage message = NdefMessage([
         NdefRecord.createText('JusTap'),
         NdefRecord.createUri(Uri.parse(
-            'https://app.justap.us/user/504c297e-49ab-4ace-8b04-d585b13d2796')),
+            "https://app.justap.us/user/${userController.user().code}")),
         NdefRecord.createMime(
             'text/plain', Uint8List.fromList('JusTap'.codeUnits)),
         NdefRecord.createExternal(
-            'com.example', 'mytype', Uint8List.fromList('JusTap'.codeUnits)),
+            'us.justap', 'justap', Uint8List.fromList('JusTap'.codeUnits)),
       ]);
 
       try {
@@ -252,7 +252,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               onPressed: () {
                                 Clipboard.setData(ClipboardData(
                                     text:
-                                        "${Uri.base}user/${userController.user().code}"));
+                                        "https://app.justap.us/user/${userController.user().code}"));
                                 showAlertDialog(context, "Copy Link",
                                     "Link copied! You can write it to a NFC tag and share with others.");
                               },
@@ -275,7 +275,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: TextFormField(
                               cursorColor: Theme.of(context).cursorColor,
                               initialValue:
-                                  "${Uri.base}user/${userController.user().code}",
+                                  "https://app.justap.us/user/${userController.user().code}",
                               style: const TextStyle(color: Colors.black45),
                               readOnly: true,
                               enabled: false,

@@ -23,7 +23,7 @@ class _VisitTabHistoryTab extends State<VisitTabHistoryTab> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 5),
+        const SizedBox(height: 0),
         Flexible(
           child: Obx(() {
             if (historyController.isLoading.value) {

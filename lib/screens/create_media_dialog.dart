@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:justap/controllers/media.dart';
-import 'package:justap/models/media.dart';
+import 'package:flutter/services.dart';
 import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
-import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/utils/media_list.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:scan/scan.dart';
+import 'dart:async';
 
 class CreateMediaDialog extends StatefulWidget {
   @override
@@ -17,6 +17,15 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
   String mediaType = "";
   String websiteLink = "";
 
+  String _platformVersion = 'Unknown';
+  String qrcode = 'Unknown';
+
+  @override
+  void initState() {
+    super.initState();
+    initPlatformState();
+  }
+
   showMediaInput(context, mediaType) {
     List<Map> targetMedia =
         mediaJson.where((m) => m['value'] == mediaType).toList();
@@ -24,7 +33,33 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
     String prefix = targetMedia[0]['prefix'];
     String? inputLabel = targetMedia[0]['input_label'];
 
-    if (prefix != '') {
+    if (mediaType == 'ZELLE') {
+      if (qrcode == "Unknown") {
+        return Container();
+      } else {
+        return Flexible(
+          flex: 1,
+          child: TextFormField(
+            cursorColor: Theme.of(context).cursorColor,
+            initialValue: qrcode,
+            //maxLength: 50,
+            onChanged: (value) {
+              setState(() {
+                websiteLink = value.toString();
+              });
+            },
+            decoration: InputDecoration(
+              labelText: "Link",
+              labelStyle: TextStyle(
+                color: Colors.black87,
+              ),
+              //helperText: 'Enter your user name of the site',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        );
+      }
+    } else if (prefix != '') {
       return Flexible(
         flex: 1,
         child: TextFormField(
@@ -468,6 +503,53 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         ));
   }
 
+  showQRProcessor(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        //Text('Running on: $_platformVersion\n'),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              textStyle:
+                  const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+          child: const Text("Read QR Code Image"),
+          onPressed: () async {
+            final pickedFile =
+                await ImagePicker().pickImage(source: ImageSource.gallery);
+
+            if (pickedFile != null) {
+              String? str = await Scan.parse(pickedFile.path);
+              if (str != null) {
+                setState(() {
+                  qrcode = str;
+                  websiteLink = str;
+                });
+              }
+            }
+          },
+        )
+      ],
+    );
+    //Text('scan result is $qrcode'),
+  }
+
+  Future<void> initPlatformState() async {
+    String platformVersion;
+    try {
+      platformVersion = await Scan.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -491,6 +573,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                 ),
+                mediaType == 'ZELLE' ? showQRProcessor(context) : Container(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [

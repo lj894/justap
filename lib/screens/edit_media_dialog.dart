@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/screens/home.dart';
@@ -7,6 +9,7 @@ import 'package:justap/services/remote_services.dart';
 import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/utils/media_list.dart';
+import 'package:scan/scan.dart';
 
 class EditMediaDialog extends StatefulWidget {
   Media? media;
@@ -20,19 +23,49 @@ class EditMediaDialog extends StatefulWidget {
 class _EditMediaDialog extends State<EditMediaDialog> {
   void initState() {
     super.initState();
+    initPlatformState();
   }
 
   String? mediaType;
   String? websiteLink = "";
+  String _platformVersion = 'Unknown';
+  String qrcode = 'Unknown';
+
+  TextEditingController txt = TextEditingController();
 
   showMediaInput(context, mediaType, link) {
     List<Map> targetMedia =
         mediaJson.where((m) => m['value'] == mediaType).toList();
-
     String prefix = targetMedia[0]['prefix'];
     String? inputLabel = targetMedia[0]['input_label'];
 
-    if (prefix != '') {
+    if (mediaType == 'ZELLE') {
+      if (link == "") {
+        return Container();
+      } else {
+        return Flexible(
+          flex: 1,
+          child: TextFormField(
+            cursorColor: Theme.of(context).cursorColor,
+            initialValue: qrcode != 'Unknown' ? qrcode : link,
+            //maxLength: 50,
+            onChanged: (value) {
+              setState(() {
+                websiteLink = value.toString();
+              });
+            },
+            decoration: const InputDecoration(
+              labelText: "Link",
+              labelStyle: TextStyle(
+                color: Colors.black87,
+              ),
+              //helperText: 'Enter your user name of the site',
+              border: OutlineInputBorder(),
+            ),
+          ),
+        );
+      }
+    } else if (prefix != '') {
       return Flexible(
         flex: 1,
         child: TextFormField(
@@ -78,6 +111,41 @@ class _EditMediaDialog extends State<EditMediaDialog> {
       );
     }
     // true
+  }
+
+  showQRInput(context, mediaType, qrcode) {
+    if (mediaType == 'ZELLE') {
+      txt.value = TextEditingValue(
+          text: qrcode, // same thing as 10.toString()
+          selection:
+              TextSelection.fromPosition(TextPosition(offset: qrcode.length)));
+      return Flexible(
+        flex: 1,
+        child: TextFormField(
+          cursorColor: Theme.of(context).cursorColor,
+          controller: txt,
+          //initialValue: "", //qrcode,
+          onChanged: (value) {
+            txt.value = TextEditingValue(
+                text: value,
+                selection: TextSelection.fromPosition(
+                  TextPosition(offset: value.length),
+                ));
+            setState(() {
+              websiteLink = value.toString();
+            });
+          },
+          decoration: const InputDecoration(
+            labelText: "Link",
+            labelStyle: TextStyle(
+              color: Colors.black87,
+            ),
+            //helperText: 'Enter your user name of the site',
+            border: OutlineInputBorder(),
+          ),
+        ),
+      );
+    }
   }
 
   showMediaRadios() {
@@ -474,6 +542,52 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         ));
   }
 
+  showQRProcessor(context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        //Text('Running on: $_platformVersion\n'),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+              primary: Colors.black,
+              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              textStyle:
+                  const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+          child: const Text("Read QR Code Image"),
+          onPressed: () async {
+            final pickedFile =
+                await ImagePicker().pickImage(source: ImageSource.gallery);
+
+            if (pickedFile != null) {
+              String? str = await Scan.parse(pickedFile.path);
+              if (str != null) {
+                setState(() {
+                  qrcode = str;
+                  websiteLink = str;
+                });
+              }
+            }
+          },
+        )
+      ],
+    );
+  }
+
+  Future<void> initPlatformState() async {
+    String platformVersion;
+    try {
+      platformVersion = await Scan.platformVersion;
+    } on PlatformException {
+      platformVersion = 'Failed to get platform version.';
+    }
+    if (!mounted) return;
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (mediaType == null && widget.media?.socialMedia != null) {
@@ -501,17 +615,31 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      showMediaInput(
-                          context, mediaType, widget.media?.websiteLink),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).viewInsets.bottom)),
-                    ],
-                  ),
+                  mediaType == 'ZELLE' ? showQRProcessor(context) : Container(),
+                  qrcode == 'Unknown'
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            showMediaInput(
+                                context, mediaType, widget.media?.websiteLink),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom)),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            showQRInput(context, mediaType, qrcode),
+                            Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: MediaQuery.of(context)
+                                        .viewInsets
+                                        .bottom)),
+                          ],
+                        ),
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                   ),
@@ -548,6 +676,10 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                                   }
                                 }
                                 link = prefix + link!;
+
+                                if (mediaType == 'ZELLE') {
+                                  link = websiteLink;
+                                }
 
                                 try {
                                   await RemoteServices.updateMedia(
