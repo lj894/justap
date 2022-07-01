@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget build(BuildContext context) {
     Future.delayed(Duration.zero, () async {
       mediaController.fetchMedias();
+      userController.fetchUser();
     });
     return Scaffold(
       bottomNavigationBar: const BottomNav(0),
