@@ -11,9 +11,9 @@ import 'package:justap/models/media.dart';
 import 'package:justap/models/user.dart';
 import 'package:justap/models/history.dart';
 import 'package:http_parser/http_parser.dart';
-import 'dart:html';
+//import 'dart:html';
+import 'package:universal_html/html.dart';
 import 'package:uuid/uuid.dart';
-import 'package:uuid/uuid_util.dart';
 
 class RemoteServices {
   static const justapAPI = "https://api.justap.us/v1";
@@ -379,7 +379,7 @@ class RemoteServices {
     }
   }
 
-  static Future<List<History?>> fetchHistory() async {
+  static Future<List<TabHistory?>> fetchTabHistory() async {
     final User? user = FirebaseAuth.instance.currentUser;
     String? token = await user?.getIdToken();
     String url = "$justapAPI/social/history";
@@ -390,7 +390,6 @@ class RemoteServices {
       });
       if (response.statusCode == 200) {
         var jsonString = response.body;
-        print(jsonString);
         return historyFromJson(jsonString);
       } else {
         return [];
@@ -401,9 +400,9 @@ class RemoteServices {
     }
   }
 
-  static Future<History?> updateHistoryNotes(id, notes) async {
+  static Future<TabHistory?> updateTabHistoryNotes(id, notes) async {
     final response = await http.put(
-      Uri.parse('$justapAPI/social/history/$id/'),
+      Uri.parse('$justapAPI/social/history/$id'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json; charset=UTF-8',
@@ -414,7 +413,7 @@ class RemoteServices {
       }),
     );
     if (response.statusCode == 200) {
-      return History.fromJson(jsonDecode(response.body));
+      return TabHistory.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update history notes.');
     }

@@ -1,8 +1,7 @@
-import 'dart:io';
-import 'dart:html' as html;
+//import 'dart:io';
+import 'package:universal_html/html.dart' as html;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';

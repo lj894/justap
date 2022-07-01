@@ -20,7 +20,8 @@ class RewardLogsTab extends StatefulWidget {
 class _RewardLogsTab extends State<RewardLogsTab> {
   final rewardLogList = rewardLogFromJson(
       '[{"id": 1, "message": "Your offer has been submitted successfully.", "createdAt": 1657194538925}, {"id": 2, "message": "Your trade for 4 Bubble Tea pts with 5 Noddle House pts has finished.", "createdAt": 1657194538925}]');
-  final HistoryController historyController = Get.put(HistoryController());
+  final TabHistoryController historyController =
+      Get.put(TabHistoryController());
   @override
   Widget build(BuildContext context) {
     return Column(

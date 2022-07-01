@@ -1,19 +1,18 @@
-import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/user.dart';
-import 'package:justap/widgets/profile_widget.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/controllers/navigation.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({
@@ -35,6 +34,8 @@ class _ProfileScreen extends State<ProfileScreen> {
   var nnChanged = false;
   var irChanged = false;
 
+  ValueNotifier<dynamic> result = ValueNotifier(null);
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +46,37 @@ class _ProfileScreen extends State<ProfileScreen> {
     token = await user?.getIdToken();
     setState(() {
       token = token;
+    });
+  }
+
+  void _ndefWrite() {
+    NfcManager.instance.startSession(onDiscovered: (NfcTag tag) async {
+      var ndef = Ndef.from(tag);
+      if (ndef == null || !ndef.isWritable) {
+        result.value = 'Tag is not ndef writable';
+        NfcManager.instance.stopSession(errorMessage: result.value);
+        return;
+      }
+
+      NdefMessage message = NdefMessage([
+        NdefRecord.createText('JusTap'),
+        NdefRecord.createUri(Uri.parse(
+            "https://app.justap.us/user/${userController.user().code}")),
+        NdefRecord.createMime(
+            'text/plain', Uint8List.fromList('JusTap'.codeUnits)),
+        NdefRecord.createExternal(
+            'us.justap', 'justap', Uint8List.fromList('JusTap'.codeUnits)),
+      ]);
+
+      try {
+        await ndef.write(message);
+        result.value = 'Success to "Ndef Write"';
+        NfcManager.instance.stopSession();
+      } catch (e) {
+        result.value = e;
+        NfcManager.instance.stopSession(errorMessage: result.value.toString());
+        return;
+      }
     });
   }
 
@@ -220,7 +252,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                               onPressed: () {
                                 Clipboard.setData(ClipboardData(
                                     text:
-                                        "${Uri.base}user/${userController.user().code}"));
+                                        "https://app.justap.us/user/${userController.user().code}"));
                                 showAlertDialog(context, "Copy Link",
                                     "Link copied! You can write it to a NFC tag and share with others.");
                               },
@@ -243,7 +275,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 child: TextFormField(
                               cursorColor: Theme.of(context).cursorColor,
                               initialValue:
-                                  "${Uri.base}user/${userController.user().code}",
+                                  "https://app.justap.us/user/${userController.user().code}",
                               style: const TextStyle(color: Colors.black45),
                               readOnly: true,
                               enabled: false,
@@ -320,7 +352,9 @@ class _ProfileScreen extends State<ProfileScreen> {
                               textStyle: const TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold)),
                           child: const Text("Activate Tag"),
-                          onPressed: () async {},
+                          onPressed: () async {
+                            _ndefWrite();
+                          },
                         )
                       ],
                     ),

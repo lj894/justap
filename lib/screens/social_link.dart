@@ -23,9 +23,9 @@ class _SocialLink extends State<SocialLink> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
+        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
         child: SizedBox(
-            height: MediaQuery.of(context).size.height + 100,
+            height: MediaQuery.of(context).size.height,
             child: Column(
               children: [
                 Padding(

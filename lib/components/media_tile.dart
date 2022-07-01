@@ -37,9 +37,9 @@ class _MediaTile extends State<MediaTile> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 2,
+        elevation: 0,
         child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(2.0),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

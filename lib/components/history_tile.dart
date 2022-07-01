@@ -7,22 +7,22 @@ import 'package:justap/controllers/history.dart';
 import 'package:get/get.dart';
 import 'package:justap/widgets/alert_dialog.dart';
 
-class HistoryTile extends StatefulWidget {
-  final History? history;
+class TabHistoryTile extends StatefulWidget {
+  final TabHistory? history;
 
-  const HistoryTile({this.history});
+  const TabHistoryTile({this.history});
 
   @override
-  _HistoryTile createState() => _HistoryTile();
+  _TabHistoryTile createState() => _TabHistoryTile();
 }
 
-class _HistoryTile extends State<HistoryTile> {
+class _TabHistoryTile extends State<TabHistoryTile> {
   @override
   void initState() {
     super.initState();
   }
 
-  getHistoryProfile(context, history) {
+  getTabHistoryProfile(context, history) {
     String? link = widget.history!.profileUrl;
     if (link != null) {
       return Image.network(
@@ -41,7 +41,7 @@ class _HistoryTile extends State<HistoryTile> {
     }
   }
 
-  getHistoryLog(context, history) {
+  getTabHistoryLog(context, history) {
     var millis = widget.history!.createdAt;
     if (millis != null) {
       var dt = DateTime.fromMillisecondsSinceEpoch(millis);
@@ -70,7 +70,7 @@ class _HistoryTile extends State<HistoryTile> {
                           //   context,
                           //   MaterialPageRoute<void>(
                           //     builder: (BuildContext context) =>
-                          //         EditHistoryDialog(history: widget.history),
+                          //         EditTabHistoryDialog(history: widget.history),
                           //     fullscreenDialog: true,
                           //   ),
                           // );
@@ -80,7 +80,8 @@ class _HistoryTile extends State<HistoryTile> {
                             SizedBox(
                               height: 50,
                               width: 50,
-                              child: getHistoryProfile(context, widget.history),
+                              child:
+                                  getTabHistoryProfile(context, widget.history),
                             ),
                             const SizedBox(width: 15),
                             Text(
@@ -103,7 +104,7 @@ class _HistoryTile extends State<HistoryTile> {
                                 context,
                                 MaterialPageRoute<void>(
                                   builder: (BuildContext context) =>
-                                      EditHistoryDialog(
+                                      EditTabHistoryDialog(
                                           history: widget.history),
                                   fullscreenDialog: true,
                                 ),
@@ -113,7 +114,7 @@ class _HistoryTile extends State<HistoryTile> {
                                 color: Colors.black),
                           ),
                           const SizedBox(width: 15),
-                          getHistoryLog(context, widget.history)
+                          getTabHistoryLog(context, widget.history)
                           // GestureDetector(
                           //   onTap: () {
                           //     showConfirmDialog(

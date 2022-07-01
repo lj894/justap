@@ -8,7 +8,7 @@
 PRODUCT_NAME = justap
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.justap
+PRODUCT_BUNDLE_IDENTIFIER = us.justap.app
 
 // The copyright displayed in application information
 PRODUCT_COPYRIGHT = Copyright © 2022 com.example. All rights reserved.

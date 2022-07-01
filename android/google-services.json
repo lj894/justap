@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:190090293913:android:8d292f4f691a83fa44fe08",
         "android_client_info": {
-          "package_name": "com.example.justap"
+          "package_name": "us.justap.app"
         }
       },
       "oauth_client": [
@@ -34,7 +34,7 @@
               "client_id": "190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.justap"
+                "bundle_id": "us.justap.app"
               }
             }
           ]

@@ -3,24 +3,24 @@ import 'package:justap/models/history.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class HistoryController extends GetxController {
+class TabHistoryController extends GetxController {
   var isLoading = true.obs;
-  var historyList = <History>[].obs;
+  var historyList = <TabHistory>[].obs;
 
   @override
   void onInit() {
-    fetchHistory();
+    fetchTabHistory();
     super.onInit();
   }
 
-  void fetchHistory() async {
+  void fetchTabHistory() async {
     var uid = FirebaseAuth.instance.currentUser?.uid;
     try {
       isLoading(true);
       //if (uid != null) {
-      var history = await RemoteServices.fetchHistory();
+      var history = await RemoteServices.fetchTabHistory();
       if (history.isNotEmpty) {
-        historyList.value = history as List<History>;
+        historyList.value = history as List<TabHistory>;
       } else {
         historyList.value = [];
       }
