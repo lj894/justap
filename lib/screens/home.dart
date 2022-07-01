@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/controllers/user.dart';
-import 'package:justap/screens/Image_upload.dart';
+import 'package:justap/screens/Image_upload2.dart';
 import 'package:justap/screens/social_link.dart';
 import 'package:justap/screens/visit_history.dart';
 import 'package:justap/widgets/cover_image.dart';
@@ -50,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen>
     });
     return Scaffold(
       bottomNavigationBar: const BottomNav(0),
-      body: Container(
+      body: SafeArea(
+        top: true,
+        bottom: true,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
