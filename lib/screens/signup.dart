@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/widgets/core_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/services/authentications.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SignUpScreen extends StatelessWidget {
   TextEditingController _emailTextController = TextEditingController();
@@ -50,11 +52,20 @@ class SignUpScreen extends StatelessWidget {
                 firebaseUIButton(context, "Sign Up", () {
                   if (_passwordTextController.text ==
                       _repeatPasswordTextController.text) {
-                    context.read<AuthenticationService>().signUp(
-                        email: _emailTextController.text.trim(),
-                        password: _passwordTextController.text.trim());
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                        '/', (Route<dynamic> route) => false);
+                    try {
+                      Future<String?> result = context
+                          .read<AuthenticationService>()
+                          .signUp(
+                              email: _emailTextController.text.trim(),
+                              password: _passwordTextController.text.trim());
+
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                          '/', (Route<dynamic> route) => false);
+                    } catch (e) {
+                      print(e);
+                    }
+                  } else {
+                    showAlertDialog(context, "Error", "passward not match");
                   }
                 })
               ],
