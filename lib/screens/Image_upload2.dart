@@ -284,44 +284,19 @@ class _ImageUploadState extends State<ImageUpload> {
 
   Future<void> _cropImage(type) async {
     if (_pickedFile != null) {
-      final croppedFile;
-      if (kIsWeb) {
-        croppedFile = await ImageCropper().cropImage(
-          sourcePath: _pickedFile!.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-          uiSettings: type == 'PROFILE'
-              ? buildProfileUISettings(context)
-              : buildBackgroundUISettings(context),
-        );
-      } else {
-        croppedFile = await ImageCropper().cropImage(
-          sourcePath: _pickedFile!.path,
-          aspectRatioPresets: [
-            CropAspectRatioPreset.square,
-            CropAspectRatioPreset.ratio3x2,
-            CropAspectRatioPreset.original,
-            CropAspectRatioPreset.ratio4x3,
-            CropAspectRatioPreset.ratio16x9
-          ],
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: 'Cropper',
-                toolbarColor: Colors.deepOrange,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-            IOSUiSettings(
-              title: 'Cropper',
-            ),
-          ],
-        );
-      }
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: _pickedFile!.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: type == 'PROFILE'
+            ? buildProfileUISettings(context)
+            : buildBackgroundUISettings(context),
+      );
 
       if (croppedFile != null) {
         setState(() {

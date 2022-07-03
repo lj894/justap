@@ -7,12 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:190090293913:android:8d292f4f691a83fa44fe08",
+        "mobilesdk_app_id": "1:190090293913:android:61ce371a47da8d0644fe08",
         "android_client_info": {
           "package_name": "us.justap.app"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "190090293913-1sdrkf1j7httuc92tv6dcvq12dg1gf91.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "us.justap.app",
+            "certificate_hash": "dbe6a2cee2cbdb3c57a8f21a98126d69fdd12b8a"
+          }
+        },
+        {
+          "client_id": "190090293913-ho256vh1slb2sbsgu92e9dnftecga26p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "us.justap.app",
+            "certificate_hash": "d41e45ec09bc2f3161287c2d19f62bb2c7322e67"
+          }
+        },
         {
           "client_id": "190090293913-4cnrd5qqkf0lpfpjnoqt49sj75b8p9e5.apps.googleusercontent.com",
           "client_type": 3
@@ -29,6 +45,13 @@
             {
               "client_id": "190090293913-4cnrd5qqkf0lpfpjnoqt49sj75b8p9e5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.justap"
+              }
             }
           ]
         }
