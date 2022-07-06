@@ -17,3 +17,12 @@ In command line / terminal:
 ```
 
 > For other useful flutter command-line tools, check this document: https://docs.flutter.dev/reference/flutter-cli
+
+### Android
+
+#### How to build the production appbundle
+
+
+```
+$ flutter build appbundle --release --flavor prod -t lib/main_prod.dart --obfuscate --split-debug-info=/Users/dennis/Github/HiFive/build/app/outputs/bundle
+```
