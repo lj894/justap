@@ -11,9 +11,9 @@ import 'package:justap/models/media.dart';
 import 'package:justap/models/user.dart';
 import 'package:justap/models/history.dart';
 import 'package:http_parser/http_parser.dart';
-//import 'dart:html';
 import 'package:universal_html/html.dart';
 import 'package:uuid/uuid.dart';
+import 'package:mime/mime.dart';
 
 class RemoteServices {
   static const justapAPI = "https://api.justap.us/v1";
@@ -126,14 +126,19 @@ class RemoteServices {
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
-      //'application/x-www-form-urlencoded'
     });
+
+    final mimeTypeData =
+        lookupMimeType(imageData.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final contentType = MediaType(mimeTypeData![0], mimeTypeData[1]);
+
     _request.files.add(http.MultipartFile.fromBytes(
         'profile',
         await imageData.readAsBytes().then((value) {
           return value.cast();
         }),
-        filename: imageData.path.toString() + imageData.name));
+        filename: imageData.path.toString() + imageData.name,
+        contentType: contentType));
     return await _request.send().then((value) {
       if (value.statusCode == 200) {
         return true;
@@ -149,14 +154,19 @@ class RemoteServices {
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
-      //'application/x-www-form-urlencoded'
     });
+
+    final mimeTypeData =
+        lookupMimeType(imageData.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final contentType = MediaType(mimeTypeData![0], mimeTypeData[1]);
+
     _request.files.add(http.MultipartFile.fromBytes(
         'profile',
         await imageData.readAsBytes().then((value) {
           return value.cast();
         }),
-        filename: imageData.path.toString()));
+        filename: imageData.path.toString(),
+        contentType: contentType));
     return await _request.send().then((value) {
       if (value.statusCode == 200) {
         return true;
@@ -172,14 +182,20 @@ class RemoteServices {
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
-      //'application/x-www-form-urlencoded'
     });
+
+    final mimeTypeData =
+        lookupMimeType(imageData.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final contentType = MediaType(mimeTypeData![0], mimeTypeData[1]);
+
     _request.files.add(http.MultipartFile.fromBytes(
-        'background',
-        await imageData.readAsBytes().then((value) {
-          return value.cast();
-        }),
-        filename: imageData.path.toString() + imageData.name));
+      'background',
+      await imageData.readAsBytes().then((value) {
+        return value.cast();
+      }),
+      filename: imageData.path.toString() + imageData.name,
+      contentType: contentType,
+    ));
     return await _request.send().then((value) {
       if (value.statusCode == 200) {
         return true;
@@ -195,35 +211,23 @@ class RemoteServices {
     _request.headers.addAll({
       'authorization': 'Bearer ${globals.userToken}',
       'Content-Type': 'multipart/form-data'
-      //'application/x-www-form-urlencoded'
     });
+
+    final mimeTypeData =
+        lookupMimeType(imageData.path, headerBytes: [0xFF, 0xD8])?.split('/');
+    final contentType = MediaType(mimeTypeData![0], mimeTypeData[1]);
     _request.files.add(http.MultipartFile.fromBytes(
         'background',
         await imageData.readAsBytes().then((value) {
           return value.cast();
         }),
-        filename: imageData.path.toString()));
+        filename: imageData.path.toString(),
+        contentType: contentType));
     return await _request.send().then((value) {
       if (value.statusCode == 200) {
         return true;
       } else {
         throw Exception('Failed to update background image');
-      }
-    });
-  }
-
-  static updateBackgroundImage(imageData) async {
-    var postUri = Uri.parse("$justapAPI/user/background");
-    var request = http.MultipartRequest("POST", postUri);
-    request.headers['authorization'] = 'Bearer ${globals.userToken}';
-    request.headers['Content-Type'] = 'multipart/form-data';
-    request.files.add(http.MultipartFile.fromBytes('profile', imageData,
-        contentType: MediaType('image', 'jpeg')));
-
-    request.send().then((response) {
-      if (response.statusCode == 200) {
-      } else {
-        throw Exception('Failed to update profile image.');
       }
     });
   }
