@@ -104,7 +104,7 @@ class _ProfileScreen extends State<ProfileScreen> {
                 )),
             backgroundColor: Colors.transparent,
             elevation: 0.0),
-        bottomNavigationBar: const BottomNav(3),
+        bottomNavigationBar: const BottomNav(1),
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 30.0),

@@ -21,13 +21,13 @@ class BottomNav extends StatelessWidget {
           case 0:
             navigation.changeScreen('/');
             break;
+          // case 1:
+          //   navigation.changeScreen('/reward');
+          //   break;
+          // case 2:
+          //   navigation.changeScreen('/reward_exchange');
+          //   break;
           case 1:
-            navigation.changeScreen('/reward');
-            break;
-          case 2:
-            navigation.changeScreen('/reward_exchange');
-            break;
-          case 3:
             navigation.changeScreen('/profile');
             break;
         }
@@ -38,16 +38,16 @@ class BottomNav extends StatelessWidget {
           activeIcon: Icon(Icons.remember_me, color: Colors.black),
           label: 'Home',
         ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.military_tech, color: Colors.grey),
-          activeIcon: Icon(Icons.military_tech, color: Colors.black),
-          label: 'Reward',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.currency_exchange, color: Colors.grey),
-          activeIcon: Icon(Icons.currency_exchange, color: Colors.black),
-          label: 'Exchange',
-        ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.military_tech, color: Colors.grey),
+        //   activeIcon: Icon(Icons.military_tech, color: Colors.black),
+        //   label: 'Reward',
+        // ),
+        // BottomNavigationBarItem(
+        //   icon: Icon(Icons.currency_exchange, color: Colors.grey),
+        //   activeIcon: Icon(Icons.currency_exchange, color: Colors.black),
+        //   label: 'Exchange',
+        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.face, color: Colors.grey),
           activeIcon: Icon(Icons.face, color: Colors.black),
