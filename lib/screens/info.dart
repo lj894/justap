@@ -7,8 +7,8 @@ import 'package:justap/controllers/ro_media.dart';
 import 'package:justap/components/ro_media_tile.dart';
 import 'package:justap/controllers/ro_user.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:justap/widgets/cover_image.dart';
-import 'package:justap/widgets/profile_image.dart';
+import 'package:justap/widgets/background_image.dart';
+import 'package:justap/widgets/profile_widget.dart';
 import 'package:justap/services/remote_services.dart';
 
 class InfoScreen extends StatefulWidget {
@@ -224,7 +224,8 @@ class _InfoScreenState extends State<InfoScreen> {
                     top: 0,
                     right: 15.0,
                     child: FloatingActionButton(
-                      backgroundColor: Colors.black,
+                      backgroundColor:
+                          token == null ? Colors.transparent : Colors.black,
                       mini: true,
                       tooltip: token == null ? "Sign In" : "Back",
                       onPressed: () async {
@@ -234,7 +235,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         }
                       },
                       child: token == null
-                          ? const Icon(Icons.login_rounded)
+                          ? Image.asset("assets/images/LOGOUT_ICON.png",
+                              width: 30, height: 30)
                           : const Icon(Icons.arrow_back),
                     ),
                   )
@@ -242,7 +244,8 @@ class _InfoScreenState extends State<InfoScreen> {
                     top: 0,
                     left: 15.0,
                     child: FloatingActionButton(
-                      backgroundColor: Colors.black,
+                      backgroundColor:
+                          token == null ? Colors.transparent : Colors.black,
                       mini: true,
                       tooltip: token == null ? "Sign In" : "Back",
                       onPressed: () async {
@@ -252,7 +255,8 @@ class _InfoScreenState extends State<InfoScreen> {
                         }
                       },
                       child: token == null
-                          ? const Icon(Icons.login_rounded)
+                          ? Image.asset("assets/images/LOGOUT_ICON.png",
+                              width: 30, height: 30)
                           : const Icon(Icons.arrow_back),
                     ),
                   ),
