@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/screens/edit_media_dialog.dart';
 import 'package:justap/services/remote_services.dart';
-import 'package:justap/controllers/media.dart';
-import 'package:get/get.dart';
 
 class MediaTile extends StatefulWidget {
   final Media? media;

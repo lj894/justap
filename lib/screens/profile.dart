@@ -1,5 +1,5 @@
 import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -110,7 +110,8 @@ class _ProfileScreen extends State<ProfileScreen> {
             padding: const EdgeInsets.only(top: 30.0),
             //child: FloatingActionButton.extended(
             child: FloatingActionButton(
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.transparent,
+              elevation: 0.0,
               mini: true,
               tooltip: "Sign Out",
               onPressed: () {
@@ -119,7 +120,8 @@ class _ProfileScreen extends State<ProfileScreen> {
                     .changeScreen('/');
                 setState(() {});
               },
-              child: const Icon(Icons.logout_rounded),
+              child: Image.asset("assets/images/LOGOUT_ICON.png",
+                  width: 30, height: 30),
             )),
         body: GestureDetector(
             onTap: () {
@@ -334,43 +336,68 @@ class _ProfileScreen extends State<ProfileScreen> {
                         const SizedBox(height: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Reset Link"),
-                              onPressed: () async {
-                                showConfirmDialog(
-                                    context,
-                                    "Reset Code",
-                                    "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
-                                    () => () async {
-                                          await RemoteServices
-                                              .resetProfileCode();
-                                          userController.fetchUser();
-                                          setState(() {});
-                                        });
-                              },
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Activate Tag"),
-                              onPressed: () async {
-                                _ndefWrite();
-                              },
-                            )
-                          ],
+                          children: kIsWeb
+                              ? [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.black,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 10),
+                                        textStyle: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    child: const Text("Reset Link"),
+                                    onPressed: () async {
+                                      showConfirmDialog(
+                                          context,
+                                          "Reset Code",
+                                          "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
+                                          () => () async {
+                                                await RemoteServices
+                                                    .resetProfileCode();
+                                                userController.fetchUser();
+                                                setState(() {});
+                                              });
+                                    },
+                                  )
+                                ]
+                              : [
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.black,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 10),
+                                        textStyle: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    child: const Text("Reset Link"),
+                                    onPressed: () async {
+                                      showConfirmDialog(
+                                          context,
+                                          "Reset Code",
+                                          "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
+                                          () => () async {
+                                                await RemoteServices
+                                                    .resetProfileCode();
+                                                userController.fetchUser();
+                                                setState(() {});
+                                              });
+                                    },
+                                  ),
+                                  ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.black,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 30, vertical: 10),
+                                        textStyle: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold)),
+                                    child: const Text("Activate Tag"),
+                                    onPressed: () async {
+                                      _ndefWrite();
+                                    },
+                                  )
+                                ],
                         ),
                       ],
                     )))));
