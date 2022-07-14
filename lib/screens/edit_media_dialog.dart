@@ -196,8 +196,11 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.grey)),
               primary: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               textStyle:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
           child: const Text("Read QR Code Image"),
@@ -254,135 +257,163 @@ class _EditMediaDialog extends State<EditMediaDialog> {
             margin: EdgeInsets.all(20.0),
             child: SingleChildScrollView(
               reverse: true,
-              child: Column(
-                children: [
-                  showMediaDropDown(),
-                  //showMediaRadios(),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                  ),
-                  (mediaType == 'ZELLE' && !kIsWeb)
-                      ? showQRProcessor(context)
-                      : Container(),
-                  (qrcode == 'Unknown' || kIsWeb)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            showMediaInput(
-                                context, mediaType, widget.media?.websiteLink),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom)),
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            showQRInput(context, mediaType, qrcode),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom)),
-                          ],
-                        ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Save"),
-                              onPressed: () async {
-                                String? link = '';
-                                List<Map> targetMedia = mediaJson
-                                    .where((m) => m['value'] == mediaType)
-                                    .toList();
-                                String prefix = targetMedia[0]['prefix'];
-
-                                if (websiteLink != null && websiteLink != '') {
-                                  link = websiteLink;
-                                } else {
-                                  link = widget.media?.websiteLink;
-                                  if (prefix != '') {
-                                    link = link!.replaceAll(prefix, '');
-                                  }
-                                }
-                                link = prefix + link!;
-
-                                if (mediaType == 'ZELLE' && !kIsWeb) {
-                                  link = websiteLink;
-                                }
-
-                                try {
-                                  await RemoteServices.updateMedia(
-                                      widget.media?.id,
-                                      mediaType,
-                                      link,
-                                      widget.media?.active);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen(),
-                                        settings:
-                                            const RouteSettings(name: '/')),
-                                  );
-                                } catch (e) {
-                                  showAlertDialog(context, "Error", "$e");
-                                }
-                              },
-                            )
-                          ],
-                        ),
+              child: Column(children: [
+                showMediaDropDown(),
+                //showMediaRadios(),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                (mediaType == 'ZELLE' && !kIsWeb)
+                    ? showQRProcessor(context)
+                    : Container(),
+                (qrcode == 'Unknown' || kIsWeb)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          showMediaInput(
+                              context, mediaType, widget.media?.websiteLink),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context)
+                                      .viewInsets
+                                      .bottom)),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          showQRInput(context, mediaType, qrcode),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context)
+                                      .viewInsets
+                                      .bottom)),
+                        ],
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.grey,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Delete"),
-                              onPressed: () async {
-                                await RemoteServices.deleteMedia(
-                                    widget.media?.id);
-                                //setState(() {});
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
+                                primary: Colors.black,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: const Text("SAVE"),
+                            onPressed: () async {
+                              String? link = '';
+                              List<Map> targetMedia = mediaJson
+                                  .where((m) => m['value'] == mediaType)
+                                  .toList();
+                              String prefix = targetMedia[0]['prefix'];
+
+                              if (websiteLink != null && websiteLink != '') {
+                                link = websiteLink;
+                              } else {
+                                link = widget.media?.websiteLink;
+                                if (prefix != '') {
+                                  link = link!.replaceAll(prefix, '');
+                                }
+                              }
+                              link = prefix + link!;
+
+                              if (mediaType == 'ZELLE' && !kIsWeb) {
+                                link = websiteLink;
+                              }
+
+                              try {
+                                await RemoteServices.updateMedia(
+                                    widget.media?.id,
+                                    mediaType,
+                                    link,
+                                    widget.media?.active);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => HomeScreen(),
                                       settings: const RouteSettings(name: '/')),
                                 );
-                              },
-                            )
-                          ],
-                        ),
+                              } catch (e) {
+                                showAlertDialog(context, "Error", "$e");
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 20),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
+                                primary: Colors.black,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: const Text("DELETE"),
+                            onPressed: () async {
+                              showConfirmDialog(
+                                  context,
+                                  "Delete Social Media Link",
+                                  "Are you sure you wish to delete ${widget.media?.socialMedia}?",
+                                  () => () async {
+                                        await RemoteServices.deleteMedia(
+                                            widget.media?.id);
+                                        //setState(() {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(),
+                                              settings: const RouteSettings(
+                                                  name: '/')),
+                                        );
+                                      });
+                            },
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    //     Flexible(
+                    //       flex: 1,
+                    //       child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           IconButton(
+                    //             iconSize: 40.0,
+                    //             icon: Image.asset("assets/images/DELETE.png"),
+                    //             color: Colors.black,
+                    //             onPressed: () async {
+                    //               await RemoteServices.deleteMedia(
+                    //                   widget.media?.id);
+                    //               //setState(() {});
+                    //               Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                     builder: (context) => HomeScreen(),
+                    //                     settings: const RouteSettings(name: '/')),
+                    //               );
+                    //             },
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                )
+              ]),
             )));
   }
 }
