@@ -162,8 +162,11 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.grey)),
               primary: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               textStyle:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
           child: const Text("Read QR Code Image"),
@@ -251,12 +254,15 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
                                 primary: Colors.black,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
-                                textStyle: TextStyle(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
-                            child: const Text("Save"),
+                            child: const Text("SAVE"),
                             onPressed: () async {
                               if (mediaType != '') {
                                 String link = websiteLink;
@@ -284,7 +290,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                                 }
                               }
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),

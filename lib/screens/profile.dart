@@ -220,13 +220,17 @@ class _ProfileScreen extends State<ProfileScreen> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side:
+                                          const BorderSide(color: Colors.grey)),
                                   primary: Colors.black,
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
+                                      horizontal: 15, vertical: 10),
                                   textStyle: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
-                              child: const Text("Save"),
+                              child: const Text("SAVE"),
                               onPressed: () async {
                                 var nn = "", ir = "";
                                 if (nnChanged) {
@@ -340,13 +344,18 @@ class _ProfileScreen extends State<ProfileScreen> {
                               ? [
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.grey)),
                                         primary: Colors.black,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 30, vertical: 10),
+                                            horizontal: 15, vertical: 10),
                                         textStyle: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    child: const Text("Reset Link"),
+                                    child: const Text("RESET LINK"),
                                     onPressed: () async {
                                       showConfirmDialog(
                                           context,
@@ -364,13 +373,18 @@ class _ProfileScreen extends State<ProfileScreen> {
                               : [
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.grey)),
                                         primary: Colors.black,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 30, vertical: 10),
+                                            horizontal: 15, vertical: 10),
                                         textStyle: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    child: const Text("Reset Link"),
+                                    child: const Text("RESET LINK"),
                                     onPressed: () async {
                                       showConfirmDialog(
                                           context,
@@ -386,13 +400,18 @@ class _ProfileScreen extends State<ProfileScreen> {
                                   ),
                                   ElevatedButton(
                                     style: ElevatedButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(18.0),
+                                            side: const BorderSide(
+                                                color: Colors.grey)),
                                         primary: Colors.black,
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 30, vertical: 10),
+                                            horizontal: 15, vertical: 10),
                                         textStyle: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold)),
-                                    child: const Text("Activate Tag"),
+                                    child: const Text("ACTIVATE TAG"),
                                     onPressed: () async {
                                       _ndefWrite();
                                     },

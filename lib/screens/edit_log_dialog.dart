@@ -53,7 +53,8 @@ class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
                         child: TextFormField(
                           cursorColor: Theme.of(context).cursorColor,
                           initialValue: widget.history?.notes,
-                          maxLines: 4,
+                          minLines: 1,
+                          maxLines: 2,
                           onChanged: (value) {
                             setState(() {
                               notes = value.toString();
@@ -87,13 +88,17 @@ class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
                           children: [
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side:
+                                          const BorderSide(color: Colors.grey)),
                                   primary: Colors.black,
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
+                                      horizontal: 15, vertical: 10),
                                   textStyle: const TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold)),
-                              child: const Text("Save"),
+                              child: const Text("SAVE"),
                               onPressed: () async {
                                 String? newNotes = '';
                                 if (notes != null && notes != '') {

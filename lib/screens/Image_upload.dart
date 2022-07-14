@@ -9,7 +9,6 @@ import 'package:justap/utils/ui_helper.dart'
     if (dart.library.html) 'package:justap/utils/web_ui_helper.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
-import 'package:justap/screens/all.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 
@@ -230,15 +229,18 @@ class _ImageUploadState extends State<ImageUpload> {
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: const BorderSide(color: Colors.grey)),
                       primary: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
+                          horizontal: 15, vertical: 10),
                       textStyle: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     _uploadImage();
                   },
-                  child: const Text('Upload'),
+                  child: const Text('UPLOAD'),
                 ),
               ),
             ],
@@ -251,11 +253,14 @@ class _ImageUploadState extends State<ImageUpload> {
   Widget _saveButton(type) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: const BorderSide(color: Colors.grey)),
           primary: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      child: const Text("Save"),
+      child: const Text("SAVE"),
       onPressed: () async {
         try {
           if (type == 'PROFILE') {
@@ -286,12 +291,14 @@ class _ImageUploadState extends State<ImageUpload> {
     if (_pickedFile != null) {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: _pickedFile!.path,
+        aspectRatio: const CropAspectRatio(ratioX: 400, ratioY: 120),
+        compressQuality: 100,
         aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
+          //   CropAspectRatioPreset.square,
+          //   CropAspectRatioPreset.ratio3x2,
+          //   CropAspectRatioPreset.original,
+          //   CropAspectRatioPreset.ratio4x3,
+          //   CropAspectRatioPreset.ratio16x9
         ],
         uiSettings: type == 'PROFILE'
             ? buildProfileUISettings(context)

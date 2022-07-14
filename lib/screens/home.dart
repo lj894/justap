@@ -11,6 +11,7 @@ import 'package:justap/screens/visit_history.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -49,6 +50,23 @@ class _HomeScreenState extends State<HomeScreen>
       userController.fetchUser();
     });
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: GestureDetector(
+            onTap: () async {
+              if (await canLaunchUrl(Uri.parse("http://justap.us"))) {
+                await launchUrl(Uri.parse("http://justap.us"));
+              }
+            },
+            child: const Image(
+              image: AssetImage("assets/images/site_logo.png"),
+              width: 80.0,
+            )),
+      ),
       bottomNavigationBar: const BottomNav(0),
       body: SafeArea(
         top: true,
@@ -213,16 +231,17 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Colors.black, fontWeight: FontWeight.bold),
               borderWidth: 1,
               unselectedBorderColor: Colors.black87,
-              radius: 10,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+              radius: 18,
               height: 50,
-              buttonMargin: const EdgeInsets.only(top: 15, left: 30, right: 30),
+              buttonMargin: const EdgeInsets.only(top: 15, left: 20, right: 20),
               tabs: const [
                 Tab(
-                  text: 'Social Links',
+                  text: 'SOCIAL LINKS',
                   height: 50.0,
                 ),
                 Tab(
-                  text: 'Tab History',
+                  text: 'TAB HISTORY',
                   height: 50.0,
                 )
               ],
