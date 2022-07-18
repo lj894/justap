@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/controllers/navigation.dart';
 
@@ -32,11 +33,15 @@ class BottomNav extends StatelessWidget {
             break;
         }
       },
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.remember_me, color: Colors.grey),
-          activeIcon: Icon(Icons.remember_me, color: Colors.black),
-          label: 'Home',
+          //icon: Icon(Icons.remember_me, color: Colors.grey),
+          icon: Image.asset("assets/images/SOCIAL_ICON_INACTIVE.png",
+              width: 30, height: 30),
+          activeIcon: Image.asset("assets/images/SOCIAL_ICON_ACTIVE.png",
+              width: 30, height: 30),
+          //activeIcon: Icon(Icons.remember_me, color: Colors.black),
+          label: 'Social',
         ),
         // BottomNavigationBarItem(
         //   icon: Icon(Icons.military_tech, color: Colors.grey),
@@ -49,8 +54,10 @@ class BottomNav extends StatelessWidget {
         //   label: 'Exchange',
         // ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.face, color: Colors.grey),
-          activeIcon: Icon(Icons.face, color: Colors.black),
+          icon: Image.asset("assets/images/PROFILE_ICON_INACTIVE.png",
+              width: 30, height: 30),
+          activeIcon: Image.asset("assets/images/PROFILE_ICON_ACTIVE.png",
+              width: 30, height: 30),
           label: 'Profile',
         ),
       ],

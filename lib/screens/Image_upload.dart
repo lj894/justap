@@ -3,17 +3,14 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-//import 'package:image_cropper/image_cropper.dart';
 import 'package:justap/controllers/user.dart';
 import 'package:justap/utils/ui_helper.dart'
     if (dart.library.io) 'package:justap/utils/mobile_ui_helper.dart'
     if (dart.library.html) 'package:justap/utils/web_ui_helper.dart';
 import 'package:justap/services/remote_services.dart';
 import 'package:justap/widgets/alert_dialog.dart';
-import 'package:justap/screens/all.dart';
 import 'package:get/get.dart';
-
-//import 'package:justap/components/image_cropper_for_web.dart';
+import 'package:image_cropper/image_cropper.dart';
 
 class ImageUpload extends StatefulWidget {
   final String title;
@@ -31,7 +28,7 @@ class ImageUpload extends StatefulWidget {
 
 class _ImageUploadState extends State<ImageUpload> {
   XFile? _pickedFile;
-  //CroppedFile? _croppedFile;
+  CroppedFile? _croppedFile;
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +52,7 @@ class _ImageUploadState extends State<ImageUpload> {
   }
 
   Widget _body() {
-    //if (_croppedFile != null || _pickedFile != null) {
-    if (_pickedFile != null) {
+    if (_croppedFile != null || _pickedFile != null) {
       return _imageCard();
     } else {
       return _uploaderCard();
@@ -94,17 +90,16 @@ class _ImageUploadState extends State<ImageUpload> {
     final screenHeight = MediaQuery.of(context).size.height;
 
     if (widget.type == 'PROFILE') {
-      //   if (_croppedFile != null) {
-      //     final path = _croppedFile!.path;
-      //     return ConstrainedBox(
-      //       constraints: BoxConstraints(
-      //         maxWidth: 0.6 * screenWidth,
-      //         maxHeight: 0.6 * screenHeight,
-      //       ),
-      //       child: kIsWeb ? Image.network(path) : Image.file(File(path)),
-      //     );
-      //   } else
-      if (_pickedFile != null) {
+      if (_croppedFile != null) {
+        final path = _croppedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            maxWidth: 0.6 * screenWidth,
+            maxHeight: 0.6 * screenHeight,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else if (_pickedFile != null) {
         final path = _pickedFile!.path;
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -117,19 +112,18 @@ class _ImageUploadState extends State<ImageUpload> {
         return const SizedBox.shrink();
       }
     } else if (widget.type == 'BACKGROUND') {
-      // if (_croppedFile != null) {
-      //   final path = _croppedFile!.path;
-      //   return ConstrainedBox(
-      //     constraints: BoxConstraints(
-      //       minWidth: 0.6 * screenWidth,
-      //       maxWidth: 0.6 * screenWidth,
-      //       minHeight: 120,
-      //       maxHeight: 120,
-      //     ),
-      //     child: kIsWeb ? Image.network(path) : Image.file(File(path)),
-      //   );
-      // } else
-      if (_pickedFile != null) {
+      if (_croppedFile != null) {
+        final path = _croppedFile!.path;
+        return ConstrainedBox(
+          constraints: BoxConstraints(
+            minWidth: 0.6 * screenWidth,
+            maxWidth: 0.6 * screenWidth,
+            minHeight: 120,
+            maxHeight: 120,
+          ),
+          child: kIsWeb ? Image.network(path) : Image.file(File(path)),
+        );
+      } else if (_pickedFile != null) {
         final path = _pickedFile!.path;
         return ConstrainedBox(
           constraints: BoxConstraints(
@@ -153,15 +147,15 @@ class _ImageUploadState extends State<ImageUpload> {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        // FloatingActionButton(
-        //   onPressed: () {
-        //     _cropImage(type);
-        //   },
-        //   mini: true,
-        //   backgroundColor: Colors.black,
-        //   tooltip: 'Crop',
-        //   child: const Icon(Icons.crop),
-        // ),
+        FloatingActionButton(
+          onPressed: () {
+            _cropImage(type);
+          },
+          mini: true,
+          backgroundColor: Colors.black,
+          tooltip: 'Crop',
+          child: const Icon(Icons.crop),
+        ),
         const SizedBox(width: 20),
         FloatingActionButton(
           onPressed: () {
@@ -235,15 +229,18 @@ class _ImageUploadState extends State<ImageUpload> {
                 padding: const EdgeInsets.symmetric(vertical: 24.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                          side: const BorderSide(color: Colors.grey)),
                       primary: Colors.black,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 30, vertical: 10),
+                          horizontal: 15, vertical: 10),
                       textStyle: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold)),
                   onPressed: () {
                     _uploadImage();
                   },
-                  child: const Text('Upload'),
+                  child: const Text('UPLOAD'),
                 ),
               ),
             ],
@@ -256,37 +253,33 @@ class _ImageUploadState extends State<ImageUpload> {
   Widget _saveButton(type) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+              side: const BorderSide(color: Colors.grey)),
           primary: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
           textStyle:
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-      child: const Text("Save"),
+      child: const Text("SAVE"),
       onPressed: () async {
         try {
           if (type == 'PROFILE') {
-            // if (_croppedFile != null) {
-            //   await RemoteServices.updateCroppedProfileImage(_croppedFile!);
-            // } else
-            if (_pickedFile != null) {
+            if (_croppedFile != null) {
+              await RemoteServices.updateCroppedProfileImage(_croppedFile!);
+            } else if (_pickedFile != null) {
               await RemoteServices.updateOriginalProfileImage(_pickedFile!);
             }
           } else if (type == 'BACKGROUND') {
-            // if (_croppedFile != null) {
-            //   await RemoteServices.updateCroppedBackgroundImage(_croppedFile!);
-            // } else
-            if (_pickedFile != null) {
+            if (_croppedFile != null) {
+              await RemoteServices.updateCroppedBackgroundImage(_croppedFile!);
+            } else if (_pickedFile != null) {
               await RemoteServices.updateOriginalBackgroundImage(_pickedFile!);
             }
           }
           final UserController userController = Get.put(UserController());
           userController.fetchUser();
 
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ProfileScreen(),
-                settings: const RouteSettings(name: '/')),
-          );
+          Navigator.pop(context);
         } catch (e) {
           showAlertDialog(context, "Error", "$e");
         }
@@ -294,45 +287,31 @@ class _ImageUploadState extends State<ImageUpload> {
     );
   }
 
-  // Future<void> _cropImage(type) async {
-  //   WebUiSettings settings;
+  Future<void> _cropImage(type) async {
+    if (_pickedFile != null) {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: _pickedFile!.path,
+        aspectRatio: const CropAspectRatio(ratioX: 400, ratioY: 120),
+        compressQuality: 100,
+        aspectRatioPresets: [
+          //   CropAspectRatioPreset.square,
+          //   CropAspectRatioPreset.ratio3x2,
+          //   CropAspectRatioPreset.original,
+          //   CropAspectRatioPreset.ratio4x3,
+          //   CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: type == 'PROFILE'
+            ? buildProfileUISettings(context)
+            : buildBackgroundUISettings(context),
+      );
 
-  //   final screenWidth = MediaQuery.of(context).size.width;
-  //   final screenHeight = MediaQuery.of(context).size.height;
-  //   settings = WebUiSettings(
-  //     context: context,
-  //     presentStyle: CropperPresentStyle.dialog,
-  //     boundary: Boundary(
-  //       width: type == "BACKGROUND"
-  //           ? (screenWidth * 0.7).round()
-  //           : (screenWidth * 0.6).round(),
-  //       height: type == "BACKGROUND"
-  //           ? 150 //(screenHeight * 0.5).round()
-  //           : (screenWidth * 0.6).round(),
-  //     ),
-  //     viewPort: ViewPort(
-  //       width: type == "BACKGROUND" ? (screenWidth * 0.6).round() : 200,
-  //       height: type == "BACKGROUND" ? 120 : 200,
-  //       type: type == "BACKGROUND" ? 'square' : 'circle',
-  //     ),
-  //     enableExif: true,
-  //     enableZoom: true,
-  //     showZoomer: true,
-  //   );
-
-  //   if (_pickedFile != null) {
-  //     final croppedFile = await ImageCropperPlugin().cropImage(
-  //         sourcePath: _pickedFile!.path,
-  //         compressFormat: ImageCompressFormat.jpg,
-  //         compressQuality: 200,
-  //         uiSettings: [settings]);
-  //     if (croppedFile != null) {
-  //       setState(() {
-  //         _croppedFile = croppedFile;
-  //       });
-  //     }
-  //   }
-  // }
+      if (croppedFile != null) {
+        setState(() {
+          _croppedFile = croppedFile;
+        });
+      }
+    }
+  }
 
   Future<void> _uploadImage() async {
     final pickedFile =
@@ -347,7 +326,7 @@ class _ImageUploadState extends State<ImageUpload> {
   void _clear() {
     setState(() {
       _pickedFile = null;
-      //_croppedFile = null;
+      _croppedFile = null;
     });
   }
 }

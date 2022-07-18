@@ -5,12 +5,13 @@ import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/controllers/user.dart';
-import 'package:justap/screens/Image_upload2.dart';
+import 'package:justap/screens/Image_upload.dart';
 import 'package:justap/screens/social_link.dart';
 import 'package:justap/screens/visit_history.dart';
 import 'package:justap/widgets/cover_image.dart';
 import 'package:justap/widgets/profile_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -49,6 +50,23 @@ class _HomeScreenState extends State<HomeScreen>
       userController.fetchUser();
     });
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        toolbarHeight: 40,
+        elevation: 0.0,
+        automaticallyImplyLeading: false,
+        centerTitle: true,
+        title: GestureDetector(
+            onTap: () async {
+              if (await canLaunchUrl(Uri.parse("http://justap.us"))) {
+                await launchUrl(Uri.parse("http://justap.us"));
+              }
+            },
+            child: const Image(
+              image: AssetImage("assets/images/site_logo.png"),
+              width: 80.0,
+            )),
+      ),
       bottomNavigationBar: const BottomNav(0),
       body: SafeArea(
         top: true,
@@ -66,45 +84,50 @@ class _HomeScreenState extends State<HomeScreen>
                     child: Column(
                   children: [
                     Stack(
-                      alignment: Alignment.center,
-                      //alignment: Alignment.bottomLeft,
                       clipBehavior: Clip.none,
+                      alignment: Alignment.center,
                       children: [
-                        InkWell(
-                          onTap: () async {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute<void>(
-                                builder: (BuildContext context) =>
-                                    const ImageUpload(
-                                        title: "Upload Background Image",
-                                        type: "BACKGROUND"),
-                                fullscreenDialog: true,
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            InkWell(
+                              onTap: () async {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (BuildContext context) =>
+                                        const ImageUpload(
+                                            title: "Upload Background Image",
+                                            type: "BACKGROUND"),
+                                    fullscreenDialog: true,
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                height: 120,
+                                margin: const EdgeInsets.only(bottom: 5),
+                                child: Obx(() {
+                                  if (userController.isLoading.value) {
+                                    return const Center(
+                                        child: CircularProgressIndicator());
+                                  } else {
+                                    if (userController.user().backgroundUrl !=
+                                        null) {
+                                      return CoverImage(
+                                          userController.user().backgroundUrl,
+                                          context);
+                                    } else {
+                                      return CoverImage(null, context);
+                                    }
+                                  }
+                                }),
                               ),
-                            );
-                          },
-                          child: Container(
-                            height: 120,
-                            margin: const EdgeInsets.only(bottom: 5),
-                            child: Obx(() {
-                              if (userController.isLoading.value) {
-                                return const Center(
-                                    child: CircularProgressIndicator());
-                              } else {
-                                if (userController.user().backgroundUrl !=
-                                    null) {
-                                  return CoverImage(
-                                      userController.user().backgroundUrl);
-                                } else {
-                                  return CoverImage(null);
-                                }
-                              }
-                            }),
-                          ),
+                            ),
+                            Container(height: 12, color: Colors.transparent),
+                          ],
                         ),
                         Positioned(
                           top: 60,
-                          //left: 10,
                           child: Obx(() {
                             if (userController.isLoading.value) {
                               return const Center(
@@ -157,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen>
                               left: 10,
                               //bottom: 20,
                               //right: 20,
-                              top: 1),
+                              top: 0),
                           child: Text(
                             userController.user().nickName!,
                             textAlign: TextAlign.left,
@@ -182,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen>
                               left: 10,
                               //bottom: 20,
                               //right: 20,
-                              top: 1),
+                              top: 0),
                           child: Text(
                             userController.user().introduction!,
                             textAlign: TextAlign.left,
@@ -208,17 +231,18 @@ class _HomeScreenState extends State<HomeScreen>
                   color: Colors.black, fontWeight: FontWeight.bold),
               borderWidth: 1,
               unselectedBorderColor: Colors.black87,
-              radius: 100,
-              height: 24,
-              buttonMargin: const EdgeInsets.only(top: 5, left: 20, right: 20),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+              radius: 18,
+              height: 50,
+              buttonMargin: const EdgeInsets.only(top: 15, left: 20, right: 20),
               tabs: const [
                 Tab(
-                  text: 'Social Links',
-                  height: 20.0,
+                  text: 'SOCIAL LINKS',
+                  height: 50.0,
                 ),
                 Tab(
-                  text: 'Tab History',
-                  height: 20.0,
+                  text: 'TAB HISTORY',
+                  height: 50.0,
                 )
               ],
               controller: _tabController,

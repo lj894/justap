@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:justap/screens/home.dart';
@@ -33,7 +34,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
     String prefix = targetMedia[0]['prefix'];
     String? inputLabel = targetMedia[0]['input_label'];
 
-    if (mediaType == 'ZELLE') {
+    if (mediaType == 'ZELLE' && !kIsWeb) {
       if (qrcode == "Unknown") {
         return Container();
       } else {
@@ -98,363 +99,13 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
             labelStyle: TextStyle(
               color: Colors.black87,
             ),
-            helperText: 'Enter your personal link to the site',
+            //helperText: 'Enter your personal link to the site',
             border: OutlineInputBorder(),
           ),
         ),
       );
     }
     // true
-  }
-
-  showMediaRadios() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Instagram',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "INSTAGRAM",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Twitter',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "TWITTER",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Facebook',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "FACEBOOK",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'LinkedIn',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "LINKEDIN",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'YouTube',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "YOUTUBE",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Spotify',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "SPOTIFY",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'venmo',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "VENMO",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Zelle',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "ZELLE",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'WeChat',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "WECHAT",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'WhatsApp',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "WHATSAPP",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Line',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "LINE",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'TikTok',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "TIKTOK",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'Telegram',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "TELEGRAM",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-            Flexible(
-              flex: 1,
-              child: ListTile(
-                title: const Text(
-                  'GitHub',
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.black,
-                  ),
-                ),
-                leading: Radio(
-                  value: "GITHUB",
-                  groupValue: mediaType,
-                  activeColor: Colors.black87,
-                  onChanged: (value) {
-                    setState(() {
-                      mediaType = value.toString();
-                    });
-                  },
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
-    );
   }
 
   showMediaDropDown() {
@@ -511,8 +162,11 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.grey)),
               primary: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               textStyle:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
           child: const Text("Read QR Code Image"),
@@ -573,7 +227,9 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                 ),
-                mediaType == 'ZELLE' ? showQRProcessor(context) : Container(),
+                mediaType == 'ZELLE' && !kIsWeb
+                    ? showQRProcessor(context)
+                    : Container(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -598,12 +254,15 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                         children: [
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
                                 primary: Colors.black,
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 30, vertical: 10),
-                                textStyle: TextStyle(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold)),
-                            child: const Text("Save"),
+                            child: const Text("SAVE"),
                             onPressed: () async {
                               if (mediaType != '') {
                                 String link = websiteLink;
@@ -631,7 +290,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
                                 }
                               }
                             },
-                          )
+                          ),
                         ],
                       ),
                     ),

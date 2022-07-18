@@ -24,7 +24,6 @@ List<Map> mediaJson = [
     'prefix': 'https://www.tiktok.com/@',
     'input_label': 'User Name'
   },
-  {'value': 'BEHANCE', 'label': 'Behance', 'prefix': '', 'input_label': 'URL'},
   {
     'value': 'LINKEDIN',
     'label': 'LinkedIn',
@@ -49,12 +48,7 @@ List<Map> mediaJson = [
     'prefix': 'venmo://users/',
     'input_label': 'User Name'
   },
-  {
-    'value': 'ZELLE',
-    'label': 'Zelle',
-    'prefix': 'https://enroll.zellepay.com/qr-codes?data=',
-    'input_label': 'User Name'
-  },
+  {'value': 'ZELLE', 'label': 'Zelle', 'prefix': '', 'input_label': 'Link'},
   {
     'value': 'WECHAT',
     'label': 'WeChat',
@@ -102,5 +96,23 @@ List<Map> mediaJson = [
     'label': 'Email',
     'prefix': 'mailto:',
     'input_label': 'Email'
+  },
+  {
+    'value': 'PERSONAL',
+    'label': 'Personal Website',
+    'prefix': '',
+    'input_label': 'URL'
+  },
+  {
+    'value': 'METAMASK',
+    'label': 'MetaMask',
+    'prefix': 'https://metamask.app.link/send/',
+    'input_label': 'Addr'
+  },
+  {
+    'value': 'OPENSEA',
+    'label': 'OpenSea',
+    'prefix': 'https://opensea.io/',
+    'input_label': 'Addr'
   },
 ];

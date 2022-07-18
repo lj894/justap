@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -114,7 +115,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
   }
 
   showQRInput(context, mediaType, qrcode) {
-    if (mediaType == 'ZELLE') {
+    if (mediaType == 'ZELLE' && !kIsWeb) {
       txt.value = TextEditingValue(
           text: qrcode, // same thing as 10.toString()
           selection:
@@ -148,354 +149,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
     }
   }
 
-  showMediaRadios() {
-    return Column(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Instagram',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "INSTAGRAM",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Twitter',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "TWITTER",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Facebook',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "FACEBOOK",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'LinkedIn',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "LINKEDIN",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'YouTube',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "YOUTUBE",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Spotify',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "SPOTIFY",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'venmo',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "VENMO",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Zelle',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "ZELLE",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'WeChat',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "WECHAT",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'WhatsApp',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "WHATSAPP",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Line',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "LINE",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'TikTok',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "TIKTOK",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'Telegram',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "TELEGRAM",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            flex: 1,
-            child: ListTile(
-              title: const Text(
-                'GitHub',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-              leading: Radio(
-                value: "GITHUB",
-                groupValue: mediaType,
-                activeColor: Colors.black87,
-                onChanged: (value) {
-                  setState(() {
-                    mediaType = value.toString();
-                  });
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    ]);
-  }
-
   showMediaDropDown() {
     return Container(
         decoration: BoxDecoration(
@@ -509,16 +162,9 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                     child: ButtonTheme(
               alignedDropdown: true,
               child: DropdownButton(
-                hint: Text('Select Media'),
+                hint: const Text('Select Media'),
                 value: mediaType,
                 onChanged: null,
-                // onChanged: (value) {
-                //   setState(() {
-                //     if (value != '') {
-                //       mediaType = value.toString();
-                //     }
-                //   });
-                // },
                 items: mediaJson.map((media) {
                   return DropdownMenuItem(
                       value: media['value'].toString(),
@@ -550,8 +196,11 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(18.0),
+                  side: const BorderSide(color: Colors.grey)),
               primary: Colors.black,
-              padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               textStyle:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
           child: const Text("Read QR Code Image"),
@@ -608,133 +257,163 @@ class _EditMediaDialog extends State<EditMediaDialog> {
             margin: EdgeInsets.all(20.0),
             child: SingleChildScrollView(
               reverse: true,
-              child: Column(
-                children: [
-                  showMediaDropDown(),
-                  //showMediaRadios(),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                  ),
-                  mediaType == 'ZELLE' ? showQRProcessor(context) : Container(),
-                  qrcode == 'Unknown'
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            showMediaInput(
-                                context, mediaType, widget.media?.websiteLink),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom)),
-                          ],
-                        )
-                      : Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            showQRInput(context, mediaType, qrcode),
-                            Padding(
-                                padding: EdgeInsets.only(
-                                    bottom: MediaQuery.of(context)
-                                        .viewInsets
-                                        .bottom)),
-                          ],
-                        ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.black,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Save"),
-                              onPressed: () async {
-                                String? link = '';
-                                List<Map> targetMedia = mediaJson
-                                    .where((m) => m['value'] == mediaType)
-                                    .toList();
-                                String prefix = targetMedia[0]['prefix'];
-
-                                if (websiteLink != null && websiteLink != '') {
-                                  link = websiteLink;
-                                } else {
-                                  link = widget.media?.websiteLink;
-                                  if (prefix != '') {
-                                    link = link!.replaceAll(prefix, '');
-                                  }
-                                }
-                                link = prefix + link!;
-
-                                if (mediaType == 'ZELLE') {
-                                  link = websiteLink;
-                                }
-
-                                try {
-                                  await RemoteServices.updateMedia(
-                                      widget.media?.id,
-                                      mediaType,
-                                      link,
-                                      widget.media?.active);
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen(),
-                                        settings:
-                                            const RouteSettings(name: '/')),
-                                  );
-                                } catch (e) {
-                                  showAlertDialog(context, "Error", "$e");
-                                }
-                              },
-                            )
-                          ],
-                        ),
+              child: Column(children: [
+                showMediaDropDown(),
+                //showMediaRadios(),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                (mediaType == 'ZELLE' && !kIsWeb)
+                    ? showQRProcessor(context)
+                    : Container(),
+                (qrcode == 'Unknown' || kIsWeb)
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          showMediaInput(
+                              context, mediaType, widget.media?.websiteLink),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context)
+                                      .viewInsets
+                                      .bottom)),
+                        ],
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          showQRInput(context, mediaType, qrcode),
+                          Padding(
+                              padding: EdgeInsets.only(
+                                  bottom: MediaQuery.of(context)
+                                      .viewInsets
+                                      .bottom)),
+                        ],
                       ),
-                      Flexible(
-                        flex: 1,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.grey,
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 10),
-                                  textStyle: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold)),
-                              child: const Text("Delete"),
-                              onPressed: () async {
-                                await RemoteServices.deleteMedia(
-                                    widget.media?.id);
-                                //setState(() {});
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
+                                primary: Colors.black,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: const Text("SAVE"),
+                            onPressed: () async {
+                              String? link = '';
+                              List<Map> targetMedia = mediaJson
+                                  .where((m) => m['value'] == mediaType)
+                                  .toList();
+                              String prefix = targetMedia[0]['prefix'];
+
+                              if (websiteLink != null && websiteLink != '') {
+                                link = websiteLink;
+                              } else {
+                                link = widget.media?.websiteLink;
+                                if (prefix != '') {
+                                  link = link!.replaceAll(prefix, '');
+                                }
+                              }
+                              link = prefix + link!;
+
+                              if (mediaType == 'ZELLE' && !kIsWeb) {
+                                link = websiteLink;
+                              }
+
+                              try {
+                                await RemoteServices.updateMedia(
+                                    widget.media?.id,
+                                    mediaType,
+                                    link,
+                                    widget.media?.active);
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => HomeScreen(),
                                       settings: const RouteSettings(name: '/')),
                                 );
-                              },
-                            )
-                          ],
-                        ),
+                              } catch (e) {
+                                showAlertDialog(context, "Error", "$e");
+                              }
+                            },
+                          ),
+                          const SizedBox(width: 20),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(18.0),
+                                    side: const BorderSide(color: Colors.grey)),
+                                primary: Colors.black,
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 10),
+                                textStyle: const TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold)),
+                            child: const Text("DELETE"),
+                            onPressed: () async {
+                              showConfirmDialog(
+                                  context,
+                                  "Delete Social Media Link",
+                                  "Are you sure you wish to delete ${widget.media?.socialMedia}?",
+                                  () => () async {
+                                        await RemoteServices.deleteMedia(
+                                            widget.media?.id);
+                                        //setState(() {});
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  HomeScreen(),
+                                              settings: const RouteSettings(
+                                                  name: '/')),
+                                        );
+                                      });
+                            },
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    //     Flexible(
+                    //       flex: 1,
+                    //       child: Row(
+                    //         mainAxisAlignment: MainAxisAlignment.center,
+                    //         children: [
+                    //           IconButton(
+                    //             iconSize: 40.0,
+                    //             icon: Image.asset("assets/images/DELETE.png"),
+                    //             color: Colors.black,
+                    //             onPressed: () async {
+                    //               await RemoteServices.deleteMedia(
+                    //                   widget.media?.id);
+                    //               //setState(() {});
+                    //               Navigator.push(
+                    //                 context,
+                    //                 MaterialPageRoute(
+                    //                     builder: (context) => HomeScreen(),
+                    //                     settings: const RouteSettings(name: '/')),
+                    //               );
+                    //             },
+                    //           )
+                    //         ],
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                  ],
+                )
+              ]),
             )));
   }
 }
