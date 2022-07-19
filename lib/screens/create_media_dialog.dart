@@ -169,7 +169,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
               textStyle:
                   const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-          child: const Text("Read QR Code Image"),
+          child: const Text("Upload Zelle QR Code Image"),
           onPressed: () async {
             final pickedFile =
                 await ImagePicker().pickImage(source: ImageSource.gallery);
