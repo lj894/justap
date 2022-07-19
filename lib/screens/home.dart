@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen>
                   height: 50.0,
                 ),
                 Tab(
-                  text: 'TAB HISTORY',
+                  text: 'TAP HISTORY',
                   height: 50.0,
                 )
               ],

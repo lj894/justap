@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:label="justap"
+        android:label="JusTap"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
