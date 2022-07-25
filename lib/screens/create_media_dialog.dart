@@ -24,7 +24,9 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
   @override
   void initState() {
     super.initState();
-    initPlatformState();
+    if (!kIsWeb) {
+      initPlatformState();
+    }
   }
 
   showMediaInput(context, mediaType) {
@@ -43,7 +45,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
           child: TextFormField(
             cursorColor: Theme.of(context).cursorColor,
             initialValue: qrcode,
-            //maxLength: 50,
             onChanged: (value) {
               setState(() {
                 websiteLink = value.toString();
@@ -54,7 +55,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
               labelStyle: TextStyle(
                 color: Colors.black87,
               ),
-              //helperText: 'Enter your user name of the site',
               border: OutlineInputBorder(),
             ),
           ),
@@ -88,7 +88,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
           initialValue: websiteLink,
-          //maxLength: 50,
           onChanged: (value) {
             setState(() {
               websiteLink = value.toString();
@@ -99,7 +98,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
             labelStyle: TextStyle(
               color: Colors.black87,
             ),
-            //helperText: 'Enter your personal link to the site',
             border: OutlineInputBorder(),
           ),
         ),
@@ -159,7 +157,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -187,7 +184,6 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         )
       ],
     );
-    //Text('scan result is $qrcode'),
   }
 
   Future<void> initPlatformState() async {
@@ -222,23 +218,15 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                //showMediaRadios(),
                 showMediaDropDown(),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                 ),
-                mediaType == 'ZELLE' && !kIsWeb
-                    ? showQRProcessor(context)
-                    : Container(),
+                if (mediaType == 'ZELLE' && !kIsWeb) showQRProcessor(context),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    mediaType != ''
-                        ? showMediaInput(context, mediaType)
-                        : Container(),
-                    Padding(
-                        padding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom)),
+                    if (mediaType != '') showMediaInput(context, mediaType)
                   ],
                 ),
                 Padding(

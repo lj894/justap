@@ -82,6 +82,8 @@ PODS:
   - PromisesObjC (2.1.0)
   - scan (0.0.1):
     - Flutter
+  - the_apple_sign_in (1.0.0):
+    - Flutter
   - TOCropViewController (2.6.1)
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -104,6 +106,7 @@ DEPENDENCIES:
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - nfc_manager (from `.symlinks/plugins/nfc_manager/ios`)
   - scan (from `.symlinks/plugins/scan/ios`)
+  - the_apple_sign_in (from `.symlinks/plugins/the_apple_sign_in/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
 
 SPEC REPOS:
@@ -139,6 +142,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/nfc_manager/ios"
   scan:
     :path: ".symlinks/plugins/scan/ios"
+  the_apple_sign_in:
+    :path: ".symlinks/plugins/the_apple_sign_in/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
 
@@ -163,6 +168,7 @@ SPEC CHECKSUMS:
   nfc_manager: 69e4cd9c15112206ab30246b1ce8d81a75729fdf
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   scan: aea35bb4aa59ccc8839c576a18cd57c7d492cc86
+  the_apple_sign_in: 2e78c83cdb09eba07bb16dcc1f3bc12fcdc8263d
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
   url_launcher_ios: 839c58cdb4279282219f5e248c3321761ff3c4de
 

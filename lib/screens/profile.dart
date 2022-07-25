@@ -108,7 +108,6 @@ class _ProfileScreen extends State<ProfileScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.miniEndTop,
         floatingActionButton: Padding(
             padding: const EdgeInsets.only(top: 30.0),
-            //child: FloatingActionButton.extended(
             child: FloatingActionButton(
               backgroundColor: Colors.transparent,
               elevation: 0.0,
@@ -205,10 +204,6 @@ class _ProfileScreen extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
-                            // Padding(
-                            //     padding: EdgeInsets.only(
-                            //         bottom:
-                            //             MediaQuery.of(context).viewInsets.bottom)),
                           ],
                         ),
                         const SizedBox(height: 24),
@@ -340,84 +335,91 @@ class _ProfileScreen extends State<ProfileScreen> {
                         const SizedBox(height: 24),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: kIsWeb
-                              ? [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color: Colors.grey)),
-                                        primary: Colors.black,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 10),
-                                        textStyle: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                    child: const Text("RESET LINK"),
-                                    onPressed: () async {
-                                      showConfirmDialog(
-                                          context,
-                                          "Reset Code",
-                                          "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
-                                          () => () async {
-                                                await RemoteServices
-                                                    .resetProfileCode();
-                                                userController.fetchUser();
-                                                setState(() {});
-                                              });
-                                    },
-                                  )
-                                ]
-                              : [
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color: Colors.grey)),
-                                        primary: Colors.black,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 10),
-                                        textStyle: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                    child: const Text("RESET LINK"),
-                                    onPressed: () async {
-                                      showConfirmDialog(
-                                          context,
-                                          "Reset Code",
-                                          "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
-                                          () => () async {
-                                                await RemoteServices
-                                                    .resetProfileCode();
-                                                userController.fetchUser();
-                                                setState(() {});
-                                              });
-                                    },
-                                  ),
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(18.0),
-                                            side: const BorderSide(
-                                                color: Colors.grey)),
-                                        primary: Colors.black,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 15, vertical: 10),
-                                        textStyle: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold)),
-                                    child: const Text("ACTIVATE TAG"),
-                                    onPressed: () async {
-                                      _ndefWrite();
-                                    },
-                                  )
-                                ],
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side:
+                                          const BorderSide(color: Colors.grey)),
+                                  primary: Colors.black,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                              child: const Text("RESET LINK"),
+                              onPressed: () async {
+                                showConfirmDialog(
+                                    context,
+                                    "Reset Code",
+                                    "Are you sure you wish to reset your personal code? \nYou can't undo this operation afterwards and all your tags with the old code needs to rewrite.",
+                                    () => () async {
+                                          await RemoteServices
+                                              .resetProfileCode();
+                                          userController.fetchUser();
+                                          setState(() {});
+                                        });
+                              },
+                            ),
+                            if (!kIsWeb)
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(18.0),
+                                        side: const BorderSide(
+                                            color: Colors.grey)),
+                                    primary: Colors.black,
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 15, vertical: 10),
+                                    textStyle: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold)),
+                                child: const Text("ACTIVATE TAG"),
+                                onPressed: () async {
+                                  _ndefWrite();
+                                },
+                              )
+                          ],
                         ),
+                        const SizedBox(height: 24),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(18.0),
+                                      side:
+                                          const BorderSide(color: Colors.grey)),
+                                  primary: Colors.black,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  textStyle: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold)),
+                              child: const Text("DELETE ACCOUNT"),
+                              onPressed: () async {
+                                showConfirmDialog(
+                                    context,
+                                    "Delete Account",
+                                    "Are you sure you wish to delete your JusTap account permanently? \nBefore deleting your account, you should keep in mind that it will also permanently remove your link, and erase your entire tap history.\nYour tag will no longer functional as well.",
+                                    () => () async {
+                                          RemoteServices.deleteUser();
+                                          context
+                                              .read<AuthenticationService>()
+                                              .signOut();
+                                          Provider.of<NavigationController>(
+                                                  context,
+                                                  listen: false)
+                                              .changeScreen('/');
+                                          setState(() {});
+                                        });
+                              },
+                            ),
+                          ],
+                        )
                       ],
                     )))));
   }

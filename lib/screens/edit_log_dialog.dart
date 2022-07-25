@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:justap/controllers/history.dart';
 import 'package:justap/models/history.dart';
-import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
-import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
 
 class EditTabHistoryDialog extends StatefulWidget {
@@ -69,10 +67,10 @@ class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
                           ),
                         ),
                       ),
-                      Padding(
-                          padding: EdgeInsets.only(
-                              bottom:
-                                  MediaQuery.of(context).viewInsets.bottom)),
+                      // Padding(
+                      //     padding: EdgeInsets.only(
+                      //         bottom:
+                      //             MediaQuery.of(context).viewInsets.bottom)),
                     ],
                   ),
                   const Padding(
@@ -103,8 +101,6 @@ class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
                                 String? newNotes = '';
                                 if (notes != null && notes != '') {
                                   newNotes = notes;
-                                } else {
-                                  //newNotes = widget.history?.notes;
                                 }
 
                                 try {

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:get/get.dart';
 import 'package:justap/components/bottom_nav.dart';
 import 'package:justap/components/reward_slides.dart';
 import 'package:justap/components/reward_list.dart';

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:justap/screens/Image_upload.dart';
 
 Widget DefaultProfileImage() => Center(
       child: Stack(

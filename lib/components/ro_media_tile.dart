@@ -8,15 +8,20 @@ import 'package:justap/widgets/alert_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:justap/utils/media_list.dart';
 
-class ROMediaTile extends StatelessWidget {
+class ROMediaTile extends StatefulWidget {
   final Media ro_media;
   final String? code;
   const ROMediaTile(this.ro_media, this.code);
 
+  @override
+  State<ROMediaTile> createState() => _ROMediaTileState();
+}
+
+class _ROMediaTileState extends State<ROMediaTile> {
   getMediaImage(context, media) {
     return GestureDetector(
       onTap: () async {
-        RemoteServices.logSocialVisit(code, media.socialMedia);
+        RemoteServices.logSocialVisit(widget.code, media.socialMedia);
         if (await canLaunchUrl(Uri.parse(media.websiteLink))) {
           await launchUrl(Uri.parse(media.websiteLink));
         } else {
@@ -67,14 +72,14 @@ class ROMediaTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: getMediaImage(context, ro_media),
+                  child: getMediaImage(context, widget.ro_media),
                 ),
               ],
             ),
             SizedBox(height: 8),
             Center(
               child: Text(
-                ro_media.socialMedia!,
+                widget.ro_media.socialMedia!,
                 maxLines: 2,
                 style: const TextStyle(
                     fontFamily: 'avenir', fontWeight: FontWeight.w800),

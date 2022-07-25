@@ -1,9 +1,6 @@
 import 'dart:convert';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
-import 'package:async/async.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:justap/utils/globals.dart' as globals;
@@ -38,7 +35,7 @@ class RemoteServices {
         throw Exception('Failed to load user');
       }
     } else {
-      throw Exception('Failed to load user');
+      throw Exception('Failed to load user: No UID provided');
     }
   }
 
@@ -63,17 +60,13 @@ class RemoteServices {
 
   static Future<SiteUser> createUser() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-
     final response = await http.post(
       Uri.parse('$justapAPI/user/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'Bearer ${globals.userToken}',
       },
-      body: jsonEncode(<String, String>{
-        //"nickName": "string",
-        //"introduction": "string"
-      }),
+      body: jsonEncode(<String, String>{}),
     );
 
     if (response.statusCode == 200) {
@@ -232,6 +225,22 @@ class RemoteServices {
     });
   }
 
+  static void deleteUser() async {
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    final response = await http.delete(
+      Uri.parse('$justapAPI/user'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(<String, String>{}),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to delete user.');
+    }
+  }
+
   static Future<List<Media?>> fetchMedias(uid, active) async {
     if (uid != null) {
       String url = "$justapAPI/social?firebaseUid=$uid";
@@ -283,7 +292,6 @@ class RemoteServices {
         "active": true
       }),
     );
-
     if (response.statusCode == 200) {
       return Media.fromJson(jsonDecode(response.body));
     } else {
@@ -310,6 +318,23 @@ class RemoteServices {
       return Media.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update social media.');
+    }
+  }
+
+  static void updateMediaSequence(data) async {
+    final response = await http.put(
+      Uri.parse('$justapAPI/social/sequence'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer ${globals.userToken}',
+      },
+      body: jsonEncode(data),
+    );
+    if (response.statusCode == 200) {
+      //return Media.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to update social media sequence.');
     }
   }
 

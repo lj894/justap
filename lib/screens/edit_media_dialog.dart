@@ -1,13 +1,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:justap/controllers/media.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/screens/home.dart';
 import 'package:justap/services/remote_services.dart';
-import 'dart:convert';
 import 'package:justap/widgets/alert_dialog.dart';
 import 'package:justap/utils/media_list.dart';
 import 'package:scan/scan.dart';
@@ -24,7 +21,9 @@ class EditMediaDialog extends StatefulWidget {
 class _EditMediaDialog extends State<EditMediaDialog> {
   void initState() {
     super.initState();
-    initPlatformState();
+    if (!kIsWeb) {
+      initPlatformState();
+    }
   }
 
   String? mediaType;
@@ -94,7 +93,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
           initialValue: link,
-          //maxLength: 50,
           onChanged: (value) {
             setState(() {
               websiteLink = value.toString();
@@ -117,7 +115,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
   showQRInput(context, mediaType, qrcode) {
     if (mediaType == 'ZELLE' && !kIsWeb) {
       txt.value = TextEditingValue(
-          text: qrcode, // same thing as 10.toString()
+          text: qrcode,
           selection:
               TextSelection.fromPosition(TextPosition(offset: qrcode.length)));
       return Flexible(
@@ -125,7 +123,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         child: TextFormField(
           cursorColor: Theme.of(context).cursorColor,
           controller: txt,
-          //initialValue: "", //qrcode,
           onChanged: (value) {
             txt.value = TextEditingValue(
                 text: value,
@@ -141,7 +138,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
             labelStyle: TextStyle(
               color: Colors.black87,
             ),
-            //helperText: 'Enter your user name of the site',
             border: OutlineInputBorder(),
           ),
         ),
@@ -170,11 +166,9 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                       value: media['value'].toString(),
                       child: Row(
                         children: [
-                          media['value'] != ''
-                              ? Image.asset(
-                                  "assets/images/${media['value']}.png",
-                                  width: 25)
-                              : Container(),
+                          if (media['value'] != '')
+                            Image.asset("assets/images/${media['value']}.png",
+                                width: 25),
                           Container(
                             margin: const EdgeInsets.only(left: 10),
                             child: Text(media['label']),
@@ -193,7 +187,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        //Text('Running on: $_platformVersion\n'),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
@@ -259,35 +252,22 @@ class _EditMediaDialog extends State<EditMediaDialog> {
               reverse: true,
               child: Column(children: [
                 showMediaDropDown(),
-                //showMediaRadios(),
                 const Padding(
                   padding: EdgeInsets.all(8.0),
                 ),
-                (mediaType == 'ZELLE' && !kIsWeb)
-                    ? showQRProcessor(context)
-                    : Container(),
+                if (mediaType == 'ZELLE' && !kIsWeb) showQRProcessor(context),
                 (qrcode == 'Unknown' || kIsWeb)
                     ? Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           showMediaInput(
                               context, mediaType, widget.media?.websiteLink),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context)
-                                      .viewInsets
-                                      .bottom)),
                         ],
                       )
                     : Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           showQRInput(context, mediaType, qrcode),
-                          Padding(
-                              padding: EdgeInsets.only(
-                                  bottom: MediaQuery.of(context)
-                                      .viewInsets
-                                      .bottom)),
                         ],
                       ),
                 const Padding(
@@ -385,32 +365,6 @@ class _EditMediaDialog extends State<EditMediaDialog> {
                         ],
                       ),
                     ),
-                    //     Flexible(
-                    //       flex: 1,
-                    //       child: Row(
-                    //         mainAxisAlignment: MainAxisAlignment.center,
-                    //         children: [
-                    //           IconButton(
-                    //             iconSize: 40.0,
-                    //             icon: Image.asset("assets/images/DELETE.png"),
-                    //             color: Colors.black,
-                    //             onPressed: () async {
-                    //               await RemoteServices.deleteMedia(
-                    //                   widget.media?.id);
-                    //               //setState(() {});
-                    //               Navigator.push(
-                    //                 context,
-                    //                 MaterialPageRoute(
-                    //                     builder: (context) => HomeScreen(),
-                    //                     settings: const RouteSettings(name: '/')),
-                    //               );
-                    //             },
-                    //           )
-                    //         ],
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 )
               ]),

@@ -75,153 +75,123 @@ class _HomeScreenState extends State<HomeScreen>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-                color: const Color.fromRGBO(235, 235, 235, 0.8),
-                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                constraints: const BoxConstraints(
-                    minHeight: 0, minWidth: double.infinity),
-                child: SizedBox(
-                    //height: MediaQuery.of(context).size.height,
-                    child: Column(
-                  children: [
-                    Stack(
-                      clipBehavior: Clip.none,
-                      alignment: Alignment.center,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            InkWell(
-                              onTap: () async {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute<void>(
-                                    builder: (BuildContext context) =>
-                                        const ImageUpload(
-                                            title: "Upload Background Image",
-                                            type: "BACKGROUND"),
-                                    fullscreenDialog: true,
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                height: 120,
-                                margin: const EdgeInsets.only(bottom: 5),
-                                child: Obx(() {
-                                  if (userController.isLoading.value) {
-                                    return const Center(
-                                        child: CircularProgressIndicator());
-                                  } else {
-                                    if (userController.user().backgroundUrl !=
-                                        null) {
-                                      return CoverImage(
-                                          userController.user().backgroundUrl,
-                                          context);
-                                    } else {
-                                      return CoverImage(null, context);
-                                    }
-                                  }
-                                }),
+              color: const Color.fromRGBO(235, 235, 235, 0.8),
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              constraints:
+                  const BoxConstraints(minHeight: 0, minWidth: double.infinity),
+              child: Obx(() {
+                if (userController.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  return SizedBox(
+                      child: Column(
+                    children: [
+                      Stack(
+                        clipBehavior: Clip.none,
+                        alignment: Alignment.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () async {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (BuildContext context) =>
+                                          const ImageUpload(
+                                              title: "Upload Background Image",
+                                              type: "BACKGROUND"),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  height: 120,
+                                  margin: const EdgeInsets.only(bottom: 5),
+                                  child: Obx(() {
+                                    return (userController
+                                                .user()
+                                                .backgroundUrl !=
+                                            null)
+                                        ? CoverImage(
+                                            userController.user().backgroundUrl,
+                                            context)
+                                        : CoverImage(null, context);
+                                  }),
+                                ),
                               ),
+                              Container(height: 12, color: Colors.transparent),
+                            ],
+                          ),
+                          Positioned(
+                            top: 60,
+                            child: Obx(() {
+                              return InkWell(
+                                  onTap: () async {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute<void>(
+                                        builder: (BuildContext context) =>
+                                            const ImageUpload(
+                                                title: "Upload Profile Photo",
+                                                type: "PROFILE"),
+                                        fullscreenDialog: true,
+                                      ),
+                                    );
+                                  },
+                                  child:
+                                      (userController.user().profileUrl != null)
+                                          ? ProfileImage(
+                                              userController.user().profileUrl)
+                                          : DefaultProfileImage());
+                            }),
+                          ),
+                        ],
+                      ),
+                      Obx(() {
+                        if (userController.user().nickName != null) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(left: 10, top: 0),
+                            child: Text(
+                              userController.user().nickName!,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontFamily: 'avenir',
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w800),
                             ),
-                            Container(height: 12, color: Colors.transparent),
-                          ],
-                        ),
-                        Positioned(
-                          top: 60,
-                          child: Obx(() {
-                            if (userController.isLoading.value) {
-                              return const Center(
-                                  child: CircularProgressIndicator());
-                            } else {
-                              return userController.user().profileUrl == null
-                                  ? InkWell(
-                                      onTap: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const ImageUpload(
-                                                    title:
-                                                        "Upload Profile Photo",
-                                                    type: "PROFILE"),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
-                                      },
-                                      child: DefaultProfileImage())
-                                  : InkWell(
-                                      onTap: () async {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute<void>(
-                                            builder: (BuildContext context) =>
-                                                const ImageUpload(
-                                                    title:
-                                                        "Upload Profile Photo",
-                                                    type: "PROFILE"),
-                                            fullscreenDialog: true,
-                                          ),
-                                        );
-                                      },
-                                      child: ProfileImage(
-                                          userController.user().profileUrl));
-                            }
-                          }),
-                        ),
-                      ],
-                    ),
-                    Obx(() {
-                      if (userController.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (userController.user().nickName != null) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(
-                              left: 10,
-                              //bottom: 20,
-                              //right: 20,
-                              top: 0),
-                          child: Text(
-                            userController.user().nickName!,
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontFamily: 'avenir',
-                                fontSize: 20,
-                                fontWeight: FontWeight.w800),
-                          ),
-                        );
-                      } else {
-                        return const Text("");
-                      }
-                    }),
-                    const SizedBox(height: 8),
-                    Obx(() {
-                      if (userController.isLoading.value) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (userController.user().introduction != null) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.only(
-                              left: 10,
-                              //bottom: 20,
-                              //right: 20,
-                              top: 0),
-                          child: Text(
-                            userController.user().introduction!,
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                                fontFamily: 'avenir',
-                                fontSize: 14,
-                                color: Colors.black45,
-                                fontWeight: FontWeight.w400),
-                          ),
-                        );
-                      } else {
-                        return const Text("");
-                      }
-                    }),
-                  ],
-                ))),
+                          );
+                        } else {
+                          return const Text("");
+                        }
+                      }),
+                      const SizedBox(height: 8),
+                      Obx(() {
+                        if (userController.user().introduction != null) {
+                          return Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(left: 10, top: 0),
+                            child: Text(
+                              userController.user().introduction!,
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                  fontFamily: 'avenir',
+                                  fontSize: 14,
+                                  color: Colors.black45,
+                                  fontWeight: FontWeight.w400),
+                            ),
+                          );
+                        } else {
+                          return const Text("");
+                        }
+                      }),
+                    ],
+                  ));
+                }
+              }),
+            ),
             ButtonsTabBar(
               backgroundColor: Colors.black,
               unselectedBackgroundColor: Colors.white,

@@ -28,85 +28,70 @@ Future<void> main() async {
         ?.getIdToken()
         .then((value) => globals.userToken = value);
   }
-  runApp(MyApp(redirectURL: redirectURL, code: code));
+  runApp(JusTap(redirectURL: redirectURL, code: code));
 }
 
-class MyApp extends StatefulWidget {
+class JusTap extends StatefulWidget {
   String? redirectURL;
   String? code;
 
-  MyApp({this.redirectURL, this.code});
+  JusTap({this.redirectURL, this.code});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  _JusTapState createState() => _JusTapState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _JusTapState extends State<JusTap> {
   @override
   Widget build(BuildContext context) {
-    if (widget.code != null) {
-      return MultiProvider(
-          providers: [
-            Provider<AuthenticationService>(
-                create: (_) => AuthenticationService(FirebaseAuth.instance)),
-            StreamProvider(
-                create: (context) =>
-                    context.read<AuthenticationService>().authStateChanges,
-                initialData: null),
-            ListenableProvider<NavigationController>(
-              create: (_) => NavigationController(),
-            )
-          ],
-          child: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (_, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else {
-                  return MaterialApp(
-                      title: 'JusTap',
-                      initialRoute: "/user/${widget.code}",
-                      routes: <String, WidgetBuilder>{
-                        "/user/${widget.code}": (context) => InfoScreen(
-                            redirectURL: widget.redirectURL, code: widget.code),
-                        "/?code=${widget.code}": (context) => InfoScreen(
-                            redirectURL: widget.redirectURL, code: widget.code),
-                      },
-                      home: InfoScreen(
-                          redirectURL: widget.redirectURL, code: widget.code));
-                }
-              }));
-    } else {
-      return MultiProvider(
-          providers: [
-            Provider<AuthenticationService>(
-                create: (_) => AuthenticationService(FirebaseAuth.instance)),
-            StreamProvider(
-                create: (context) =>
-                    context.read<AuthenticationService>().authStateChanges,
-                initialData: null),
-            ListenableProvider<NavigationController>(
-              create: (_) => NavigationController(),
-            )
-          ],
-          child: StreamBuilder(
-              stream: FirebaseAuth.instance.authStateChanges(),
-              builder: (_, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (snapshot.data != null) {
-                  return const AuthenticationWrapper();
-                }
-                return LoginScreen();
-              }));
-    }
+    return MultiProvider(
+        providers: [
+          Provider<AuthenticationService>(
+              create: (_) => AuthenticationService(FirebaseAuth.instance)),
+          StreamProvider(
+              create: (context) =>
+                  context.read<AuthenticationService>().authStateChanges,
+              initialData: null),
+          ListenableProvider<NavigationController>(
+            create: (_) => NavigationController(),
+          )
+        ],
+        child: StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else {
+                return (widget.code != null)
+                    ? MaterialApp(
+                        title: 'JusTap',
+                        initialRoute: "/user/${widget.code}",
+                        routes: <String, WidgetBuilder>{
+                          "/user/${widget.code}": (context) => InfoScreen(
+                              redirectURL: widget.redirectURL,
+                              code: widget.code),
+                          "/?code=${widget.code}": (context) => InfoScreen(
+                              redirectURL: widget.redirectURL,
+                              code: widget.code),
+                        },
+                        home: InfoScreen(
+                            redirectURL: widget.redirectURL, code: widget.code))
+                    : (snapshot.data != null)
+                        ? const AuthenticationWrapper()
+                        : LoginScreen();
+              }
+            }));
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
+class AuthenticationWrapper extends StatefulWidget {
   const AuthenticationWrapper({Key? key}) : super(key: key);
 
+  @override
+  State<AuthenticationWrapper> createState() => _AuthenticationWrapperState();
+}
+
+class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
   @override
   Widget build(BuildContext context) {
     NavigationController navigation =

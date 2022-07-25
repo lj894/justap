@@ -4,25 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/services/authentications.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+class ResetPasswordScreen extends StatefulWidget {
+  const ResetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _SignUpScreenState createState() => _SignUpScreenState();
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _SignUpScreenState extends State<SignUpScreen> {
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   TextEditingController _emailTextController = TextEditingController();
-  TextEditingController _passwordTextController = TextEditingController();
-  TextEditingController _repeatPasswordTextController = TextEditingController();
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _emailTextController.dispose();
-    _passwordTextController.dispose();
-    _repeatPasswordTextController.dispose();
 
     super.dispose();
   }
@@ -35,7 +31,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: const Text(
-          "SIGN UP",
+          "RESET PASSWORD",
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
       ),
@@ -57,37 +53,26 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    reusableTextField("Password", Icons.lock_outlined, true,
-                        _passwordTextController, validatePassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    reusableTextField("Repeat Password", Icons.lock_outlined,
-                        true, _repeatPasswordTextController, validatePassword),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    firebaseUIButton(context, "Sign Up", () {
+                    firebaseUIButton(context, "Reset Password", () {
                       if (_key.currentState!.validate()) {
-                        if (_passwordTextController.text ==
-                            _repeatPasswordTextController.text) {
-                          Future<String?> result = context
-                              .read<AuthenticationService>()
-                              .signUp(
-                                  email: _emailTextController.text.trim(),
-                                  password: _passwordTextController.text.trim())
-                              .then((result) {
-                            if (result == 'DONE') {
-                              Navigator.of(context).pushNamedAndRemoveUntil(
-                                  '/', (Route<dynamic> route) => false);
-                            } else {
-                              showAlertDialog(context, "Error", result);
-                            }
-                          });
-                        } else {
-                          showAlertDialog(
-                              context, "Error", "passward not match");
-                        }
+                        Future<String?> result = context
+                            .read<AuthenticationService>()
+                            .resetPassword(
+                              email: _emailTextController.text.trim(),
+                            )
+                            .then((result) {
+                          if (result == 'DONE') {
+                            showAlertDialogWithCallback(
+                                context,
+                                "Reset Password Email Sent",
+                                "Please check your email and follow the instruction to reset your password.\nCheck your spam folder if you didn't receive the email within 5 minutes.",
+                                () => () {
+                                      Navigator.of(context).pop();
+                                    });
+                          } else {
+                            showAlertDialog(context, "Error", result);
+                          }
+                        });
                       }
                     })
                   ],

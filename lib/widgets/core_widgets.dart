@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 
-Image logoWidget(String imageName) {
-  return Image.asset(
-    imageName,
-    fit: BoxFit.fitWidth,
-    width: 240,
-    height: 240,
-    color: Colors.white,
-  );
-}
-
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller) {
-  return TextField(
+TextFormField reusableTextField(String text, IconData icon, bool isPasswordType,
+    TextEditingController controller, String? Function(String?)? validator) {
+  return TextFormField(
     controller: controller,
+    validator: validator,
     obscureText: isPasswordType,
     enableSuggestions: !isPasswordType,
     autocorrect: !isPasswordType,
@@ -53,7 +44,7 @@ Container firebaseUIButton(BuildContext context, String title, Function onTap) {
         title,
         style: const TextStyle(
             color: Colors.black87, fontWeight: FontWeight.bold, fontSize: 16),
-      ), 
+      ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.resolveWith((states) {
             if (states.contains(MaterialState.pressed)) {

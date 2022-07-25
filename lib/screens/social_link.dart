@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:justap/controllers/media.dart';
 import 'package:justap/components/media_tile.dart';
 import 'package:justap/screens/create_media_dialog.dart';
+import 'package:justap/services/remote_services.dart';
 
 class SocialLink extends StatefulWidget {
   const SocialLink({
@@ -34,8 +34,6 @@ class _SocialLink extends State<SocialLink> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       SizedBox(
-                          //height: 20.0,
-                          //width: 20.0,
                           child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
@@ -68,18 +66,34 @@ class _SocialLink extends State<SocialLink> {
                     if (mediaController.isLoading.value) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
-                      return StaggeredGridView.countBuilder(
-                        //crossAxisCount: 2,
-                        crossAxisCount: 1,
-                        itemCount: mediaController.mediaList.length,
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 0,
-                        itemBuilder: (context, index) {
-                          return MediaTile(
-                              media: mediaController.mediaList[index]);
+                      return ReorderableListView(
+                        onReorder: (oldIndex, newIndex) {
+                          setState(() {
+                            if (newIndex > oldIndex) newIndex--;
+                            final item =
+                                mediaController.mediaList.removeAt(oldIndex);
+                            mediaController.mediaList.insert(newIndex, item);
+                            var data = [];
+                            for (var i = 0;
+                                i < mediaController.mediaList.length;
+                                i++) {
+                              mediaController.mediaList[i]?.sequence = i;
+                              data.add({
+                                "id": mediaController.mediaList[i]?.id,
+                                "sequence":
+                                    mediaController.mediaList[i]?.sequence
+                              });
+                            }
+                            RemoteServices.updateMediaSequence(data);
+                          });
                         },
-                        staggeredTileBuilder: (index) =>
-                            const StaggeredTile.fit(1),
+                        children: [
+                          for (final mediaItem in mediaController.mediaList)
+                            Card(
+                                key: ValueKey(mediaItem),
+                                elevation: 1,
+                                child: MediaTile(media: mediaItem)),
+                        ],
                       );
                     }
                   }),
