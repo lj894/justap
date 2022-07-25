@@ -12,57 +12,32 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 16.0),
-      child: _isSigningIn
-          ? const CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-            )
-          : OutlinedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(Colors.white),
-                shape: MaterialStateProperty.all(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                ),
-              ),
-              onPressed: () async {
-                setState(() {
-                  _isSigningIn = true;
-                });
-                context
-                    .read<AuthenticationService>()
-                    .signInWithGoogle(context: context);
-                setState(() {
-                  _isSigningIn = false;
-                });
-              },
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const <Widget>[
-                    Image(
-                      image: AssetImage("assets/images/google_logo.png"),
-                      height: 25.0,
-                    ),
-                    // Padding(
-                    //   padding: EdgeInsets.only(left: 10),
-                    //   child: Text(
-                    //     'Sign in with Google',
-                    //     style: TextStyle(
-                    //       fontSize: 20,
-                    //       color: Colors.black54,
-                    //       fontWeight: FontWeight.w600,
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                ),
-              ),
-            ),
+    return SizedBox(
+      width: 36,
+      height: 36,
+      child: TextButton(
+        onPressed: () {
+          setState(() {
+            _isSigningIn = true;
+          });
+          context
+              .read<AuthenticationService>()
+              .signInWithGoogle(context: context);
+          setState(() {
+            _isSigningIn = false;
+          });
+        },
+        child: Image(
+          image: AssetImage("assets/images/google_logo.png"),
+          height: 30.0,
+        ),
+        style: TextButton.styleFrom(
+          backgroundColor: Colors.white,
+          minimumSize: Size.zero,
+          padding: EdgeInsets.all(10),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+      ),
     );
   }
 }

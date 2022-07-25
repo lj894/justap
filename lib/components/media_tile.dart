@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:justap/models/media.dart';
 import 'package:justap/screens/edit_media_dialog.dart';
@@ -23,7 +24,6 @@ class _MediaTile extends State<MediaTile> {
 
   getMediaImage(context, media) {
     return Container(
-      // Image tapped
       child: Image(
         image: AssetImage("assets/images/${media.socialMedia}.png"),
         height: 50.0,
@@ -37,7 +37,9 @@ class _MediaTile extends State<MediaTile> {
     return Card(
         elevation: 0,
         child: Padding(
-            padding: const EdgeInsets.all(2.0),
+            padding: kIsWeb
+                ? EdgeInsets.fromLTRB(2.0, 2.0, 30.0, 2.0)
+                : EdgeInsets.all(2.0),
             child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,7 +88,7 @@ class _MediaTile extends State<MediaTile> {
                         },
                         child: const Icon(Icons.edit, color: Colors.black),
                       ),
-                      const SizedBox(width: 15),
+                      const SizedBox(width: 5),
                       Switch(
                         value: active,
                         onChanged: (value) async {
@@ -98,11 +100,18 @@ class _MediaTile extends State<MediaTile> {
                           setState(() {
                             active = value;
                           });
-                          //mediaController.fetchMedias();
                         },
                         activeTrackColor: Colors.black,
                         activeColor: Colors.white60,
                       ),
+                      if (!kIsWeb) ...[
+                        SizedBox(width: 5),
+                        GestureDetector(
+                          onTap: () {},
+                          child: const Icon(Icons.drag_handle,
+                              color: Colors.black),
+                        ),
+                      ],
                     ],
                   )
                 ])));

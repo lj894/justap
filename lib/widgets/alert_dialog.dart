@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 
 showAlertDialog(BuildContext context, title, message) {
-  // set up the button
   Widget okButton = TextButton(
     child: Text("OK"),
     onPressed: () {
-      //Navigator.of(context).pop();
       Navigator.of(context, rootNavigator: true).pop();
     },
   );
 
-  // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Text(message),
@@ -19,7 +16,29 @@ showAlertDialog(BuildContext context, title, message) {
     ],
   );
 
-  // show the dialog
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+showAlertDialogWithCallback(BuildContext context, title, message, callback) {
+  Widget okButton = TextButton(
+    child: Text("OK"),
+    onPressed: () async {
+      await callback()();
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Text(title),
+    content: Text(message),
+    actions: [okButton],
+  );
+
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -29,7 +48,6 @@ showAlertDialog(BuildContext context, title, message) {
 }
 
 showConfirmDialog(BuildContext context, title, message, callback) {
-  // set up the button
   Widget okButton = TextButton(
     child: Text("Confirm"),
     onPressed: () async {
@@ -43,14 +61,12 @@ showConfirmDialog(BuildContext context, title, message, callback) {
       Navigator.of(context, rootNavigator: true).pop();
     },
   );
-  // set up the AlertDialog
   AlertDialog alert = AlertDialog(
     title: Text(title),
     content: Text(message),
     actions: [okButton, cancelButton],
   );
 
-  // show the dialog
   showDialog(
     context: context,
     builder: (BuildContext context) {

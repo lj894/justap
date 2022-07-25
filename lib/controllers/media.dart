@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class MediaController extends GetxController {
   var isLoading = true.obs;
-  var mediaList = <Media>[].obs;
+  var mediaList = <Media?>[].obs;
 
   @override
   void onInit() {

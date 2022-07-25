@@ -3,19 +3,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:justap/controllers/navigation.dart';
 
-class BottomNav extends StatelessWidget {
+class BottomNav extends StatefulWidget {
   //const BottomNav({Key? key}) : super(key: key);
 
   final int activeButtonIndex;
   const BottomNav(this.activeButtonIndex);
 
   @override
+  State<BottomNav> createState() => _BottomNavState();
+}
+
+class _BottomNavState extends State<BottomNav> {
+  @override
   Widget build(BuildContext context) {
     NavigationController navigation =
         Provider.of<NavigationController>(context, listen: false);
 
     return BottomNavigationBar(
-      currentIndex: activeButtonIndex,
+      currentIndex: widget.activeButtonIndex,
       selectedItemColor: Colors.black,
       onTap: (buttonIndex) {
         switch (buttonIndex) {

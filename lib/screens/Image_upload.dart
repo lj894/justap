@@ -293,13 +293,7 @@ class _ImageUploadState extends State<ImageUpload> {
         sourcePath: _pickedFile!.path,
         aspectRatio: const CropAspectRatio(ratioX: 400, ratioY: 120),
         compressQuality: 100,
-        aspectRatioPresets: [
-          //   CropAspectRatioPreset.square,
-          //   CropAspectRatioPreset.ratio3x2,
-          //   CropAspectRatioPreset.original,
-          //   CropAspectRatioPreset.ratio4x3,
-          //   CropAspectRatioPreset.ratio16x9
-        ],
+        aspectRatioPresets: [],
         uiSettings: type == 'PROFILE'
             ? buildProfileUISettings(context)
             : buildBackgroundUISettings(context),

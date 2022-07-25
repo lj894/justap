@@ -16,6 +16,7 @@ class Media {
     this.modifiedAt,
     this.active,
     this.owner,
+    this.sequence,
   });
 
   int? id;
@@ -26,6 +27,7 @@ class Media {
   int? modifiedAt;
   bool? active;
   bool? owner;
+  int? sequence;
 
   factory Media.fromJson(Map<String, dynamic> json) => Media(
         id: json["id"],
@@ -36,6 +38,7 @@ class Media {
         modifiedAt: json["modifiedAt"],
         active: json["active"],
         owner: json["owner"],
+        sequence: json["sequence"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -47,5 +50,6 @@ class Media {
         "modifiedAt": modifiedAt,
         "active": active,
         "owner": owner,
+        "sequence": sequence
       };
 }
