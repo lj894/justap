@@ -19,8 +19,10 @@ class MediaController extends GetxController {
       isLoading(true);
       if (uid != null) {
         var medias = await RemoteServices.fetchMedias(uid, false);
-        if (medias != null) {
+        if (medias.length > 0) {
           mediaList.value = medias as List<Media>;
+        } else {
+          mediaList.value = [];
         }
       }
     } finally {
