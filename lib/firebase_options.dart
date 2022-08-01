@@ -48,7 +48,7 @@ class DefaultFirebaseOptions {
     appId: '1:190090293913:web:c86047c977fa5d9544fe08',
     messagingSenderId: '190090293913',
     projectId: 'justap-bdc9a',
-    authDomain: 'justap-bdc9a.firebaseapp.com',
+    authDomain: 'firebase.justap.us',
     storageBucket: 'justap-bdc9a.appspot.com',
     measurementId: 'G-ZPBYL65DYH',
   );
