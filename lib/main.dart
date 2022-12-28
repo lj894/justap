@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/screens/wallet.dart';
 import 'package:justap/services/authentications.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -107,9 +108,11 @@ class _AuthenticationWrapperState extends State<AuthenticationWrapper> {
       initialRoute: "/",
       home: Navigator(
         pages: [
-          MaterialPage(child: HomeScreen()),
-          if (navigation.screenName == '/reward')
-            const MaterialPage(child: RewardScreen()),
+          MaterialPage(child: RewardScreen()),
+          if (navigation.screenName == '/wallet')
+            const MaterialPage(child: WalletScreen()),
+          if (navigation.screenName == '/social')
+            MaterialPage(child: HomeScreen()),
           if (navigation.screenName == '/reward_exchange')
             const MaterialPage(child: RewardExchangeScreen()),
           if (navigation.screenName == '/profile')

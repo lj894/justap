@@ -262,6 +262,17 @@ class _ImageUploadState extends State<ImageUpload> {
               const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
       child: const Text("SAVE"),
       onPressed: () async {
+        showDialog(
+          barrierDismissible: false,
+          builder: (ctx) {
+            return Center(
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+              ),
+            );
+          },
+          context: context,
+        );
         try {
           if (type == 'PROFILE') {
             if (_croppedFile != null) {
@@ -278,9 +289,10 @@ class _ImageUploadState extends State<ImageUpload> {
           }
           final UserController userController = Get.put(UserController());
           userController.fetchUser();
-
+          Navigator.of(context, rootNavigator: true).pop();
           Navigator.pop(context);
         } catch (e) {
+          Navigator.of(context, rootNavigator: true).pop();
           showAlertDialog(context, "Error", "$e");
         }
       },
@@ -291,9 +303,11 @@ class _ImageUploadState extends State<ImageUpload> {
     if (_pickedFile != null) {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: _pickedFile!.path,
-        aspectRatio: const CropAspectRatio(ratioX: 400, ratioY: 120),
+        aspectRatio: type == "PROFILE"
+            ? const CropAspectRatio(ratioX: 150, ratioY: 150)
+            : const CropAspectRatio(ratioX: 400, ratioY: 120),
         compressQuality: 100,
-        aspectRatioPresets: [],
+        //aspectRatioPresets: [],
         uiSettings: type == 'PROFILE'
             ? buildProfileUISettings(context)
             : buildBackgroundUISettings(context),

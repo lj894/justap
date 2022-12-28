@@ -68,7 +68,7 @@ class DefaultFirebaseOptions {
     projectId: 'justap-bdc9a',
     storageBucket: 'justap-bdc9a.appspot.com',
     iosClientId:
-        '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
+        '190090293913-5048om259ivucef35ieirhq2dv3hl91i.apps.googleusercontent.com',
     iosBundleId: 'us.justap.app',
   );
 
@@ -79,7 +79,7 @@ class DefaultFirebaseOptions {
     projectId: 'justap-bdc9a',
     storageBucket: 'justap-bdc9a.appspot.com',
     iosClientId:
-        '190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com',
+        '190090293913-5048om259ivucef35ieirhq2dv3hl91i.apps.googleusercontent.com',
     iosBundleId: 'us.justap.app',
   );
 }

@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:image_cropper/image_cropper.dart';
-import 'package:image_cropper_for_web/image_cropper_for_web.dart';
 
 List<PlatformUiSettings>? buildProfileUISettings(BuildContext context) {
   return [
     WebUiSettings(
       context: context,
       presentStyle: CropperPresentStyle.dialog,
-      boundary: Boundary(
+      boundary: const CroppieBoundary(
         width: 250,
         height: 250,
       ),
-      viewPort: ViewPort(width: 200, height: 200, type: 'circle'),
+      viewPort: const CroppieViewPort(width: 200, height: 200, type: 'circle'),
       enableExif: true,
       enableZoom: true,
       showZoomer: true,
@@ -24,11 +23,12 @@ List<PlatformUiSettings>? buildBackgroundUISettings(BuildContext context) {
     WebUiSettings(
       context: context,
       presentStyle: CropperPresentStyle.dialog,
-      boundary: Boundary(
+      boundary: const CroppieBoundary(
         //width: 500,
         height: 200,
       ),
-      viewPort: ViewPort(width: 300, height: 120, type: 'rectangle'),
+      viewPort:
+          const CroppieViewPort(width: 300, height: 120, type: 'rectangle'),
       enableExif: true,
       enableZoom: true,
       showZoomer: true,
@@ -41,11 +41,11 @@ List<PlatformUiSettings>? buildSocialUISettings(BuildContext context) {
     WebUiSettings(
       context: context,
       presentStyle: CropperPresentStyle.dialog,
-      boundary: Boundary(
+      boundary: const CroppieBoundary(
         width: 500,
         height: 500,
       ),
-      viewPort: ViewPort(width: 480, height: 480, type: 'square'),
+      viewPort: const CroppieViewPort(width: 480, height: 480, type: 'square'),
       enableExif: true,
       enableZoom: true,
       showZoomer: true,

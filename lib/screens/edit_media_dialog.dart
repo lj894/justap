@@ -46,7 +46,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
         return Flexible(
           flex: 1,
           child: TextFormField(
-            cursorColor: Theme.of(context).cursorColor,
+            //cursorColor: Theme.of(context).cursorColor,
             initialValue: qrcode != 'Unknown' ? qrcode : link,
             //maxLength: 50,
             onChanged: (value) {
@@ -69,7 +69,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
       return Flexible(
         flex: 1,
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          //cursorColor: Theme.of(context).cursorColor,
           initialValue: link.replaceAll(prefix, ''),
           //maxLength: 50,
           onChanged: (value) {
@@ -91,7 +91,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
       return Flexible(
         flex: 1,
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          //cursorColor: Theme.of(context).cursorColor,
           initialValue: link,
           onChanged: (value) {
             setState(() {
@@ -121,7 +121,7 @@ class _EditMediaDialog extends State<EditMediaDialog> {
       return Flexible(
         flex: 1,
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          //cursorColor: Theme.of(context).cursorColor,
           controller: txt,
           onChanged: (value) {
             txt.value = TextEditingValue(

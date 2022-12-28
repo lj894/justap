@@ -23,6 +23,13 @@ class _LoginState extends State<LoginScreen> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  bool _passwordVisible = false;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,12 +66,46 @@ class _LoginState extends State<LoginScreen> {
                           const SizedBox(
                             height: 20,
                           ),
-                          reusableTextField(
-                              "Enter Password",
-                              Icons.lock_outline,
-                              true,
-                              _passwordTextController,
-                              validatePassword),
+                          TextFormField(
+                              controller: _passwordTextController,
+                              validator: validatePassword,
+                              obscureText: !_passwordVisible,
+                              enableSuggestions: false,
+                              autocorrect: false,
+                              cursorColor: Colors.white,
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.9)),
+                              decoration: InputDecoration(
+                                prefixIcon: Icon(
+                                  Icons.lock_outlined,
+                                  color: Colors.white70,
+                                ),
+                                suffixIcon: IconButton(
+                                  icon: Icon(
+                                    !_passwordVisible
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                    color: Colors.white,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _passwordVisible = !_passwordVisible;
+                                    });
+                                  },
+                                ),
+                                labelText: "Password",
+                                labelStyle: TextStyle(
+                                    color: Colors.white.withOpacity(0.9)),
+                                filled: true,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                fillColor: Colors.white.withOpacity(0.3),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30.0),
+                                    borderSide: const BorderSide(
+                                        width: 0, style: BorderStyle.none)),
+                              ),
+                              keyboardType: TextInputType.visiblePassword),
                           const SizedBox(
                             height: 5,
                           ),

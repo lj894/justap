@@ -18,6 +18,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
+  bool _passwordVisible = false, _repeatPasswordVisible = false;
+
+  @override
+  void initState() {
+    _passwordVisible = false;
+    _repeatPasswordVisible = false;
+  }
+
   @override
   void dispose() {
     _emailTextController.dispose();
@@ -57,13 +65,86 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    reusableTextField("Password", Icons.lock_outlined, true,
-                        _passwordTextController, validatePassword),
+                    TextFormField(
+                        controller: _passwordTextController,
+                        validator: validatePassword,
+                        obscureText: !_passwordVisible,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white.withOpacity(0.9)),
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.lock_outlined,
+                            color: Colors.white70,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              !_passwordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _passwordVisible = !_passwordVisible;
+                              });
+                            },
+                          ),
+                          labelText: "Password",
+                          labelStyle:
+                              TextStyle(color: Colors.white.withOpacity(0.9)),
+                          filled: true,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          fillColor: Colors.white.withOpacity(0.3),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(
+                                  width: 0, style: BorderStyle.none)),
+                        ),
+                        keyboardType: TextInputType.visiblePassword),
                     const SizedBox(
                       height: 20,
                     ),
-                    reusableTextField("Repeat Password", Icons.lock_outlined,
-                        true, _repeatPasswordTextController, validatePassword),
+                    TextFormField(
+                        controller: _repeatPasswordTextController,
+                        validator: validatePassword,
+                        obscureText: !_repeatPasswordVisible,
+                        enableSuggestions: false,
+                        autocorrect: false,
+                        cursorColor: Colors.white,
+                        style: TextStyle(color: Colors.white.withOpacity(0.9)),
+                        decoration: InputDecoration(
+                          prefixIcon: Icon(
+                            Icons.lock_outlined,
+                            color: Colors.white70,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              !_repeatPasswordVisible
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _repeatPasswordVisible =
+                                    !_repeatPasswordVisible;
+                              });
+                            },
+                          ),
+                          labelText: "Repeat Password",
+                          labelStyle:
+                              TextStyle(color: Colors.white.withOpacity(0.9)),
+                          filled: true,
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          fillColor: Colors.white.withOpacity(0.3),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30.0),
+                              borderSide: const BorderSide(
+                                  width: 0, style: BorderStyle.none)),
+                        ),
+                        keyboardType: TextInputType.visiblePassword),
                     const SizedBox(
                       height: 20,
                     ),
@@ -111,13 +192,17 @@ String? validateEmail(String? formEmail) {
 String? validatePassword(String? formPassword) {
   if (formPassword == null || formPassword.isEmpty)
     return 'Password is required.';
-  String pattern =
-      r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~.,/]).{8,}$';
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(formPassword))
+  // String pattern =
+  //     r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~.,/]).{8,}$';
+  // RegExp regex = RegExp(pattern);
+  // if (!regex.hasMatch(formPassword))
+  //   return '''
+  //     Password must be at least 8 characters,
+  //     include an uppercase letter, number and symbol.
+  //     ''';
+  if (formPassword.length < 8)
     return '''
-      Password must be at least 8 characters,
-      include an uppercase letter, number and symbol.
-      ''';
+        Password must be at least 8 characters.
+        ''';
   return null;
 }
