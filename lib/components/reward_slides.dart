@@ -1,6 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:getwidget/getwidget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class RewardSlides extends StatefulWidget {
   const RewardSlides({
@@ -17,6 +17,14 @@ class RewardSlides extends StatefulWidget {
 class _RewardSlides extends State<RewardSlides> {
   //final RewardController rewardController = Get.put(RewardController());
 
+  final List<String> adList = [
+    "assets/ads/AD_1.png",
+    "assets/ads/AD_2.png",
+    "assets/ads/AD_3.png",
+    "assets/ads/AD_4.png",
+    "assets/ads/AD_5.png",
+  ];
+
   final List<String> imageList = [
     "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=496,h=624,fit=scale-down/mnlyEBexnEtW0B85/buyimg1-YlekzQLoy6TgE9Gw.png",
     "https://cdn.pixabay.com/photo/2017/12/13/00/23/christmas-3015776_960_720.jpg",
@@ -32,28 +40,32 @@ class _RewardSlides extends State<RewardSlides> {
       //rewardController.fetchReward();
     });
 
-    return GFCarousel(
-      items: imageList.map(
-        (url) {
-          return Container(
-            margin: EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.all(Radius.circular(5.0)),
-              child: Image.network(url, fit: BoxFit.cover, width: 1000.0),
-            ),
-          );
-        },
-      ).toList(),
-      height: 180,
-      autoPlay: true,
-      autoPlayInterval: const Duration(seconds: 5),
-      hasPagination: true,
-      activeIndicator: Colors.white,
-      onPageChanged: (index) {
-        setState(() {
-          index;
-        });
-      },
+    final List<Widget> imageSliders = adList
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                    child: Stack(
+                      children: <Widget>[
+                        Image.asset(item, fit: BoxFit.cover, width: 1000.0),
+                      ],
+                    )),
+              ),
+            ))
+        .toList();
+
+    return Container(
+      height: (kIsWeb) ? 200 : null,
+      child: CarouselSlider(
+        options: CarouselOptions(
+          autoPlay: true,
+          //height: 200,
+          aspectRatio: 2.0,
+          enlargeCenterPage: false,
+        ),
+        items: imageSliders,
+      ),
     );
   }
 }

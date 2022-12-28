@@ -8,43 +8,57 @@ String rewardToJson(List<Reward> data) =>
 
 class Reward {
   Reward(
-      {this.id,
-      this.store,
+      {this.businessId,
+      this.businessRewardId,
+      this.businessName,
+      this.businessRewardName,
       this.type,
-      this.image,
-      this.credit,
-      this.fullCredit,
+      this.businessProfileUrl,
+      this.totalPoints,
+      this.redeemPoints,
       this.createdAt,
-      this.expiryAt});
-
-  int? id;
-  String? store;
+      this.businessRewardExpiredAt,
+      this.countDownDays,
+      this.isExpired});
+  int? businessId;
+  int? businessRewardId;
+  String? businessName;
+  String? businessRewardName;
   String? type;
-  String? image;
-  int? credit;
-  int? fullCredit;
+  String? businessProfileUrl;
+  int? totalPoints;
+  int? redeemPoints;
   int? createdAt;
-  int? expiryAt;
+  int? businessRewardExpiredAt;
+  int? countDownDays;
+  bool? isExpired;
 
   factory Reward.fromJson(Map<String, dynamic> json) => Reward(
-        id: json["id"],
-        store: json["store"],
-        type: json["type"],
-        image: json["image"],
-        credit: json["credit"],
-        fullCredit: json["fullCredit"],
-        createdAt: json["createdAt"],
-        expiryAt: json["expiryAt"],
-      );
+      businessId: json["businessId"],
+      businessRewardId: json["businessRewardId"],
+      businessName: json["businessName"],
+      businessRewardName: json["businessRewardName"],
+      type: json["type"],
+      businessProfileUrl: json["businessProfileUrl"],
+      totalPoints: json["totalPoints"],
+      redeemPoints: json["redeemPoints"],
+      createdAt: json["createdAt"],
+      businessRewardExpiredAt: json["businessRewardExpiredAt"],
+      countDownDays: json["countDownDays"],
+      isExpired: json["isExpired"]);
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "store": store,
+        "businessId": businessId,
+        "businessRewardId": businessRewardId,
+        "businessName": businessName,
+        "businessRewardName": businessRewardName,
         "type": type,
-        "image": image,
-        "credit": credit,
-        "fullCredit": fullCredit,
+        "businessProfileUrl": businessProfileUrl,
+        "totalPoints": totalPoints,
+        "redeemPoints": redeemPoints,
         "createdAt": createdAt,
-        "expiryAt": expiryAt,
+        "businessRewardExpiredAt": businessRewardExpiredAt,
+        "countDownDays": countDownDays,
+        "isExpired": isExpired
       };
 }

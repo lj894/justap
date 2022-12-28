@@ -42,7 +42,6 @@ class _VisitTabHistoryTab extends State<VisitTabHistoryTab> {
                   return const Center(child: CircularProgressIndicator());
                 } else {
                   return StaggeredGridView.countBuilder(
-                    //crossAxisCount: 2,
                     crossAxisCount: 1,
                     itemCount: historyController.historyList.length,
                     crossAxisSpacing: 0,

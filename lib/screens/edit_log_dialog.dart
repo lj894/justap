@@ -49,7 +49,7 @@ class _EditTabHistoryDialog extends State<EditTabHistoryDialog> {
                       Flexible(
                         flex: 1,
                         child: TextFormField(
-                          cursorColor: Theme.of(context).cursorColor,
+                          //cursorColor: Theme.of(context).cursorColor,
                           initialValue: widget.history?.notes,
                           minLines: 1,
                           maxLines: 2,

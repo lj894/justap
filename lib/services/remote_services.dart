@@ -3,6 +3,9 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:justap/models/business_image.dart';
+import 'package:justap/models/reward.dart';
+import 'package:justap/models/reward_history.dart';
 import 'package:justap/utils/globals.dart' as globals;
 import 'package:justap/models/media.dart';
 import 'package:justap/models/user.dart';
@@ -67,11 +70,15 @@ class RemoteServices {
         'Authorization': 'Bearer ${globals.userToken}',
       },
       body: jsonEncode(<String, String>{}),
+      //body: jsonEncode(<String, String>{"nickName": "", "introduction": ""}),
     );
 
     if (response.statusCode == 200) {
       return SiteUser.fromJson(jsonDecode(response.body));
     } else {
+      if (response.statusCode == 500) {
+        FirebaseAuth.instance.signOut();
+      }
       throw Exception('Failed to create user.');
     }
   }
@@ -445,6 +452,73 @@ class RemoteServices {
       return TabHistory.fromJson(jsonDecode(response.body));
     } else {
       throw Exception('Failed to update history notes.');
+    }
+  }
+
+  static Future<List<Reward?>> fetchRewards() async {
+    await FirebaseAuth.instance.currentUser
+        ?.getIdToken()
+        .then((value) => globals.userToken = value);
+
+    final response =
+        await client.get(Uri.parse('$justapAPI/user/reward'), headers: {
+      'Authorization': 'Bearer ${globals.userToken}',
+      'Accept': 'application/json; charset=UTF-8'
+    });
+
+    if (response.statusCode == 200) {
+      var jsonString = response.body;
+      return rewardFromJson(jsonString);
+    } else {
+      return [];
+    }
+  }
+
+  static Future<List<RewardHistory?>> fetchRewardHistory(id) async {
+    await FirebaseAuth.instance.currentUser
+        ?.getIdToken()
+        .then((value) => globals.userToken = value);
+    if (id != null) {
+      print(id);
+      final response = await client.get(
+          Uri.parse('$justapAPI/user/reward/history?businessRewardId=' +
+              id.toString()),
+          headers: {
+            'Authorization': 'Bearer ${globals.userToken}',
+            'Accept': 'application/json; charset=UTF-8'
+          });
+
+      if (response.statusCode == 200) {
+        var jsonString = response.body;
+        return rewardHistoryFromJson(jsonString);
+      } else {
+        return [];
+      }
+    } else {
+      return [];
+    }
+  }
+
+  static Future<List<BusinessImage?>> fetchBusinessImage(id) async {
+    await FirebaseAuth.instance.currentUser
+        ?.getIdToken()
+        .then((value) => globals.userToken = value);
+
+    if (globals.userToken != null && id != null) {
+      final response = await client.get(
+          Uri.parse(
+              '$justapAPI/business/advertisement?businessId=' + id.toString()),
+          headers: {
+            'Authorization': 'Bearer ${globals.userToken}',
+          });
+      if (response.statusCode == 200) {
+        var data = businessImageFromJson(response.body);
+        return data;
+      } else {
+        return [];
+      }
+    } else {
+      throw Exception('Failed to load business image');
     }
   }
 }

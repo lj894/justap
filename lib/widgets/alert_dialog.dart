@@ -74,3 +74,45 @@ showConfirmDialog(BuildContext context, title, message, callback) {
     },
   );
 }
+
+showNFCScanDialog(BuildContext context, callback) {
+  Widget cancelButton = TextButton(
+    child: Text("CANCEL"),
+    onPressed: () async {
+      await callback()();
+      Navigator.of(context, rootNavigator: true).pop();
+    },
+  );
+
+  AlertDialog alert = AlertDialog(
+    title: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[Text("WAITING FOR NFC TAG")]),
+    content: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Icon(
+          Icons.add_to_home_screen_outlined,
+          size: 80,
+        ),
+        SizedBox(height: 30),
+        Text(
+          "Hold your NFC tag near the device.",
+          style: TextStyle(fontSize: 12),
+        )
+      ],
+    ),
+    actions: [
+      Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
+        cancelButton,
+      ])
+    ],
+  );
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}

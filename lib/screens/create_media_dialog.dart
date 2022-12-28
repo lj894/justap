@@ -43,7 +43,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
         return Flexible(
           flex: 1,
           child: TextFormField(
-            cursorColor: Theme.of(context).cursorColor,
+            //cursorColor: Theme.of(context).cursorColor,
             initialValue: qrcode,
             onChanged: (value) {
               setState(() {
@@ -64,7 +64,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
       return Flexible(
         flex: 1,
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          //cursorColor: Theme.of(context).cursorColor,
           initialValue: websiteLink.split("/").last,
           //maxLength: 50,
           onChanged: (value) {
@@ -86,7 +86,7 @@ class _CreateMediaDialog extends State<CreateMediaDialog> {
       return Flexible(
         flex: 1,
         child: TextFormField(
-          cursorColor: Theme.of(context).cursorColor,
+          //cursorColor: Theme.of(context).cursorColor,
           initialValue: websiteLink,
           onChanged: (value) {
             setState(() {

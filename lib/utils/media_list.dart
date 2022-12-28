@@ -27,20 +27,20 @@ List<Map> mediaJson = [
   {
     'value': 'LINKEDIN',
     'label': 'LinkedIn',
-    'prefix': 'https://www.linkedin.com/in/',
-    'input_label': 'User Name'
+    'prefix': '',
+    'input_label': 'Copy and paste your linkedIn link here'
   },
   {
     'value': 'YOUTUBE',
     'label': 'YouTube',
-    'prefix': 'https://www.youtube.com/c/',
-    'input_label': 'User Name'
+    'prefix': '',
+    'input_label': 'Copy and paste your YouTube link here'
   },
   {
     'value': 'SPOTIFY',
     'label': 'Spotify',
-    'prefix': 'https://open.spotify.com/playlist/',
-    'input_label': 'User Name'
+    'prefix': '',
+    'input_label': 'Copy and paste your Spotify playlist here'
   },
   {
     'value': 'VENMO',
@@ -97,12 +97,7 @@ List<Map> mediaJson = [
     'prefix': 'mailto:',
     'input_label': 'Email'
   },
-  {
-    'value': 'PERSONAL',
-    'label': 'Personal Website',
-    'prefix': '',
-    'input_label': 'URL'
-  },
+  {'value': 'WEBSITE', 'label': 'Website', 'prefix': '', 'input_label': 'URL'},
   {
     'value': 'METAMASK',
     'label': 'MetaMask',

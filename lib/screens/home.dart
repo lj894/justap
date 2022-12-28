@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen>
               width: 80.0,
             )),
       ),
-      bottomNavigationBar: const BottomNav(0),
+      bottomNavigationBar: const BottomNav(2),
       body: SafeArea(
         top: true,
         bottom: true,

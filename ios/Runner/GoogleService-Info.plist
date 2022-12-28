@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve.apps.googleusercontent.com</string>
+	<string>190090293913-5048om259ivucef35ieirhq2dv3hl91i.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.190090293913-v9tspl7oe6eo4o1gn7doidnphdn7g6ve</string>
+	<string>com.googleusercontent.apps.190090293913-5048om259ivucef35ieirhq2dv3hl91i</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>190090293913-1sdrkf1j7httuc92tv6dcvq12dg1gf91.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCXnXHlAEPNzIebIquQ_vn1TbMDiqNXQ5g</string>
 	<key>GCM_SENDER_ID</key>
@@ -29,6 +31,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:190090293913:ios:f8d258f5d05f395344fe08</string>
+	<string>1:190090293913:ios:c98452d1db4c053c44fe08</string>
 </dict>
 </plist>
